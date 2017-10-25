@@ -129,8 +129,7 @@ chobongki.profile=(()=>{
        $('#bkcontainer').html(cho.profile());
        $('#menu5').click(()=>{
             alert('프로필수정')
-              $('<div/>',{'id':'container'}).appendTo('body');
-               
+              $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
             chobongki.profile.init();
          });
        $('#menu5-1').click(()=>{

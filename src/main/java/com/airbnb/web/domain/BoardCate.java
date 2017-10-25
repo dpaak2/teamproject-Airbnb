@@ -10,7 +10,5 @@ public class BoardCate {
 	private String
 	boardSeq,
 	cateName,
-	cateLevel,
-	cateParentId,
-	cateSection;
+	cateLevel;
 }
