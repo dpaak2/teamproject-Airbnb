@@ -3,12 +3,39 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.airbnb.web.mapper.BKMapper">
+	
+	<insert id="insert" 
+			parameterType="com.airbnb.web.command.Command">
+	INSERT INTO member (member_id,member_password,name,regdate,birthdate) 
+		VALUES (#{action},#{column},#{dir},now(),#{pageNumber})
+	
+	</insert>
+		
+	<select id="selectSearch" resultType="com.airbnb.web.domain.Member"
+		parameterType="com.airbnb.web.command.Command">
+	SELECT member_id AS memberId , member_password AS memberPassword ,name,regdate,birthdate,member_role AS memberRole 
+	FROM Member 
+	WHERE member_id LIKE #{action} 
+	 
+	</select>
+		
 	<select id="selectOne" resultType="com.airbnb.web.domain.Member"
 		parameterType="com.airbnb.web.command.Command">
-	SELECT * 
+	SELECT member_id AS memberId , member_password AS memberPassword ,name,regdate,birthdate,member_role AS memberRole 
 	FROM Member 
-	WHERE 
-		 member_id LIKE #{action} 
+	WHERE member_id LIKE #{action} 
 	 AND member_password LIKE #{column}
 	</select>
+	
+	<update id="update">
+	UPDATE member SET name = #{column} WHERE member_id LIKE #{action} 
+	</update>
+	
+	<delete id="delete" 
+			parameterType="com.airbnb.web.command.Command"> 
+	DELETE FROM member WHERE member_id LIKE #{action} 
+	
+	
+	</delete>
 </mapper>
+

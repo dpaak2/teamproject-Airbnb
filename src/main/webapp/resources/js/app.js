@@ -1,4 +1,4 @@
-/*hayun*/
+/*hayun  병하기전*/
 var app =app ||{};
 app.common=(function(){
 	var init=x=>{		
@@ -32,10 +32,6 @@ app.main=(()=>{
 			$('#container').append(compUI.div('navbar')).css('mim-width','800px');
 			$('#navbar').append(main.navbar());
 			$('#navbar').append(main.navbarTxt());
-			$('#logoHome').click(e=>{
-				alert('logo homeBTN');
-			});
-			
 			
 			$('#mainLogobox').after('<nav/>',{'id':'mainNabMenu'});
 			/* 프로필가기mainProfile */
@@ -51,24 +47,22 @@ app.main=(()=>{
 			
 		    $('#mainHelp').click(e=>{
 		    	alert('도움말'+ctx);
-			    $('#content').empty(); 
-			    $('#airbnbText').remove();
+			    $('#content').empty();
+			    $('#navbar').html(app.navbar.init()).css({'padding-top':'35px','margin-bottom':'5%'});
+				  $('#airbnbText').remove();
 			    	hee.common.init(ctx);
 			    	hee.rev.init();
 		    });
-		
-		    $('#mainJoin').attr({'data-toggle':'modal', 'data-target':"#myModal222"}).click(e=>{
-		    	alert('회원가입');
-				   chobongki.common.init();
-		    });
+	
 		    $('#mainLogin').attr({'data-toggle':'modal', 'data-target':"#myModal111"}).click(e=>{		    	
 		    	alert('로그인');
 		    			   chobongki.common.init(ctx);
 		    });
+		    
 		    $('#mainJoin').click(e=>{
 	             alert('회원가입');
 	              $('body').html(cho.join());
-	                chobongki.index.init(); 
+	                chobongki.index.init(ctx); 
 	          });
 		    
 		    // mainHost,...
@@ -116,7 +110,10 @@ app.main=(()=>{
 		    
 		    $('#roomsSeeAllBtn').css({'background-color':'transparent','border-color':'transparent'}).text('전체보기>').click(e=>{
 		    	alert('전체보기');
+		    	$('#navbar').html(main.navbar()).css({'padding-top':'35px','margin-bottom':'5%'});
+		    	$('#airbnbText').remove();
 		    	$('#content').empty();
+		    	
 		    	yongju.common.init(ctx);
 		    });
 		    
@@ -163,7 +160,7 @@ app.main=(()=>{
 		    			 sessionStorage.setItem('host_serial',j.host_serial);
 		 		    });
 		    		 $('#hostels').html(hostelbanner);
-		    		 $('a').click(e=>{
+		    	/*	 $('a').click(e=>{
 	    				 alert('제발제발::'+sessionStorage.getItem('host_serial'));
 	    				 $.ajax({
 	    					 url :ctx+'/put/searchCity',
@@ -175,7 +172,7 @@ app.main=(()=>{
 	    						 alert('x');
 	    					 }
 	    				 });
-	    			 });
+	    			 });*/
 	    			
 		    		
 		    	},
@@ -481,10 +478,6 @@ app.navbar=(function(){
 	var onCreate=function(){
 		$.getScript(temp,()=>{
 			main.navbar();
-			$('#logoHome').click(e=>{
-				alert('logo homeBTN');
-			});
-			
 			
 			$('#mainLogobox').after('<nav/>',{'id':'mainNabMenu'});
 			/* 프로필가기mainProfile */
