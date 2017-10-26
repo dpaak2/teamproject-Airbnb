@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.airbnb.web.command.Command;
 import com.airbnb.web.domain.Residence;
 import com.airbnb.web.mapper.HYMapper;
+import com.airbnb.web.service.IGetService;
 import com.airbnb.web.service.IListService;
 
 @RestController
@@ -21,15 +22,13 @@ public class HYController {
 	private static final Logger logger = LoggerFactory.getLogger(HYController.class);
 	@Autowired Command cmd;
 	@Autowired HYMapper mapper;
-	
+	@Autowired Residence residence;
 	@RequestMapping("/put/listhostels")
 	public @ResponseBody List<?> listHostels(){
 		 logger.info("HYcontroller listHostels{}." ,"진입 ");
 		 List<?> list = new IListService() {
-			
 			@Override
 			public List<?> execute(Object o) {
-				// TODO Auto-generated method stub
 				return mapper.selectList(cmd);
 			}
 		}.execute(cmd);
@@ -42,4 +41,19 @@ public class HYController {
 		 System.out.println("넘어온 호스트 시리얼:::"+resi.getHostSerial());
 		return null;
 	}*/
+
+/*	@RequestMapping(value="/put/searchCity", method=RequestMethod.POST)
+	public @ResponseBody Object searchCity(@RequestBody Command cmdPo){
+		 logger.info("HYcontroller selecthostel{}." ,"진입 ");
+		 System.out.println("넘어온 호스트 시리얼:::"+cmdPo.getAction());
+		 residence= (Residence) new IGetService() {
+			@Override
+			public Object execute(Object o) {
+				return mapper.selectOne(cmd);
+			}
+		}.execute(cmd); 
+		System.out.println("result find by host serial=="+residence);
+		return null;
+	}*/
+	
 }

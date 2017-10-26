@@ -9,14 +9,17 @@
 
 	<select id="selectList" parameterType="com.airbnb.web.command.Command" resultType="map">
 		SELECT * FROM Residence
+		<!-- <if test="title != null">
+		    AND title like #{action}
+		 </if> -->
 	</select>
 
 	<select id="count">
 
 	</select>
 
-	<select id="selectOne" >
-	
+	<select id="selectOne">
+			<!-- SELECT * FROM Residence WHERE host_serial = #{action} -->
 	</select>
 
 	<update id="update" >

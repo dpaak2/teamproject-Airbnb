@@ -23,14 +23,11 @@ app.main=(()=>{
 		
 	};
 	
-	var onCreate=()=>{
-		setContentView();
-	};
 
-	var setContentView=()=>{
+	var onCreate=()=>{
 		$.getScript(temp,()=>{
-			/*main navbar*/
-			//style="min-width: 800px; mind-height:5px"
+			/* main navbar */
+			// style="min-width: 800px; mind-height:5px"
 			$('body').html(compUI.div('container'));
 			$('#container').append(compUI.div('navbar')).css('mim-width','800px');
 			$('#navbar').append(main.navbar());
@@ -41,10 +38,11 @@ app.main=(()=>{
 			
 			
 			$('#mainLogobox').after('<nav/>',{'id':'mainNabMenu'});
-			/*프로필가기mainProfile*/
+			/* 프로필가기mainProfile */
 			 $('#mainProfile').click(e=>{
 			    	alert('프로필 가기');
-					$('#navbar').html(main.navbar()).css({'padding-top':'35px','margin-bottom':'5%'});
+					$('#navbar').html(app.navbar.init()).css({'padding-top':'35px','margin-bottom':'5%'});
+					  $('#airbnbText').remove();
 			    	$('#content').empty();
 			    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
 					   chobongki.profile.init();
@@ -53,9 +51,8 @@ app.main=(()=>{
 			
 		    $('#mainHelp').click(e=>{
 		    	alert('도움말'+ctx);
-		    	
 			    $('#content').empty(); 
-			    $('#main-nav-txtnsearch').remove();
+			    $('#airbnbText').remove();
 			    	hee.common.init(ctx);
 			    	hee.rev.init();
 		    });
@@ -74,11 +71,11 @@ app.main=(()=>{
 	                chobongki.index.init(); 
 	          });
 		    
-		    //mainHost,...
+		    // mainHost,...
 		    $('#mainHost').click(e=>{
 		    	alert('호스트가기');
+		    	 $('#airbnbText').remove();
 		    	 $('#content').empty();
-			    $('#main-nav-txtnsearch').remove();
 			    $('body').css({'background-color':'#FAFAFA'});
 			    hee.common.init(ctx);
 			    hee.register.init();
@@ -88,13 +85,21 @@ app.main=(()=>{
 		    	alert('관리자');
 		    	jw.common.init(ctx);
 		    });
+		   
 		    
 		    $('#mainSearch').click(e=>{
 		    	alert('검색');
 		        alert('검색한 도시::'+$('#searchCity').val());
-		       
+		        var _searchCity =$('#searchCity').val();
+		       $.ajax({
+		    	   url :ctx+'/put/searchCity',
+		    	   data : JSON.stringify({
+		    		   'action' :_searchCity
+		    	   }),
+		    	   dataType : ''
+		   
+		       });
 		    });
-		    
 		  
 		    $('#navbar').after(compUI.div('content'));
 		    $('#content').css({'height':'100%','width':'100%'});
@@ -115,15 +120,15 @@ app.main=(()=>{
 		    	yongju.common.init(ctx);
 		    });
 		    
-		    /*인기있는 숙소 each*/
-		    /*top3숙소*/
+		    /* 인기있는 숙소 each */
+		    /* top3숙소 */
 		    var roomarr=[{'a':'₩33,797',b:'Villa Amonteera, Luxury with Fa...',c:'아파트 · 침대3개',d:img+'/hostelpic1.png',e:'별점'},
 		    	{a:'₩33,797',b:'Villa Amonteera, Luxury with Fa...',c:'아파트 · 침대3개',d:img+'/hostelpic1.png',e:'별점'},
 		    	{a:'₩33,797',b:'Villa Amonteera, Luxury with Fa...',c:'아파트 · 침대3개',d:img+'/hostelpic1.png',e:'별점'}];
 		    
 		    var rommbanner='';
 		    $.each(roomarr,(i,j)=>{
-		    	//rooms
+		    	// rooms
 		    	rommbanner+='<div style="float:left;width: 300px;"><a id="tophos"'+i+' style="text-decoration: none;cursor: pointer;" target="_blank" >'
 		    	+'  <img src="'+j.d+'" style="width: 300px;" alt="" />'
 		    	+'  <div><span style="padding: 8px;font-size:13px; font-weight:600; color:#484848;">'+j.a+'</span>'
@@ -145,7 +150,6 @@ app.main=(()=>{
 		    	datType: 'json',
 		    	contentType : 'allpication/json',
 		    	success : list=>{
-		    		alert('통신성공');
 		    		 var hostelbanner='';
 		    		 $.each(list,(i,j)=>{
 		    			 hostelbanner+='<div class="hy-slide"><a id="hostPic" onclick="abc();" style="text-decoration: none;cursor: pointer;" target="_blank" >'
@@ -156,11 +160,24 @@ app.main=(()=>{
 				 		    	+'</div>'
 				 		    	+'</a>'
 				 		    	+'</div>';
+		    			 sessionStorage.setItem('host_serial',j.host_serial);
 		 		    });
 		    		 $('#hostels').html(hostelbanner);
-		    		var abc=function(e){
-		    			alert('clickfsalkj');
-		    		};
+		    		 $('a').click(e=>{
+	    				 alert('제발제발::'+sessionStorage.getItem('host_serial'));
+	    				 $.ajax({
+	    					 url :ctx+'/put/searchCity',
+	    					 success : d=>{
+	    						 alert('yeahyeahyeahyeahyeah');
+	    						 
+	    					 },
+	    					 error :(x,s,m)=>{
+	    						 alert('x');
+	    					 }
+	    				 });
+	    			 });
+	    			
+		    		
 		    	},
 		    	error : (x,s,m)=>{
 		    		alert('통신 에러::'+m);}
@@ -169,15 +186,15 @@ app.main=(()=>{
 		    	alert('dklfjasdfdfsdfsd tlfgdjfakd');
 		    });
 			
-		    /*숙소*/
+		    /* 숙소 */
 		    
-		    //hostels
+		    // hostels
 		    var hostelarr=[{'a':'₩33,797',b:'Villa Amonteera, Luxury with Fa...',c:'아파트 · 침대3개',d:img+'/hostelpic1.png',e:'별점'},
 		    			   {'a':'₩33,797',b:'Villa Amonteera, Luxury with Fa...',c:'아파트 · 침대3개',d:img+'/hostelpic1.png',e:'별점'},
 				    	   {'a':'₩33,797',b:'Villa Amonteera, Luxury with Fa...',c:'아파트 · 침대3개',d:img+'/hostelpic1.png',e:'별점'}];
 		   
 		    
-			/*jw-footer*/
+			/* jw-footer */
 			$('#container').after(main.footer());
 	         $('<option/>',{'value':'ko'}).appendTo($('#language-selector')).text('한국어');
 	         $('<option/>',{'value':'en'}).appendTo($('#language-selector')).text('English');
@@ -189,7 +206,7 @@ app.main=(()=>{
 		
 
 		
-   /*인기있는 호스텔*/
+   /* 인기있는 호스텔 */
 	var top3='<!-- top3 -->'
     +'<div id="top3" style="position: relative; width:90%">'
               +'<div style="margin-left: 16%;">'
@@ -428,7 +445,8 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:100%;  height:200p
 	+'	<div  style="width: 90%;position: relative;">'
 	+'<span><h3 style="font-weight: 700;">인기있는 숙소</h3></span>'
 	+'<span id="roomsSeeAll" style="position: absolute;right: 10%; top: 0;">'
-	//+'<button style="background-color: transparent;border-color: transparent;">전체보기></button>'
+	// +'<button style="background-color: transparent;border-color:
+	// transparent;">전체보기></button>'
 	+'</span></div>'
 	+'<div id="rooms" >'
 	+'</div>'
@@ -438,7 +456,8 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:100%;  height:200p
 		+'	<div  style="width: 90%;position: relative;">'
 		+'<span><h3 style="font-weight: 700;">숙소</h3></span>'
 		+'<span id="roomsSeeAll" style="position: absolute;right: 10%; top: 0;">'
-		//+'<button style="background-color: transparent;border-color: transparent;">전체보기></button>'
+		// +'<button style="background-color: transparent;border-color:
+		// transparent;">전체보기></button>'
 		+'</span></div>'
 		+'<div id="hy-hostelsSlide">'
 		+'<div id="hostels" class="hy-hostelsSlide-wrapper">'
@@ -449,6 +468,79 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:100%;  height:200p
 
 
 
+/* navbar */
+app.navbar=(function(){
+	var js,temp,ctx;
+	var init=()=>{		
+		ctx = $$('x');
+		img = $$('i');
+		js = $$('j');
+		temp=js + '/template.js';
+		onCreate();
+	};
+	var onCreate=function(){
+		$.getScript(temp,()=>{
+			main.navbar();
+			$('#logoHome').click(e=>{
+				alert('logo homeBTN');
+			});
+			
+			
+			$('#mainLogobox').after('<nav/>',{'id':'mainNabMenu'});
+			/* 프로필가기mainProfile */
+			 $('#mainProfile').click(e=>{
+			    	alert('프로필 가기');
+					$('#navbar').html(main.navbar()).css({'padding-top':'35px','margin-bottom':'5%'});
+					 $('#airbnbText').remove();
+			    	$('#content').empty();
+			    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
+					   chobongki.profile.init();
+			    });
+			
+			
+		    $('#mainHelp').click(e=>{
+		    	alert('도움말'+ctx);
+			    $('#content').empty(); 
+			    $('#airbnbText').remove();
+			    	hee.common.init(ctx);
+			    	hee.rev.init();
+		    });
+		
+		    $('#mainJoin').attr({'data-toggle':'modal', 'data-target':"#myModal222"}).click(e=>{
+		    	alert('회원가입');
+				   chobongki.common.init();
+		    });
+		    $('#mainLogin').attr({'data-toggle':'modal', 'data-target':"#myModal111"}).click(e=>{		    	
+		    	alert('로그인');
+		    			   chobongki.common.init(ctx);
+		    });
+		    $('#mainJoin').click(e=>{
+	             alert('회원가입');
+	              $('body').html(cho.join());
+	                chobongki.index.init(); 
+	          });
+		    
+		    // mainHost,...
+		    $('#mainHost').click(e=>{
+		    	alert('호스트가기');
+		    	 $('#content').empty();
+		    	 $('#airbnbText').remove();
+			    $('body').css({'background-color':'#FAFAFA'});
+			    hee.common.init(ctx);
+			    hee.register.init();
+		    });
+		    
+		    $('#mainAdmin').click(e=>{
+		    	alert('관리자');
+		    	jw.common.init(ctx);
+		    });
+		});
+	};
+	return {init: init}
+})();
+
+
+/* session */
 app.session=
    {
       init : (x)=>{
