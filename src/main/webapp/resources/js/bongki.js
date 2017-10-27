@@ -334,19 +334,21 @@ chobongki.profile=(e=>{
          .click(function(){
             alert('추천글');
          });
-         
-               
-        
          compUI.btn('profileShow')
          .addClass('cho_btn')
          .text('예약보기').appendTo('#profileShow2').click(()=>{
-            alert('예약보기');  
-           
-            jw.resvBoard.list();
+        	 alert('예약보기');  
+        	 $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+			 $('#airbnbText').remove();
+	         $('#content').empty();
+	        // $('#content').html(rsvNavbar.rsvvvv());
+	    	 $('#footer').html(main.footer()).css({'margin-top': '10%'});
+	    	 $('#content').html(jw.resvBoard.list());
          });
    };
    return { init:init };
 })();
+
 
 
 // -----------템플릿---------------//

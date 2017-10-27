@@ -37,7 +37,7 @@ app.main=(()=>{
 			/* 프로필가기mainProfile */
 			 $('#mainProfile').click(e=>{
 			    	alert('프로필 가기');
-					$('#navbar').html(app.navbar.init()).css({'padding-top':'35px','margin-bottom':'5%'});
+					$('#navbar').html(app.navbar.init());//.css({'padding-top':'10px','margin-bottom':'5%'});
 					  $('#airbnbText').remove();
 			    	$('#content').empty();
 			    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
@@ -48,7 +48,7 @@ app.main=(()=>{
 		    $('#mainHelp').click(e=>{
 		    	alert('도움말'+ctx);
 			    $('#content').empty();
-			    $('#navbar').html(app.navbar.init()).css({'padding-top':'35px','margin-bottom':'5%'});
+			    $('#navbar').html(app.navbar.init());//.css({'padding-top':'10px','margin-bottom':'5%'});
 				  $('#airbnbText').remove();
 			    	hee.common.init(ctx);
 			    	hee.rev.init();
@@ -77,6 +77,8 @@ app.main=(()=>{
 		    
 		    $('#mainAdmin').click(e=>{
 		    	alert('관리자');
+		    	$('body').empty();
+		    	$('#content').remove();
 		    	jw.common.init(ctx);
 		    });
 		   
@@ -110,7 +112,7 @@ app.main=(()=>{
 		    
 		    $('#roomsSeeAllBtn').css({'background-color':'transparent','border-color':'transparent'}).text('전체보기>').click(e=>{
 		    	alert('전체보기');
-		    	$('#navbar').html(main.navbar()).css({'padding-top':'35px','margin-bottom':'5%'});
+		    	$('#navbar').html(main.navbar());//.css({'padding-top':'10px','margin-bottom':'5%'});
 		    	$('#airbnbText').remove();
 		    	$('#content').empty();
 		    	
@@ -127,6 +129,7 @@ app.main=(()=>{
 		    $.each(roomarr,(i,j)=>{
 		    	// rooms
 		    	rommbanner+='<div style="float:left;width: 300px;"><a id="tophos"'+i+' style="text-decoration: none;cursor: pointer;" target="_blank" >'
+		        +'<div></div>'
 		    	+'  <img src="'+j.d+'" style="width: 300px;" alt="" />'
 		    	+'  <div><span style="padding: 8px;font-size:13px; font-weight:600; color:#484848;">'+j.a+'</span>'
 		    	+'<span style="padding: 8px;font-size:12px; font-weight:600; color:#484848;">'+j.b+'</span><br/><span style="padding: 8px;">'+j.c+'</span>'
@@ -149,19 +152,25 @@ app.main=(()=>{
 		    	success : list=>{
 		    		 var hostelbanner='';
 		    		 $.each(list,(i,j)=>{
-		    			 hostelbanner+='<div class="hy-slide"><a id="hostPic" onclick="abc();" style="text-decoration: none;cursor: pointer;" target="_blank" >'
-				 		    	+'  <img src="'+j.info_img+'" style="height: 300px;width:600px; " alt="" />'
+		    			 hostelbanner+='<div class="hy-slide"><a id="'+j.host_serial+'" onclick="abc();" style="text-decoration: none;cursor: pointer;" target="_blank" >'
+				 		    	//+'<div style="background-image : url('+j.info_img+')" ></div>'
+		    				    +'  <img src="'+j.info_img+'" style="height: 300px;width:1000px; " alt="" />'
 				 		    	+'  <div><span style="padding: 8px;font-size:15px; font-weight:600; color:#484848;">₩'+j.price+'</span>'
 				 		    	+'<span style="padding: 8px;font-size:12px; font-weight:600; color:#484848;" id="findHost">'+j.residence_name+'</span><br/><span style="padding: 8px;"></span>'
 				 		    	+'<span style="padding: 8px;">별점</span>'
 				 		    	+'</div>'
 				 		    	+'</a>'
 				 		    	+'</div>';
-		    			 sessionStorage.setItem('host_serial',j.host_serial);
+		    			
 		 		    });
 		    		 $('#hostels').html(hostelbanner);
-		    	/*	 $('a').click(e=>{
-	    				 alert('제발제발::'+sessionStorage.getItem('host_serial'));
+		   /* 		 $('a').click(e=>{
+	    				 alert('제발제발::');
+	    				// $('#content').empty();
+	    				 $('#navbar').html(app.navbar.init());//.css({'padding-top':'10px','margin-bottom':'5%'});
+	    				 $('#airbnbText').remove();
+	    				 hee.common.init(ctx);
+	    				 hee.rev.init('kosu111113');
 	    				 $.ajax({
 	    					 url :ctx+'/put/searchCity',
 	    					 success : d=>{
@@ -478,12 +487,11 @@ app.navbar=(function(){
 	var onCreate=function(){
 		$.getScript(temp,()=>{
 			main.navbar();
-			
 			$('#mainLogobox').after('<nav/>',{'id':'mainNabMenu'});
 			/* 프로필가기mainProfile */
 			 $('#mainProfile').click(e=>{
 			    	alert('프로필 가기');
-					$('#navbar').html(main.navbar()).css({'padding-top':'35px','margin-bottom':'5%'});
+					$('#navbar').html(main.navbar());//.css({'padding-top':'10px','margin-bottom':'5%'});
 					 $('#airbnbText').remove();
 			    	$('#content').empty();
 			    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
@@ -525,6 +533,8 @@ app.navbar=(function(){
 		    
 		    $('#mainAdmin').click(e=>{
 		    	alert('관리자');
+		    	$('body').empty();
+		    	$('#content').remove();
 		    	jw.common.init(ctx);
 		    });
 		});

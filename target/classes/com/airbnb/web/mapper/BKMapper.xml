@@ -3,7 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.airbnb.web.mapper.BKMapper">
-	
+	<resultMap type="com.airbnb.web.command.ResultMap" id="ResiMap">
+      <id property="rsvSeq" column="rsv_seq"/>
+      <result property="residenceName" column="residence_name"/>      
+      <result property="name" column="name"/>      
+      <result property="checkin" column="checkin"/>      
+  		 <result property="checkout" column="checkout"/>
+   </resultMap>
 	<insert id="insert" 
 			parameterType="com.airbnb.web.command.Command">
 	INSERT INTO member (member_id,member_password,name,regdate,birthdate) 
@@ -27,15 +33,28 @@
 	 AND member_password LIKE #{column}
 	</select>
 	
-	<update id="update">
+	<update id="update" parameterType="com.airbnb.web.command.Command">
 	UPDATE member SET name = #{column} WHERE member_id LIKE #{action} 
 	</update>
 	
-	<delete id="delete" 
+	<delete id="deleteId"
 			parameterType="com.airbnb.web.command.Command"> 
-	DELETE FROM member WHERE member_id LIKE #{action} 
-	
-	
+	DELETE FROM member WHERE member_id = #{action}
 	</delete>
-</mapper>
+	<delete id="deleteRes"
+			parameterType="com.airbnb.web.command.Command"> 
+	DELETE FROM residence WHERE member_id = #{action}
+	</delete>
+	
+	<select id="selectList" resultMap="ResiMap"
+		parameterType="com.airbnb.web.command.Command">
+	
+	SELECT reservation.rsv_seq,residence.residence_name ,reservation.checkin, reservation.checkout,m.name,m.member_id  
+		FROM reservation ,member m,residence
+		WHERE  reservation.member_id =  m.member_id
+    AND reservation.host_serial = residence.host_serial
+		AND m.member_id = #{action} 
 
+	</select>
+	
+</mapper>

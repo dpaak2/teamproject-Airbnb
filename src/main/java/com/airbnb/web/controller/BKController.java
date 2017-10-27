@@ -1,6 +1,8 @@
 package com.airbnb.web.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -18,21 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.airbnb.web.command.Command;
+import com.airbnb.web.command.ResultMap;
 import com.airbnb.web.domain.Board;
 import com.airbnb.web.domain.Member;
+import com.airbnb.web.domain.Reservation;
 import com.airbnb.web.mapper.BKMapper;
 import com.airbnb.web.service.IDeleteService;
 import com.airbnb.web.service.IGetService;
+import com.airbnb.web.service.IListService;
 import com.airbnb.web.service.IPostService;
 import com.airbnb.web.service.IPutService;
+import com.airbnb.web.service.TransactionService;
 
 @RestController
 public class BKController {
 	private static final Logger logger = LoggerFactory.getLogger(BKController.class);
 	@Autowired Member mem;
 	@Autowired BKMapper mapper;
+	@Autowired Reservation rev;
+	@Autowired Command cmd;
+	@Autowired TransactionService tx;
 	
-
 	@RequestMapping(value = "/get/login", method = RequestMethod.POST)
 	public @ResponseBody Map<?, ?> put(@RequestBody Member mem) {
 		logger.info("BKController::::: BKController {}", "컨트롤러진입");
@@ -68,6 +76,7 @@ public class BKController {
 		Map<String, Object> map = new HashMap<>();
 		System.out.println("email : " + mem.getMemberId() + "비번 : " + mem.getMemberPassword());
 		System.out.println("이름 : " + mem.getName() + "생일 : " + mem.getBirthdate());
+		
 		Command cmd = new Command();
 		cmd.setAction(mem.getMemberId());
 		cmd.setDir(mem.getName());
@@ -117,7 +126,7 @@ public class BKController {
 		cmd.setAction(mem.getMemberId());
 		String a=mem.getBirthdate()+mem.getName();
 		cmd.setColumn(a);
-		Map<String, Object> map = new HashMap<>();
+		
 		System.out.println("aaaaaaaaa"+a);
 		new IPutService() {
 			
@@ -136,13 +145,27 @@ public class BKController {
 		System.out.println("id : " + mem.getMemberId());
 		Command cmd = new Command();
 		cmd.setAction(mem.getMemberId());
-		new IDeleteService() {
-			@Override
-			public void execute(Object o) {
-			mapper.delete(cmd);// TODO Auto-generated method stub
-		 }
-		}.execute(cmd);
+		tx.delete(cmd);
+		System.out.println("트랜잭션 성공");
 	}
+	@RequestMapping(value = "/get/rev", method = RequestMethod.POST)
+	public @ResponseBody List<?> selectList(@RequestBody Member mem) {
+		logger.info("BKController::::: 예약리스트!!!! {}", "컨트롤러진입");
+		cmd.setAction(mem.getMemberId());
 		
+		 @SuppressWarnings("unchecked")
+		List<ResultMap> list=(List<ResultMap>) new IListService() {
+			
+			@Override
+			public List<?> execute(Object o) {
+				// TODO Auto-generated method stub
+				return mapper.selectList(cmd);
+			}
+		}.execute(cmd); 
+		
+		System.out.println(list.toString());	
+		
+		return list;
+	}	
 	
 }

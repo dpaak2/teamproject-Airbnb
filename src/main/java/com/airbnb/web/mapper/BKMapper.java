@@ -14,5 +14,6 @@ public interface BKMapper {
     public Object  selectSearch (Command cmd);
 	public String count(Command cmd);
 	public void update (Object o);
-	public void delete(Command cmd);
+	public void deleteId(Command cmd);
+	public void deleteRes(Command cmd);
 }

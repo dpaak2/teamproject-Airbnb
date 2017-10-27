@@ -99,6 +99,8 @@ protected String dir,action, page,pageNumber,search,view,column,startRow,endRow;
 			Path.VIEW+dir+Path.SEPARATOR+page+Extension.JSP;
 		System.out.println("�̵�������:"+this.view);
 	}
-	
+	public String toString() {
+		return String.format("dir: %s / action: %s / page: %s / pageNumber: %s / search: %s / view: %s / column: %s / startRow: %s / endRow: %s", dir, action, page, pageNumber, search, view, column, startRow, endRow);
+	}
 
 }

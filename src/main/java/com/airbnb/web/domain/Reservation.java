@@ -2,7 +2,9 @@ package com.airbnb.web.domain;
 
 import org.springframework.stereotype.Component;
 
-@Component
+import lombok.Data;
+
+@Component @Data
 public class Reservation {
 	private String
 	rsvSeq,
