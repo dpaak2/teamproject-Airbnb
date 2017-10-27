@@ -437,7 +437,7 @@ jw.resvBoard = (function(){
        init();
        var ctx = $$('x');
        var url=ctx+'/get/rev/';
-      $('body').html(resvbrdUI.frame());
+      $('#content').html(resvbrdUI.frame());
       alert('리스트화면');
       alert('리스트화면'+ctx);
       $.ajax({

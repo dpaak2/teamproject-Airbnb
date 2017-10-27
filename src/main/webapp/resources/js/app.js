@@ -37,7 +37,8 @@ app.main=(()=>{
 			/* 프로필가기mainProfile */
 			 $('#mainProfile').click(e=>{
 			    	alert('프로필 가기');
-					$('#navbar').html(app.navbar.init());//.css({'padding-top':'10px','margin-bottom':'5%'});
+			    	//$('#navbar').append(main.navbar());
+					$('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
 					  $('#airbnbText').remove();
 			    	$('#content').empty();
 			    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
@@ -56,7 +57,7 @@ app.main=(()=>{
 	
 		    $('#mainLogin').attr({'data-toggle':'modal', 'data-target':"#myModal111"}).click(e=>{		    	
 		    	alert('로그인');
-		    			   chobongki.common.init(ctx);
+		    	 chobongki.common.init(ctx);
 		    });
 		    
 		    $('#mainJoin').click(e=>{
@@ -87,14 +88,14 @@ app.main=(()=>{
 		    	alert('검색');
 		        alert('검색한 도시::'+$('#searchCity').val());
 		        var _searchCity =$('#searchCity').val();
-		       $.ajax({
+		     /*  $.ajax({
 		    	   url :ctx+'/put/searchCity',
 		    	   data : JSON.stringify({
 		    		   'action' :_searchCity
 		    	   }),
 		    	   dataType : ''
 		   
-		       });
+		       });*/
 		    });
 		  
 		    $('#navbar').after(compUI.div('content'));
@@ -491,7 +492,7 @@ app.navbar=(function(){
 			/* 프로필가기mainProfile */
 			 $('#mainProfile').click(e=>{
 			    	alert('프로필 가기');
-					$('#navbar').html(main.navbar());//.css({'padding-top':'10px','margin-bottom':'5%'});
+					$('#navbar').html(main.navbar()).css({'padding-top':'10px','margin-bottom':'5%'});
 					 $('#airbnbText').remove();
 			    	$('#content').empty();
 			    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
