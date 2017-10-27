@@ -232,7 +232,7 @@ chobongki.profile=(e=>{
          
          $('#profileShow').click(()=>{
             alert('프로필로')
-            $('#navbar').html(main.navbar()).css({'padding-top':'10px','margin-bottom':'5%'});
+            $('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
 			 $('#airbnbText').remove();
 	    	$('#content').empty();
 	    	$('#footer').html(main.footer()).css({'margin-top': '55%'});

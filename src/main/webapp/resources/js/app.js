@@ -153,9 +153,9 @@ app.main=(()=>{
 		    	success : list=>{
 		    		 var hostelbanner='';
 		    		 $.each(list,(i,j)=>{
-		    			 hostelbanner+='<div class="hy-slide"><a id="'+j.host_serial+'" onclick="abc();" style="text-decoration: none;cursor: pointer;" target="_blank" >'
+		    			 hostelbanner+='<div class="hy-slide"><a id="'+j.host_serial+'" onclick="abc();" style="margin-left:0px; text-decoration: none;cursor: pointer;" target="_blank" >'
 				 		    	//+'<div style="background-image : url('+j.info_img+')" ></div>'
-		    				    +'  <img src="'+j.info_img+'" style="height: 300px;width:1000px; " alt="" />'
+		    				    +'  <img src="'+j.info_img+'" style="height: 300px;width:600px; " alt="" />'
 				 		    	+'  <div><span style="padding: 8px;font-size:15px; font-weight:600; color:#484848;">₩'+j.price+'</span>'
 				 		    	+'<span style="padding: 8px;font-size:12px; font-weight:600; color:#484848;" id="findHost">'+j.residence_name+'</span><br/><span style="padding: 8px;"></span>'
 				 		    	+'<span style="padding: 8px;">별점</span>'
@@ -467,7 +467,7 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:100%;  height:200p
 		// transparent;">전체보기></button>'
 		+'</span></div>'
 		+'<div id="hy-hostelsSlide">'
-		+'<div id="hostels" class="hy-hostelsSlide-wrapper">'
+		+'<div id="hostels" class="hy-hostelsSlide-wrapper" style="maring-left:10px;">'
 		   
 		  +'</div>'
 		+'</div>'
