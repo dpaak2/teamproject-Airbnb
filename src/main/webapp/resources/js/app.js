@@ -8,7 +8,11 @@ app.common=(function(){
 	return{init:init};
 })();
 
-
+app.loginRequire=(function(){
+	var init =function(){};
+	return {init:init};
+	
+})();
 
 app.main=(()=>{
 	var $navbar, $navbar2, $content, img, js,temp,footer, ctx;
@@ -20,14 +24,11 @@ app.main=(()=>{
 		temp=js + '/template.js';
 		bongki = js + '/bongki.js';
 		onCreate();
-		
 	};
 	
 
 	var onCreate=()=>{
 		$.getScript(temp,()=>{
-			/* main navbar */
-			// style="min-width: 800px; mind-height:5px"
 			$('body').html(compUI.div('container'));
 			$('#container').append(compUI.div('navbar')).css('mim-width','800px');
 			$('#navbar').append(main.navbar());
@@ -165,25 +166,7 @@ app.main=(()=>{
 		    			
 		 		    });
 		    		 $('#hostels').html(hostelbanner);
-		   /* 		 $('a').click(e=>{
-	    				 alert('제발제발::');
-	    				// $('#content').empty();
-	    				 $('#navbar').html(app.navbar.init());//.css({'padding-top':'10px','margin-bottom':'5%'});
-	    				 $('#airbnbText').remove();
-	    				 hee.common.init(ctx);
-	    				 hee.rev.init('kosu111113');
-	    				 $.ajax({
-	    					 url :ctx+'/put/searchCity',
-	    					 success : d=>{
-	    						 alert('yeahyeahyeahyeahyeah');
-	    						 
-	    					 },
-	    					 error :(x,s,m)=>{
-	    						 alert('x');
-	    					 }
-	    				 });
-	    			 });*/
-	    			
+		
 		    		
 		    	},
 		    	error : (x,s,m)=>{
@@ -502,10 +485,10 @@ app.navbar=(function(){
 			
 		    $('#mainHelp').click(e=>{
 		    	alert('도움말'+ctx);
-			    $('#content').empty(); 
+			   /* $('#content').empty(); 
 			    $('#airbnbText').remove();
 			    	hee.common.init(ctx);
-			    	hee.rev.init();
+			    	hee.rev.init();*/
 		    });
 		
 		    $('#mainJoin').attr({'data-toggle':'modal', 'data-target':"#myModal222"}).click(e=>{

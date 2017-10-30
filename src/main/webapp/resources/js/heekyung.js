@@ -36,15 +36,17 @@ var $$ = function(x){return hee.session.getPath(x);};
  *******************************/
 hee.rev = (function(){
 	var $container, ctx, js, img;
-	var init=function(){
+	var init=function(x){
 		//hee.session.init(ctx);
+		alert('넘어온 시리얼은!!'+x);
 		js=$$('j');
 		ctx=$$('x');
 		img=$$('i');
 		temp=js+'/template.js';
-		onCreate();
+		var hostSerialNum=x;
+		onCreate(hostSerialNum);
 	};
-	var onCreate=function(){
+	var onCreate=function(hostSerialNum){
 		setContextView();
 		
 		var $menubar=$('#menubar');
@@ -86,7 +88,7 @@ hee.rev = (function(){
 					.appendTo($menubar);
 			});
 			//숙소 디테일 호출
-			hee.logic.revdata('kosu111103');
+			hee.logic.revdata(hostSerialNum);
 			
 			compUI.iBtn('trans')
 				.val('이 설명을 한국어로 번역하기')
@@ -229,7 +231,7 @@ hee.rev = (function(){
 								.css({'vertical-align': 'middle', 'border': '0', 'background': 'white', 'font-size': '25px', 'color': '#00A699','outline-style': 'none'})
 								.appendTo('#revDownC');
 								
-							hee.logic.upDown('kosu111103');
+							hee.logic.upDown(hostSerialNum);
 							alert(sessionStorage.getItem('ssesionPrice'))
 							var result_rate = sessionStorage.getItem('ssesionPrice')*btwcount;
 							
@@ -253,7 +255,7 @@ hee.rev = (function(){
 									
 								}else{
 									//예약 insert 호출
-									hee.logic.datePic('kosu111103');
+									hee.logic.datePic(hostSerialNum);
 								};
 								
 							});
@@ -264,8 +266,8 @@ hee.rev = (function(){
 			    }
 			 });
 	        //리뷰보드&리뷰검색 호출
-			hee.logic.reviewBoard('kosu111103');
-			hee.logic.reviewSearch('kosu111103');
+			hee.logic.reviewBoard(hostSerialNum);
+			hee.logic.reviewSearch(hostSerialNum);
 			
 		});
 		

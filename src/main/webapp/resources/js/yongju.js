@@ -45,13 +45,12 @@ yongju.index=(()=>{
            dataType:'json',
            contentType : 'application/json',
            success : list=>{
-              alert(list[1].member_id);
- 
+        	  
               var row='';
                 $.each(list,(i,j)=>{
-                   row +='<div style="float:left;width:300px;height:280px;margin-right:40px;">' 
-                      +'<a style="text-decoration:none;">'
-                       +'<img src="'+j.info_img+'" style="width:321.58px;height:214.38px">'
+                   row +='<div class="hostels" onclick="yongju.test.temp(\''+j.host_serial+'\')" '
+                   	 +'style="float:left;width:290px;height:280px;margin-right:40px;cursor: pointer;">' 
+                       +'<img src="'+j.info_img+'" style="width:321.58px;height:214.38px"/>'
                         +'<span >'+j.price+'</span></br>'
                         +'<span > '+j.residence_name+' </span>'
                         +'<span > 침대 3개</span></br>'
@@ -60,7 +59,6 @@ yongju.index=(()=>{
                      +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
                      +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
                      +'<span class="glyphicon glyphicon-star" style="color: #006666"></span></span>'
-                        +'</a>'
                         +'</div>';
                 });
                 $('#yj-content').append(row);
@@ -73,7 +71,19 @@ yongju.index=(()=>{
    };
    return {init:init};
 })();
-
+yongju.test={
+		temp : function(x){
+		
+			alert(x+' click');
+		/*var $hostSerial= sessionStorage.setItem('hostSerial',x);
+		   $('#content').empty(); 
+		    $('#airbnbText').remove();
+		    	hee.common.init(ctx);*/
+		//  location.href= hee.rev.init(x);
+		  $.getJSON(hee.rev.init(x));
+			
+		}
+};
 yongju.session={
       init : (x)=>{
          sessionStorage.setItem('x',x);

@@ -4,8 +4,6 @@
 <html lang="en">
 <head>
     <meta name="viewport" content="user-scalable=no, initial-scale=1.0, user-scalable=no,  maximum-scale=1, minimum-scale=1, width=device-width" charset="UTF-8">
-    <!--CSS LINK-->
-    <link rel="stylesheet" href="css/index.css" type="text/css">
     <style>
         #map {
 	        height: 600px;
