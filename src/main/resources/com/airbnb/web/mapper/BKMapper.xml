@@ -8,7 +8,7 @@
       <result property="residenceName" column="residence_name"/>      
       <result property="name" column="name"/>      
       <result property="checkin" column="checkin"/>      
-  		 <result property="checkout" column="checkout"/>
+  	  <result property="checkout" column="checkout"/>
    </resultMap>
 	<insert id="insert" 
 			parameterType="com.airbnb.web.command.Command">

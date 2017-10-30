@@ -1,31 +1,21 @@
 package com.airbnb.web.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import org.springframework.web.bind.annotation.SessionAttributes;
-
 import com.airbnb.web.command.Command;
 import com.airbnb.web.command.ResultMap;
-import com.airbnb.web.domain.Board;
 import com.airbnb.web.domain.Member;
 import com.airbnb.web.domain.Reservation;
 import com.airbnb.web.mapper.BKMapper;
-import com.airbnb.web.service.IDeleteService;
 import com.airbnb.web.service.IGetService;
 import com.airbnb.web.service.IListService;
 import com.airbnb.web.service.IPostService;

@@ -14,17 +14,20 @@ yongju.common=(()=>{
 
 yongju.index=(()=>{
    var ctx,img,js;
-   var init=()=>{
+   var init=(data)=>{
       js=$$('j');
       img=$$('i');
       ctx=$$('x');
-      
-      onCreate();
+      alert('@@@@@data' + data);
+      onCreate(data);
    };
-   var onCreate=()=>{
-        setContentView();
+   var onCreate=(data)=>{
+        setContentView(data);
    };
-   var setContentView=()=>{
+   var setContentView=(data)=>{
+	   alert('plzplzplzplzpl'+data);
+	   
+	   
         $('<div/>')
         .appendTo('#content')
         .attr('id', 'yj-container')
@@ -39,31 +42,53 @@ yongju.index=(()=>{
         .attr('id','gmap')
         .css({'width':'33%','float': 'right','margin-top':'4%','background-color': 'pink','height':'100%'}).text('Google API');
         //float: left;margin-top:4%; height: 100%;
-        $.ajax({
-           url : ctx+'/put/listimg',
-           method : 'post',
-           dataType:'json',
-           contentType : 'application/json',
-           success : list=>{
-        	  
-              var row='';
-                $.each(list,(i,j)=>{
-                   row +='<div class="hostels" onclick="yongju.test.temp(\''+j.host_serial+'\')" '
-                   	 +'style="float:left;width:290px;height:280px;margin-right:40px;cursor: pointer;">' 
-                       +'<img src="'+j.info_img+'" style="width:321.58px;height:214.38px"/>'
-                        +'<span >'+j.price+'</span></br>'
-                        +'<span > '+j.residence_name+' </span>'
-                        +'<span > 침대 3개</span></br>'
-                        +'<span><span class="glyphicon glyphicon-star" style="color: #006666"></span>'
-                     +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
-                     +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
-                     +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
-                     +'<span class="glyphicon glyphicon-star" style="color: #006666"></span></span>'
-                        +'</div>';
+       
+   /*     if(data !=''){
+        	 var row='';
+             $.each(data,(i,j)=>{
+                row +='<div class="hostels" onclick="yongju.test.temp(\''+j.host_serial+'\')" '
+                	 +'style="float:left;width:290px;height:280px;margin-right:40px;cursor: pointer;">' 
+                    +'<img src="'+j.info_img+'" style="width:321.58px;height:214.38px"/>'
+                     +'<span >'+j.price+'</span></br>'
+                     +'<span > '+j.residence_name+' </span>'
+                     +'<span > 침대 3개</span></br>'
+                     +'<span><span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                  +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                  +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                  +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                  +'<span class="glyphicon glyphicon-star" style="color: #006666"></span></span>'
+                     +'</div>';
+             });
+            
+             $('#yj-content').append(row);
+        }else{*/
+        	   $.ajax({
+                   url : ctx+'/put/listimg',
+                   method : 'post',
+                   dataType:'json',
+                   contentType : 'application/json',
+                   success : list=>{
+                	  
+                      var row='';
+                        $.each(list,(i,j)=>{
+                           row +='<div class="hostels" onclick="yongju.test.temp(\''+j.host_serial+'\')" '
+                           	 +'style="float:left;width:290px;height:280px;margin-right:40px;cursor: pointer;">' 
+                               +'<img src="'+j.info_img+'" style="width:321.58px;height:214.38px"/>'
+                                +'<span >'+j.price+'</span></br>'
+                                +'<span > '+j.residence_name+' </span>'
+                                +'<span > 침대 3개</span></br>'
+                               /* +'<span><span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                             +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                             +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                             +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                             +'<span class="glyphicon glyphicon-star" style="color: #006666"></span></span>'*/
+                                +'</div>';
+                        });
+                        $('#yj-content').append(row);
+                    }
                 });
-                $('#yj-content').append(row);
-            }
-        });
+       // }
+     
         $('#gmap').load(ctx+'/gmap');
        /* $('#gmap').after('<div/>').attr('id','mapSpace');
         $('#mapSpace').css('height','800px');*/
@@ -75,8 +100,7 @@ yongju.test={
 		temp : function(x){
 		
 			alert(x+' click');
-		/*var $hostSerial= sessionStorage.setItem('hostSerial',x);
-		   $('#content').empty(); 
+		/*   $('#content').empty(); 
 		    $('#airbnbText').remove();
 		    	hee.common.init(ctx);*/
 		//  location.href= hee.rev.init(x);

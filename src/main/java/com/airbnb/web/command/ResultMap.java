@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class ResultMap {
    /*common ResultMap*/
-
+    
    /*common bongki ...*/
 	private String rsvSeq,residenceName,name,checkout,checkin,birthdate;
    /*common heekyung */

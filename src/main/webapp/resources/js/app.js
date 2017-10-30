@@ -86,17 +86,25 @@ app.main=(()=>{
 		   
 		    
 		    $('#mainSearch').click(e=>{
-		    	alert('검색');
-		        alert('검색한 도시::'+$('#searchCity').val());
-		        var _searchCity =$('#searchCity').val();
-		     /*  $.ajax({
-		    	   url :ctx+'/put/searchCity',
-		    	   data : JSON.stringify({
-		    		   'action' :_searchCity
-		    	   }),
-		    	   dataType : ''
-		   
-		       });*/
+		    	var _searchCity =$('#searchCity').val();
+		        alert('검색한 도시::'+_searchCity);
+			    $.ajax({
+			    	url : ctx+'/put/searchCity',
+			    	method : 'post',
+			    	datType: 'json',
+			    	data : JSON.stringify({
+			    		action : _searchCity
+			    	}),
+			    	contentType : 'application/json',
+			    	success : data=>{
+			    		alert('성공');
+			    		
+			    		//yongju.common.init(ctx);
+			    		 yongju.index.init(data);
+			    	},
+			    	error : (x,s,m)=>{
+			    		alert('통신 에러::'+m);}
+			     });
 		    });
 		  
 		    $('#navbar').after(compUI.div('content'));
@@ -112,7 +120,7 @@ app.main=(()=>{
 		    	yongju.common.init(ctx);
 		    });
 		    
-		    $('#roomsSeeAllBtn').css({'background-color':'transparent','border-color':'transparent'}).text('전체보기>').click(e=>{
+		    $('#roomsSeeAllBtn').css({'background-color':'transparent','border-color':'transparent'}).text('전체보기 >').click(e=>{
 		    	alert('전체보기');
 		    	$('#navbar').html(main.navbar());//.css({'padding-top':'10px','margin-bottom':'5%'});
 		    	$('#airbnbText').remove();
@@ -154,11 +162,11 @@ app.main=(()=>{
 		    	success : list=>{
 		    		 var hostelbanner='';
 		    		 $.each(list,(i,j)=>{
-		    			 hostelbanner+='<div class="hy-slide"><a id="'+j.host_serial+'" onclick="abc();" style="margin-left:0px; text-decoration: none;cursor: pointer;" target="_blank" >'
+		    			 hostelbanner+='<div class="hy-slide"><a id="'+j.hostSerial+'" onclick="abc();" style="margin-left:0px; text-decoration: none;cursor: pointer;" target="_blank" >'
 				 		    	//+'<div style="background-image : url('+j.info_img+')" ></div>'
-		    				    +'  <img src="'+j.info_img+'" style="height: 300px;width:600px; " alt="" />'
+		    				    +'  <img src="'+j.infoImg+'" style="height: 300px;width:600px; " alt="" />'
 				 		    	+'  <div><span style="padding: 8px;font-size:15px; font-weight:600; color:#484848;">₩'+j.price+'</span>'
-				 		    	+'<span style="padding: 8px;font-size:12px; font-weight:600; color:#484848;" id="findHost">'+j.residence_name+'</span><br/><span style="padding: 8px;"></span>'
+				 		    	+'<span style="padding: 8px;font-size:12px; font-weight:600; color:#484848;" id="findHost">'+j.residenceName+'</span><br/><span style="padding: 8px;"></span>'
 				 		    	+'<span style="padding: 8px;">별점</span>'
 				 		    	+'</div>'
 				 		    	+'</a>'

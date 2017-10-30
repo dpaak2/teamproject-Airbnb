@@ -1,6 +1,9 @@
 package com.airbnb.web.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,34 +29,39 @@ public class HYController {
 	@RequestMapping("/put/listhostels")
 	public @ResponseBody List<?> listHostels(){
 		 logger.info("HYcontroller listHostels{}." ,"진입 ");
-		 List<?> list = new IListService() {
+		 @SuppressWarnings("unchecked")
+		List<Residence> list = (List<Residence>) new IListService() {
 			@Override
 			public List<?> execute(Object o) {
 				return mapper.selectList(cmd);
 			}
 		}.execute(cmd);
-		System.out.println("넘어온 리스트 확인:::"+list);
+		System.out.println("hy넘어온 리스트 확인:::"+list);
 		return list;
 	}
-	/*@RequestMapping(value="/put/selecthostel", method=RequestMethod.POST)
-	public @ResponseBody Object selecthostel(@RequestBody Residence resi){
-		 logger.info("HYcontroller selecthostel{}." ,"진입 ");
-		 System.out.println("넘어온 호스트 시리얼:::"+resi.getHostSerial());
-		return null;
-	}*/
 
-/*	@RequestMapping(value="/put/searchCity", method=RequestMethod.POST)
+	@SuppressWarnings("unchecked")
+	@RequestMapping(value="/put/searchCity", method=RequestMethod.POST)
 	public @ResponseBody Object searchCity(@RequestBody Command cmdPo){
 		 logger.info("HYcontroller selecthostel{}." ,"진입 ");
-		 System.out.println("넘어온 호스트 시리얼:::"+cmdPo.getAction());
-		 residence= (Residence) new IGetService() {
+		 System.out.println("넘어온 city Name:::"+cmdPo.getAction());
+		 cmd.setAction(cmdPo.getAction());
+		 List<Residence> searchCity= new ArrayList<>();
+		  searchCity=  (List<Residence>) new IGetService() {
 			@Override
 			public Object execute(Object o) {
-				return mapper.selectOne(cmd);
+				return mapper.selectList(cmd);
 			}
 		}.execute(cmd); 
-		System.out.println("result find by host serial=="+residence);
-		return null;
-	}*/
+		Map<String,Object> map = new HashMap<>();
+		for(int i=0; i<searchCity.size(); i++) {
+			map.put("key"+i, searchCity.get(i));
+			
+		}
+		System.out.println(map.get("key1"));
+		//searchCity.add(residence);
+		System.out.println("result find by host serial=="+searchCity);
+		return map;
+	}
 	
 }
