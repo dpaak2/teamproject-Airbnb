@@ -9,7 +9,7 @@ public class ResultMap {
    /*common bongki ...*/
 	private String rsvSeq,residenceName,name,checkout,checkin,birthdate;
    /*common heekyung */
-	private String hostSerial, memberId, price, zipcode, detailImg, infoImg, resiContent, addr, adult, teen, child;
+	private String hostSerial, memberId, price, zipcode, detailImg, infoImg, resiContent, addr, limit;
 	private String wifi, bedNum, pet, essentialItem, parking, bathroomNum, tv, washingMac, airCondi, kitchen,
 	boardSeq, reviewStar, contents, regdate;
 	int revAvg; 

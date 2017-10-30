@@ -559,4 +559,3 @@ app.session=
    };
 
 var $$= function(x){return app.session.getPath(x);};
-

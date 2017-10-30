@@ -37,7 +37,8 @@ yongju.index=(()=>{
         $('<div></div>')
         .appendTo('#yj-container')
         .attr('id','gmap')
-        .css({'width':'33%','float': 'right','top':'0','background-color': 'pink','height':'100%'}).text('Google API');
+        .css({'width':'33%','float': 'right','margin-top':'4%','background-color': 'pink','height':'100%'}).text('Google API');
+        //float: left;margin-top:4%; height: 100%;
         $.ajax({
            url : ctx+'/put/listimg',
            method : 'post',
@@ -65,6 +66,9 @@ yongju.index=(()=>{
                 $('#yj-content').append(row);
             }
         });
+        $('#gmap').load(ctx+'/gmap');
+       /* $('#gmap').after('<div/>').attr('id','mapSpace');
+        $('#mapSpace').css('height','800px');*/
      
    };
    return {init:init};

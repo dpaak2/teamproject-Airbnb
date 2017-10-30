@@ -9,14 +9,12 @@ public class Residence {
 	private String 
 		hostSerial,
 		memberId,
+		limit,
 		residenceName,
 		price,
 		zipcode,
 		detailImg,
 		infoImg,
 		resiContent,
-		addr,
-		adult,
-		teen,
-		child;
+		addr;
 }

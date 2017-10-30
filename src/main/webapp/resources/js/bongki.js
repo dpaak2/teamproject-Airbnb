@@ -98,8 +98,8 @@ chobongki.index=(()=>{
             	 					 contentType : 'application/json',
             	 					 success : d=>{
             	 	                           alert('가입성공 성공 !!');
-            	 	                           app.common.init(ctx);
-            	 	                          
+            	 	                         //  app.common.init(ctx);
+            	 	                          app.main.init();
             	 					 },
             	 					 error : (x,s,m)=>{
             	 						

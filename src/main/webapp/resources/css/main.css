@@ -42,7 +42,7 @@ hy-h3{
     height:41px;
     position:absolute;
     top:20px;
-    left: 70%;
+    left: 80%;
 }
 .hy-navbar-ul {
     background: white;
@@ -97,6 +97,37 @@ hy-h3{
   80% {margin-left: -2184px;}
  90% {margin-left: -2184px;}
 }
+
+/*hostels slide*/
+* { box-sizing: border-box; }
+.carousel {
+  background: #EEE;
+}
+
+.carousel-cell {
+  width: 28%;
+  height: 200px;
+  margin-right: 10px;
+  background: #8C8;
+  counter-increment: gallery-cell;
+}
+
+.carousel-cell.is-selected {
+  background: #ED2;
+}
+
+/* cell number */
+.carousel-cell:before {
+  display: block;
+  text-align: center;
+  content: counter(gallery-cell);
+  line-height: 200px;
+  font-size: 80px;
+  color: white;
+}
+
+
+
 /* style icon */
 .inner-addon .glyphicon {
     position: absolute;
