@@ -658,7 +658,7 @@ var $$= function(x){return chobongki.session.getPath(x);};
 
 
    ////=====페이스북 api====///
-
+/*
 
 (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -698,4 +698,4 @@ window.fbAsyncInit = function() {
           } else {
             // The person is not logged into this app or we are unable to tell. 
           }
-        });
+        });*/

@@ -70,6 +70,7 @@ app.main=(()=>{
 		    // mainHost,...
 		    $('#mainHost').click(e=>{
 		    	alert('호스트가기');
+		    	$('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
 		    	 $('#airbnbText').remove();
 		    	 $('#content').empty();
 			    $('body').css({'background-color':'#FAFAFA'});
@@ -83,28 +84,15 @@ app.main=(()=>{
 		    	$('#content').remove();
 		    	jw.common.init(ctx);
 		    });
-		   
 		    
 		    $('#mainSearch').click(e=>{
 		    	var _searchCity =$('#searchCity').val();
 		        alert('검색한 도시::'+_searchCity);
-			    $.ajax({
-			    	url : ctx+'/put/searchCity',
-			    	method : 'post',
-			    	datType: 'json',
-			    	data : JSON.stringify({
-			    		action : _searchCity
-			    	}),
-			    	contentType : 'application/json',
-			    	success : data=>{
-			    		alert('성공');
-			    		
-			    		//yongju.common.init(ctx);
-			    		 yongju.index.init(data);
-			    	},
-			    	error : (x,s,m)=>{
-			    		alert('통신 에러::'+m);}
-			     });
+		        sessionStorage.setItem('searchCity',_searchCity);
+		    	$('#airbnbText').empty();
+	    		$('#content').empty();
+	    		 yongju.common.init(ctx);
+			 
 		    });
 		  
 		    $('#navbar').after(compUI.div('content'));
@@ -122,10 +110,10 @@ app.main=(()=>{
 		    
 		    $('#roomsSeeAllBtn').css({'background-color':'transparent','border-color':'transparent'}).text('전체보기 >').click(e=>{
 		    	alert('전체보기');
-		    	$('#navbar').html(main.navbar());//.css({'padding-top':'10px','margin-bottom':'5%'});
+		    	$('#navbar').html(ap.navbar.init());//.css({'padding-top':'10px','margin-bottom':'5%'});
 		    	$('#airbnbText').remove();
 		    	$('#content').empty();
-		    	
+		    	sessionStorage .removeItem('data');
 		    	yongju.common.init(ctx);
 		    });
 		    
@@ -171,17 +159,14 @@ app.main=(()=>{
 				 		    	+'</div>'
 				 		    	+'</a>'
 				 		    	+'</div>';
-		    			
 		 		    });
 		    		 $('#hostels').html(hostelbanner);
-		
-		    		
 		    	},
 		    	error : (x,s,m)=>{
 		    		alert('통신 에러::'+m);}
 		    });
 		    $('#hostPic').click(e=>{
-		    	alert('dklfjasdfdfsdfsd tlfgdjfakd');
+		    	alert('error');
 		    });
 			
 		    /* 숙소 */
@@ -516,6 +501,7 @@ app.navbar=(function(){
 		    // mainHost,...
 		    $('#mainHost').click(e=>{
 		    	alert('호스트가기');
+		    	
 		    	 $('#content').empty();
 		    	 $('#airbnbText').remove();
 			    $('body').css({'background-color':'#FAFAFA'});

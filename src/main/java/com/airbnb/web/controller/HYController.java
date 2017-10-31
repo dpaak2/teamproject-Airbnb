@@ -53,15 +53,10 @@ public class HYController {
 				return mapper.selectList(cmd);
 			}
 		}.execute(cmd); 
-		Map<String,Object> map = new HashMap<>();
-		for(int i=0; i<searchCity.size(); i++) {
-			map.put("key"+i, searchCity.get(i));
-			
-		}
-		System.out.println(map.get("key1"));
+		
 		//searchCity.add(residence);
 		System.out.println("result find by host serial=="+searchCity);
-		return map;
+		return searchCity;
 	}
 	
 }
