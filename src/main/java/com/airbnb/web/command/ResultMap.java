@@ -15,6 +15,7 @@ public class ResultMap {
 	int revAvg; 
    /*common jiwon.... */
 	private String title,cateName, cateLevel, cateSeq,date, sale;
+	private String gender,rowNum, totalCnt,colYear, colMonth, colArea, colCount, blyearSales, lyearSales, tyearSales;
    /*common yongju */
    /*common juyeon */
    

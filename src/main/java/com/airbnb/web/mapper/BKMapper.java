@@ -16,4 +16,5 @@ public interface BKMapper {
 	public void update (Object o);
 	public void deleteId(Command cmd);
 	public void deleteRes(Command cmd);
+	public Object deleterev(Command cmd);
 }

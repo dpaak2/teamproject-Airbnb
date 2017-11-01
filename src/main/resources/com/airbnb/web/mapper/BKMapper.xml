@@ -7,6 +7,7 @@
       <id property="rsvSeq" column="rsv_seq"/>
       <result property="residenceName" column="residence_name"/>      
       <result property="name" column="name"/>      
+      <result property="hostSerial" column="host_serial"/>      
       <result property="checkin" column="checkin"/>      
   	  <result property="checkout" column="checkout"/>
    </resultMap>
@@ -49,12 +50,14 @@
 	<select id="selectList" resultMap="ResiMap"
 		parameterType="com.airbnb.web.command.Command">
 	
-	SELECT reservation.rsv_seq,residence.residence_name ,reservation.checkin, reservation.checkout,m.name,m.member_id  
+	SELECT reservation.rsv_seq,reservation.host_serial,residence.residence_name ,reservation.checkin, reservation.checkout,m.name,m.member_id  
 		FROM reservation ,member m,residence
 		WHERE  reservation.member_id =  m.member_id
     AND reservation.host_serial = residence.host_serial
 		AND m.member_id = #{action} 
 
 	</select>
-	
+	<delete id="deleterev"  parameterType="com.airbnb.web.command.Command"> 
+   DELETE FROM reservation WHERE rsv_seq = #{search}
+   </delete>
 </mapper>

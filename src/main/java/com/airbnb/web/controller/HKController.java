@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.airbnb.web.command.Command;
 import com.airbnb.web.command.ResultMap;
 import com.airbnb.web.domain.Reservation;
+import com.airbnb.web.mapper.BKMapper;
 import com.airbnb.web.mapper.HKMapper;
 import com.airbnb.web.service.IGetService;
 import com.airbnb.web.service.IListService;
@@ -27,8 +28,42 @@ public class HKController {
 	private static final Logger logger = LoggerFactory.getLogger(HKController.class);
 	@Autowired Command cmd;
 	@Autowired HKMapper mapper;
-	
-	@RequestMapping(value="/get/{cate}/{seq}", method=RequestMethod.POST, consumes="application/json")
+	@Autowired BKMapper bkmapper;
+	   @RequestMapping(value="/get/{cate}/{seq}", method=RequestMethod.POST, consumes="application/json")
+	   public @ResponseBody Map<?,?> get(@PathVariable String cate, @PathVariable String seq) {
+	      logger.info("get 진입");
+	      System.out.println("삭제할 예약번호: " +seq);
+	      Map<String,Object> map = new HashMap<>();
+	      cmd.setSearch(seq);
+	      
+	      switch (cate) {
+	      case "revcancle" :
+	      
+	         new IGetService() {
+	            @Override
+	            public Object execute(Object o) {
+	               return bkmapper.deleterev(cmd);
+	            }
+	         }.execute(cmd);
+	         
+	         break;
+	   
+	      default:
+	      
+	         System.out.println("희경");
+	         map.put("detail", new IGetService() {
+	         @Override
+	         public Object execute(Object o) {
+	            return mapper.selectOne(cmd);
+	         }
+	      }.execute(null));
+	      }
+	      //ResultMap rm = (ResultMap) map.get("detail");
+	      return map;
+	      
+	      
+	      };
+/*	@RequestMapping(value="/get/{cate}/{seq}", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?,?> get(@PathVariable String cate, @PathVariable String seq) {
 		logger.info("get 진입");
 		System.out.println("###### 넘어온 시퀀스 값 : " +seq);
@@ -43,7 +78,7 @@ public class HKController {
 		//ResultMap rm = (ResultMap) map.get("detail");
 		return map;
 		
-	};
+	};*/
 	
 	@RequestMapping(value="/list/{cate}", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?,?> list(@RequestBody Command cmd){

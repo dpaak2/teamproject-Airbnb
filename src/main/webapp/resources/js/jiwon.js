@@ -51,14 +51,14 @@ jw.index = (function(){
 	return {init : init};
 })();
 
-
 /*******************************
  * 통계
  *******************************/
-jw.stats = (function(){
-	var js, temp;
+jw.stats = (()=>{
+	var ctx, js, temp;
 	var init = function(){
 		js=$$('j');
+		ctx = $$('x');
 		temp=js+'/template.js';
 		onCreate();
 	};
@@ -78,11 +78,99 @@ jw.stats = (function(){
 			}
 		});
 		
+		//chart 호출
+		callChart();
 	}; 
 	
+	var callChart = function(){
+		jw.makeGraph.columnChart(ctx);
+		jw.makeGraph.lineChart(ctx);
+		jw.makeGraph.geoChart(ctx);
+		
+		$("#charts").width("90%");
+	};
 	
 	return { init : init };
 })();
+
+
+/*******************************
+ * chart
+ * 객체 literal 생성방식
+ * 부품들을 (DOM객체)return 하기만 하면 됨
+ *******************************/
+jw.makeGraph = 
+{
+	columnChart : ctx=>{
+		google.charts.load('current', {'packages':['bar']});
+	    google.charts.setOnLoadCallback(drawChart);
+	    
+	    function drawChart() {
+	    	var url = ctx+'/jw/list/chart/column';
+			$.getJSON(url, d=>{
+				var data = new google.visualization.DataTable(d);
+		  
+				var options = {
+						title : ' ',
+		                bars: 'vertical',
+		                vAxis: {format: 'decimal'},
+		                legend: { position: 'bottom' },
+		                width : 680,
+		                colors: ['#7570b3', '#008489', '#FF5A5F']
+		        };
+				
+				var chart = new google.charts.Bar(document.getElementById('stat_div_column'));
+		        chart.draw(data, google.charts.Bar.convertOptions(options));
+			});
+	    }
+	},
+	lineChart : ctx=>{
+		google.charts.load('current', {'packages':['corechart']});
+		google.charts.setOnLoadCallback(drawChart);
+	
+		function drawChart() {
+			var url = ctx+'/jw/list/chart/line';
+			$.getJSON(url, d=>{
+				var data = new google.visualization.DataTable(d);
+		  
+				var options = {
+		        	curveType: 'function',
+		        	legend: { position: 'bottom' },
+		        	hAxis: {titleTextStyle: {color: '#333'}},
+		        	vAxis: {minValue: 0},
+		        	colors: ['#FF5A5F']
+				};
+				var chart = new google.visualization.AreaChart($('#stat_div_line')[0]);
+				chart.draw(data, options);
+			});
+		}
+	},
+	geoChart : ctx=>{
+		google.charts.load('current', {'packages':['geochart'], 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'});
+		google.charts.setOnLoadCallback(drawRegionsMap);
+	
+		function drawRegionsMap() {
+			var url = ctx+'/jw/list/chart/geo';
+			$.getJSON(url, d=>{
+				var data = new google.visualization.DataTable(d);
+		  
+				var options = {
+		        	displayMode: 'regions',
+		        	enableRegionInteractivity: 'true',
+		        	resolution: 'provinces',
+		        	region : 'KR',
+		        	displayMode: 'markers',
+		        	sizeAxis: { minValue: 0 },
+	        		colorAxis : {colors: ['#3182BD','#9ECAE1','#DEEBF7']},
+	        		keepAspectRatio: true
+		        };
+
+		        var chart = new google.visualization.GeoChart($('#stat_Rtop_chart')[0]);
+		        chart.draw(data, options);
+			});
+	    }
+	}
+};
 
 
 /*******************************
@@ -110,46 +198,23 @@ jw.accom = (()=>{
 			compUI.span('acc_btngrp').appendTo($('#acc_input_grp')).addClass('input-group-btn');
 			compUI.btn('acc_btn_search').appendTo($('#acc_btngrp')).addClass('btn btn-default search_btn')
 			.click(()=>{
-				var _search = $('#acc_search').val();
-				
-				$.ajax({
-					url : ctx+'/jw/list/residence',
-					method : 'post',
-					dataType : 'json',
-	                data : JSON.stringify({
-                        'contents' : _search
-                    }),
-	                contentType : 'application/json',
-	                success : d=>{
-	                	$('#acc_list').empty();
-	                	acclistDraw(d);
-                    },
-                    error : (x,s,m)=>{
-                        alert('에러발생! '+m);
-                    }
+				//search
+				var _search = ($('#acc_search').val()==="")?'x':$('#acc_search').val();
+				var url = ctx+'/jw/list/residence/'+_search+'/1';
+
+				$.getJSON(url, d=>{
+					$('#acc_list').empty();
+					acclistDraw(d);
 				});
 			});
 			compUI.spanX().addClass('glyphicon glyphicon-search').appendTo($('#acc_btn_search'));
 			
 			//accom list
-			$.ajax({
-				url : ctx+'/jw/list/residence',
-				method : 'post',
-				dataType : 'json',
-				data : JSON.stringify({
-                    'title' : 'residence'
-                }),
-				contentType : 'application/json', 
-				success : d=>{
-					$('#acc_list').empty();
-					acclistDraw(d);
-				},
-				error : (x,s,m)=>{
-					alert('에러발생! '+m);
-				}
+			var url = ctx+'/jw/list/residence/x/1';
+			$.getJSON(url, d=>{
+				$('#acc_list').empty();
+				acclistDraw(d);
 			});
-			
-			$('#acc_pagebar').append(boardUI.pagebar());
 		});
 	}; 
 	
@@ -157,7 +222,7 @@ jw.accom = (()=>{
 		$.each(d.list, (i,j)=>{
 			compUI.div("dvwrap_"+i).appendTo($('#acc_list')).css({'float':'left', 'height':'250px', 'width':'25%', 'margin-top':'5px'});
 			//image
-			var mainImg = (j.infoImg === null)?img+'/testimg.jpg':j.infoImg;
+			var mainImg = (j.infoImg === "" || j.infoImg === null)?img+'/testimg.jpg':j.infoImg;
 			compUI.div("dvimg_"+i).appendTo($('#dvwrap_'+i)).css({'float':'left', 'height':'83%', 'width':'100%', 'margin-top':'5px'});
 			compUI.image('img_'+j.hostSerial, mainImg).appendTo($('#dvimg_'+i)).css({'height':'100%', 'margin':'auto', 'display':'block', 'border':'1px solid #D5D5D5'});
 			//content
@@ -168,28 +233,38 @@ jw.accom = (()=>{
 			compUI.span('acc_btn_del_'+i).appendTo($('#dv_R'+i)).html('삭제').attr('displsy','inline').addClass('label label-default').css({'margin-right':'5px', 'font-size':'90%', 'cursor':'pointer'})
 			.click(()=>{
 				var _serial = j.hostSerial;
-				$.ajax({
-					url : ctx+'/jw/delete/residence',
-					method : 'post',
-					dataType : 'json',
-					data : JSON.stringify({
-	                    'title' : _serial
-	                }),
-					contentType : 'application/json', 
-					success : d=>{
-						$('#acc_list').empty();
-						setContentView();
-					},
-					error : (x,s,m)=>{
-						alert('에러발생! '+m);
-					}
-				});
+				if(confirm("숙소 "+j.residenceName+"을 정말 삭제하시겠습니까?")){
+					$.ajax({
+						url : ctx+'/jw/delete/residence',
+						method : 'post',
+						dataType : 'json',
+						data : JSON.stringify({
+		                    'boardSeq' : _serial
+		                }),
+						contentType : 'application/json', 
+						success : d=>{
+							if(d.result === "success"){
+								alert("삭제성공!!");
+								$('#acc_list').empty();
+								setContentView();
+							}else{
+								alert("삭제실패!!");
+							}
+						},
+						error : (x,s,m)=>{
+							alert('에러발생! '+m);
+						}
+					});
+				}else{
+					return false;
+				}
 			})
 		});
 	}
 	
 	return { init : init };
 })();
+
 
 /*******************************
  * 게시판
@@ -212,22 +287,13 @@ jw.board = (()=>{
 			compUI.span('brd_btngrp').appendTo($('#brd_input_grp')).addClass('input-group-btn');
 			compUI.btn('brd_btn_search').appendTo($('#brd_btngrp')).addClass('btn btn-default search_btn')
 			.click(()=>{
-				var _search = $('#brd_search').val();
+				var _search = ($('#brd_search').val()==="")?'x':$('#brd_search').val();
+				var url = ctx+'/jw/list/board/'+_search;
 				
-				$.ajax({
-					url : ctx+'/jw/list/board',
-					method : 'post',
-					dataType : 'json',
-	                data : JSON.stringify({
-                        'contents' : _search
-                    }),
-	                contentType : 'application/json',
-	                success : d=>{
-	                	brdlistDraw(d);
-                    },
-                    error : (x,s,m)=>{
-                        alert('에러발생! '+m);
-                    }
+				$.getJSON(url, d=>{
+					brdlistDraw(d);
+					
+					$('#brd_pagebar').append(boardUI.pagebar());
 				});
 			});
 			compUI.spanX().addClass('glyphicon glyphicon-search').appendTo($('#brd_btn_search'));
@@ -240,24 +306,16 @@ jw.board = (()=>{
 			
 			//board_list
 			$('#brd_list').html(boardUI.tbl());
-			$.ajax({
-				url : ctx+'/jw/list/board',
-				method : 'post',
-				dataType : 'json',
-				data : JSON.stringify({
-                    'title' : 'board'
-                }),
-				contentType : 'application/json',
-				success : d=>{
-					brdlistDraw(d);
-				},
-				error : (x,s,m)=>{
-					alert('에러발생! '+m);
-				}
+			var url = ctx+'/jw/list/board/x/1';
+			
+			$.getJSON(url, d=>{
+				brdlistDraw(d);
+				//$('#brd_pagebar').append(boardUI.pagebar());
 			});
 			
 			//pagebar
 			$('#brd_pagebar').append(boardUI.pagebar());
+			
 		});
 	}; 
 	
@@ -290,10 +348,9 @@ jw.board = (()=>{
 					}),
 					contentType : 'application/json', 
 					success : d=>{
-						//$('#brdD_combo_lvl1').val(d.detail.cateLevel);
+						$("#brdD_txt_lvl1").val(d.detail.cateName);
 						$('#brdD_ipt_title').val(d.detail.title);
 						$('#summernote').summernote('code', d.detail.contents);
-						//$('p').text(d.detail.contents);
 					},
 					error : (x,s,m)=>{
 						alert('에러발생! '+m);
@@ -379,25 +436,20 @@ jw.board = (()=>{
 			});
 			
 			//comboBox
-			compUI.select('brdD_combo_lvl1').appendTo($('#brdD_gubun')).css({'height':'30px', 'width':'100px', 'margin-right':'5px'});
-			$.ajax({
-				 url : ctx+'/jw/list/combo',
-				 method : 'post',
-	             dataType : 'json',
-	             data : JSON.stringify({
-	            	 'title' : 'boardcate' 
-	             }),
-	             contentType : 'application/json',
-	             success : d=>{
-	            	 $.each(d.combobox, (i,j)=>{
-	            		 compUI.option(j.cateLevel, j.cateName).appendTo($('#brdD_combo_lvl1'));
-	         		});
-	             },
-	             error : (x,s,m)=>{
-	            	 alert('에러발생! '+m);
-	             }
-			});
-			$('#brdD_combo_lvl1').selectedIndex="0";
+			if(x ==='w'){
+				compUI.select('brdD_combo_lvl1').appendTo($('#brdD_gubun')).css({'height':'30px', 'width':'100px', 'margin-right':'5px'});
+				var url = ctx+'/jw/list/combo/x/x';
+				$.getJSON(url, d=>{
+					$('#brdD_combo_lvl1').empty();
+					$.each(d.combobox, (i,j)=>{
+						compUI.option(j.cateLevel, j.cateName).appendTo($('#brdD_combo_lvl1'));
+	        		});
+				});	
+				$('#brdD_combo_lvl1').selectedIndex="0";
+			}else{
+				compUI.input('brdD_txt_lvl1').appendTo($('#brdD_gubun')).attr('readonly',true).css({'height':'30px', 'width':'100px', 'margin-right':'5px', 'text-align':'center'});
+			}
+			
 			
 			//input title
 			compUI.input('brdD_ipt_title', 'text').appendTo($('#brdD_title')).css({'height':'30px', 'width':'100%'});
@@ -421,6 +473,7 @@ jw.board = (()=>{
 		detail : detail
 	};
 })();
+
 
 /*******************************
  * 예약내역 list
@@ -461,8 +514,42 @@ jw.resvBoard = (function(){
                       + '<td id="tbl_btnarea'+i+'"></td>'
                        + '</tr>';
                 });
-                $('#resv_tbody').html(tr);   
                 
+                $('#resv_tbody').html(tr);   
+               //삭제버튼
+                $.each(list, (i,j)=>{
+                	
+                    compUI.span('brd_btn_res_'+i)                  
+                    .appendTo($('#tbl_btnarea'+i))
+                    .attr('displsy','inline')
+                    .html('예약취소')
+                    .addClass('label label-warning')
+                    .css({'cursor':'pointer'})
+                    .click(e=>{
+                       alert('예약번호'+j.rsvSeq);
+                                        
+                       $.ajax({
+                        url:ctx +'/get/revcancle/'+j.rsvSeq,
+                         method:'post',
+                         data : JSON.stringify(j.rsvSeq),
+                         contentType : 'application/json',
+                       
+                         success : d=>{
+                                                                        
+                      },
+                      error : (x,s,m)=>{
+                         
+                      }
+                       });                       
+                      alert('삭제완료');
+                      $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+         			 $('#airbnbText').remove();
+         	         $('#content').empty();
+         	    	 $('#footer').html(main.footer()).css({'margin-top': '10%'});
+         	    	 $('#content').html(jw.resvBoard.list(ctx));
+              
+                    });
+                 });
               //후기 작성 버튼
                 $.each(list, (i,j)=>{
                    compUI.span('brd_btn_res_'+i).appendTo($('#tbl_btnarea'+i))
@@ -471,23 +558,58 @@ jw.resvBoard = (function(){
        			.attr('data-target','#myModal')
                    .html('후기작성').addClass('label label-warning').css({'cursor':'pointer'})
                    .click(()=>{
-       				alert('후기작성');
-       				$formCm.html(compUI.iBtn('formBtn')
+                	  alert('후기작성');
+                	  sessionStorage.setItem('seq',j.hostSerial);
+                	var reviewStar ='';
+                    if($('#reviewStar1').attr('checked',true)){
+                    	reviewStar=$('#reviewStar1').val();
+                    }
+                    if($('#reviewStar2').attr('checked',true)){
+                    	reviewStar=$('#reviewStar2').val();
+                    }
+                    if($('#reviewStar3').attr('checked',true)){
+                    	reviewStar=$('#reviewStar3').val();
+                    }
+                	
+                    if($('#reviewStar4').attr('checked',true)){
+                    	reviewStar=$('#reviewStar4').val();
+                    }
+                	
+                    if($('#reviewStar5').attr('checked',true)){
+                    	reviewStar=$('#reviewStar5').val();
+                    }
+                    
+       				
+       				$('#formCm').html(compUI.inputBtn('formBtn','submit')
        						.val('후기 작성 완료')
        						.attr('data-dismiss','modal')
        						.addClass('btn btn-danger btn-large btn-block')
        						.css({'font-size': '22px', 'font-weight':'bold','outline-style': 'none'})
        						.click(e=>{
        							alert('후기 작성 완료');
+       							$.ajax({
+       								url :ctx+'/post/review',
+       								method : 'post',
+       								dataType : 'json',
+       								contentType : 'application/json',
+       								data : JSON.stringify({
+       									action : reviewStar,
+       									column : $('#reviewContent').val(),
+       									dir : sessionStorage.getItem('seq')
+       								}),
+       								success : data=>{
+       									alert('성공');
+       								},
+       								error : (x,s,m)=>{
+       									alert('error'+m);
+       								}
+       								
+       							});
+       							
        						})
        					)
        			   });
                 });
-                
-                //예약취소
-                
-//                //pagebar
-//                $('#resv_pagebar').append(boardUI.pagebar());
              });
          },
          error : (x,s,m)=>{
@@ -527,7 +649,7 @@ var $$ = (x)=>{return jw.session.getPath(x);};
 var admIndex = {
 	frame : ()=>{
 		return '<div id="container">'
-				+ '<div id="header" class="jw_index_header">'
+				+ '<div id="header" class="jw_index_header" style="background-color:#212121">'
 				+ '		<div style="float:left" class="jw_main-nav-logobox">'
                 + '			<div class="jw_main-nav-logobox2">'
                 + '				<div class="jw_main-nav-logobox3">'
@@ -564,40 +686,33 @@ var statsUI = {
 				+ '		<div style="float:left; width:55%">'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 목표대비 실적 현황<span></div>'
+				+ '					<div style="float:left"><span class="jw_header_title">> 매출실적<span></div>'
 				+ '					<div id="stat_dvbtn_1" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_Ltop_chart" class="jw_div_border" style="height:150px;">그래프</div>'
+				+ '				<div id="stat_div_column" class="jw_div_border" style="height:240px;">그래프</div>'
 				+ '			</div>'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 매출실적<span></div>'
-				+ '					<div id="stat_dvbtn_2" style="float:right"></div>'
-				+ '				</div>'
-				+ '				<div id="stat_div_column" class="jw_div_border" style="height:220px;">그래프</div>'
-				+ '			</div>'
-				+ '			<div>'
-				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 사용자 가입 추이<span></div>'
+				+ '					<div style="float:left"><span class="jw_header_title">> 연간 사용자 가입 추이<span></div>'
 				+ '					<div id="stat_dvbtn_3" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_div_line" class="jw_div_border" style="height:170px;">그래프</div>'				
+				+ '				<div id="stat_div_linex" class="jw_div_border" style="height:325px;">그래프</div>'				
 				+ '			</div>'
 				+ '		</div>'
 				+ '		<div style="float:right; width:44%">'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 도시별 호스트 분포<span></div>'
+				+ '					<div style="float:left"><span class="jw_header_title">> 지역별 숙소 분포도<span></div>'
 				+ '					<div id="stat_dvbtn_4" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_Rtop_chart" class="jw_div_border" style="height:311px;">그래프</div>'
+				+ '				<div id="stat_Rtop_chart" class="jw_div_border" style="height:355px;">그래프</div>'
 				+ '			</div>'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 도시별 추천 숙소TOP5<span></div>'
+				+ '					<div style="float:left"><span class="jw_header_title">> 연간 사용자 가입 추이<span></div>'
 				+ '					<div id="stat_dvbtn_5" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_Lbot_grid" class="jw_div_border" style="height:260px;">리스트</div>'
+				+ '				<div id="stat_div_line" class="jw_div_border" style="height:210px;">리스트</div>'
 				+ '			</div>'
 				+ '		</div>'
 				+ '		</div>'
@@ -664,19 +779,10 @@ var boardUI = {
 	},
 	
 	pagebar : ()=>{
-		return '<div><nav aria-label="Page navigation" style="width:314px; margin:auto;">'
-			+ '      <ul id="page_form" class="pagination">'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></a></li>'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>'
-			+ '         <li><a href="#" style="color:#D9534F;">1</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">2</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">3</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">4</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">5</a></li>'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></a></li>'
-			+ '     </ul>'
-			+ ' </nav></div>'; 
+	return '<div><nav aria-label="Page navigation" style="width:314px; margin:auto;">'
+		+ '      <ul id="page_form" class="pagination">'
+		+ '     </ul>'
+		+ ' </nav></div>'; 
 	},
 	
 	detail : ()=>{
@@ -687,12 +793,13 @@ var boardUI = {
 				+ '		</div>'
 				+ '		<div style="width:100%; display:inline-block; margin-top:10px;">'
 				+ '			<div id="brdD_gubun" style="float:left; width:105px;"></div>'
-				+ '			<div id="brdD_title" style="float:left; width:91.8%;"></div>'
+				+ '			<div id="brdD_title" style="float:left; width:91.7%;"></div>'
 				+ '		</div>'
 				+ '		<div id="brd_content" style="width:100%; margin-top:5px; margin-right:5px"><div id="summernote"></div></div>'
 				+ '</div>';
 	}
 }
+
 
 /*******************************
  * 예약내역 list UI (board)
@@ -729,11 +836,11 @@ var resvbrdUI = {
 		            +'					      		<span style="font-size: 17px;">숙소의 총 평점을 선택하세요.</span>'
 		            +'					      	</div>'
 		            +'					      	<div>'
-		            +'							    <p><span><input type="radio" name="reviewStar" value="1점" />1점</span> '
-		            +'							    <span style="margin-left:25px; font-size: 17px;"><input type="radio" name="reviewStar" value="2점" />2점</span> '
-		            +'								<span style="margin-left:25px; font-size: 17px;"><input type="radio" name="reviewStar" value="3점"  />3점</span>'
-		            +'								<span style="margin-left:25px; font-size: 17px;"><input type="radio" name="reviewStar" value="4점" />4점</span>'
-		            +'								<span style="margin-left:25px; font-size: 17px;"><input type="radio" name="reviewStar" value="5점" />5점</span></p>'
+		            +'							    <p><span><input id="reviewStar1" type="radio" name="reviewStar" value="1" />1점</span> '
+		            +'							    <span style="margin-left:25px; font-size: 17px;"><input id="reviewStar2" type="radio" name="reviewStar" value="2" />2점</span> '
+		            +'								<span style="margin-left:25px; font-size: 17px;"><input id="reviewStar3" type="radio" name="reviewStar" value="3"  />3점</span>'
+		            +'								<span style="margin-left:25px; font-size: 17px;"><input id="reviewStar4" type="radio" name="reviewStar" value="4" />4점</span>'
+		            +'								<span style="margin-left:25px; font-size: 17px;"><input id="reviewStar5" type="radio" name="reviewStar" value="5" />5점</span></p>'
 		            +'							</div>'
 		            +'						</div>'
 		            +'						<div style="width: 100%; margin-top: 6%; margin-bottom: 6%">'
@@ -741,7 +848,7 @@ var resvbrdUI = {
 		            +'					      		<span style="font-size: 17px;">구체적인 후기 내용을 남겨주세요.</span>'
 		            +'					      	</div>'
 		            +'							<div>'
-		            +'								<textarea name="detail_cont" cols="57" rows="7"></textarea>'
+		            +'								<textarea id="reviewContent" name="detail_cont" cols="57" rows="7"></textarea>'
 		            +'							</div>'
 		            +'					    </div>	'
 		            +'				    </div>'

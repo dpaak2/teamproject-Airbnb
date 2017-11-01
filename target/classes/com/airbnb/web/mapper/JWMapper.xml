@@ -5,6 +5,7 @@
 <mapper namespace="com.airbnb.web.mapper.JWMapper">
 	<resultMap id="respMap" type="com.airbnb.web.command.ResultMap" >
 		<id property="boardSeq" column="board_seq" />
+		<result property="rowNum" column="row_num" />
 		<result property="title" column="board_title"/>
 		<result property="contents" column="board_content"/>
 		<result property="regdate" column="board_regdate"/>
@@ -18,6 +19,7 @@
 		<result property="hostSerial" column="host_serial"/>
 		<result property="residenceName" column="residence_name"/>
 		<result property="infoImg" column="info_img"/>
+		<result property="totalCnt" column="total_cnt" />
 	</resultMap>
 	
     <insert id="insert" parameterType="com.airbnb.web.command.Command">
@@ -35,6 +37,60 @@
     	</if>
 	</insert>
 	
+	<select id="chartList" resultType="com.airbnb.web.command.ResultMap" parameterType="com.airbnb.web.command.Command">
+		<if test="dir != null">
+			<choose>
+				<when test="dir == 'column'">
+					SELECT t.sal_month as colMonth
+					     , SUM(yy_sales) as blyearSales
+					     , SUM(y_sales) as lyearSales
+					     , SUM(sales) as tyearSales
+					FROM (
+					  SELECT MONTH(date) sal_month, sale yy_sales, 0 y_sales, 0 sales
+					  FROM accumulate
+					  WHERE YEAR(date) = YEAR(CURDATE())-2
+					  union all 
+					  SELECT MONTH(date) sal_month, 0 yy_sales, sale y_sales, 0 sales
+					  FROM accumulate
+					  WHERE YEAR(date) = YEAR(CURDATE())-1
+					  union all 
+					  SELECT MONTH(date) sal_month, 0 yy_sales, 0 y_sales, sale sales
+					  FROM accumulate
+					  WHERE YEAR(date) = YEAR(CURDATE())
+					  union all
+					  SELECT MONTH(regdate) sal_month, 0 yy_sales, 0 y_sales, TRUNCATE(SUM(res_price)/100,0) sales 
+					  FROM reservation
+					  WHERE YEAR(regdate) = YEAR(CURDATE())
+					  GROUP BY YEAR(regdate), MONTH(regdate)
+					) t
+					GROUP BY t.sal_MONTH
+				</when>
+				<when test="dir == 'line'">
+					SELECT t.year as colYear, t.cnt as colCount FROM (
+						SELECT YEAR(regdate) year, COUNT(member_id) cnt
+						FROM member
+						GROUP BY YEAR(regdate)
+						UNION ALL
+						SELECT '2016' year, 100 cnt
+						UNION ALL
+						SELECT '2015' year, 120 cnt
+						UNION ALL
+						SELECT '2014' year, 110 cnt
+					) t
+					ORDER BY t.year;
+				</when>
+				<when test="dir == 'geo'">
+					SELECT t.area as colArea, count(t.host_serial) as colCount
+					FROM(
+					  SELECT SUBSTRING_INDEX(b.addr, ' ', 1) area, host_serial 
+					  FROM residence b
+					) t
+					GROUP BY t.area
+				</when>
+			</choose>
+		</if>		
+	</select>
+	
 	<select id="comboList" resultMap="respMap" parameterType="com.airbnb.web.command.Command">
 		SELECT cate_level, cate_name FROM boardcate
 		WHERE board_seq = '0';
@@ -44,19 +100,16 @@
 		<if test="dir != null">
 			<choose>
 				<when test="dir == 'board'">
-					SELECT * FROM (
-						SELECT b.board_seq
-					      	, (CASE WHEN c.cate_name IS NULL THEN '분류없음' 
-					  		   ELSE c.cate_name end) AS cate_name
-					      	, b.board_title
-					        , b.board_regdate 
-						FROM ${dir} b
-					    LEFT OUTER JOIN boardcate c ON b.board_seq = c.board_seq
-					  	WHERE (b.board_seq LIKE '11%' OR b.board_seq LIKE 'bo%')
-					) t
-					WHERE (t.board_title LIKE #{search} 
-						   OR t.cate_name LIKE #{search})
-					ORDER BY t.board_regdate DESC;
+					SELECT t.* FROM(
+						SELECT (@ROWNUM := @ROWNUM + 1) row_num
+							 , (select count(*) from vboard) as total_cnt 
+							 , board_seq, cate_name, board_title, board_regdate
+						FROM vboard, (SELECT @ROWNUM := 0) AS y
+						WHERE( board_title LIKE #{search} 
+		   					   OR cate_name LIKE #{search})
+						ORDER BY board_regdate DESC
+					)t
+					<!-- WHERE row_num BETWEEN ${startRow} and ${endRow}; -->
 				</when>
 				<when test="dir == 'residence'">
 					SELECT * FROM ${dir}
@@ -69,14 +122,14 @@
 	</select>
    
 	<select id="selectOne" resultMap="respMap" parameterType="com.airbnb.web.command.Command">
-		SELECT b.board_seq, c.cate_level, b.board_title, b.board_content
+		SELECT b.board_seq, c.cate_name, b.board_title, b.board_content
 		FROM ${dir} b 
 		LEFT OUTER JOIN boardcate c ON b.board_seq = c.board_seq
 		WHERE b.${column} = #{search};
 	</select>
 	
 	<select id="count" resultMap="respMap" parameterType="com.airbnb.web.command.Command">  
-		SELECT COUNT(*) AS cnt FROM ${dir};
+		SELECT COUNT(*) AS row_cont FROM vboard;
 	</select>
 
 	<update id="update" parameterType="com.airbnb.web.command.Command">

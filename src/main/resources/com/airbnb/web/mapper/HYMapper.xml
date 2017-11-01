@@ -9,7 +9,15 @@
       <result property="price" column="price"/>      
       <result property="residenceName" column="residence_name"/>      
    </resultMap>
- <insert id="insert">
+    <insert id="insert" parameterType="com.airbnb.web.command.Command">
+		INSERT INTO ReviewBoard (
+		
+		   board_seq
+		  ,review_star
+		  ,host_serial
+		) VALUES (#{dir},#{action},#{column}
+			
+		)
 	</insert>
 
 	<select id="selectList" parameterType="com.airbnb.web.command.Command" resultMap="ResiMap">

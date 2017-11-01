@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.airbnb.web.command.Command;
 import com.airbnb.web.mapper.BKMapper;
+import com.airbnb.web.mapper.HYMapper;
 import com.airbnb.web.mapper.JWMapper;
 
 //serviceImply 안만드는 격 / 형태는 serviceImply / controller에서 호출

@@ -15,10 +15,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.airbnb.web.command.Command;
+import com.airbnb.web.command.ResultMap;
 import com.airbnb.web.domain.Residence;
 import com.airbnb.web.mapper.HYMapper;
 import com.airbnb.web.service.IGetService;
 import com.airbnb.web.service.IListService;
+import com.airbnb.web.service.IPostService;
+import com.airbnb.web.service.IPutService;
+import com.airbnb.web.service.TransactionService;
 
 @RestController
 public class HYController {
@@ -26,6 +30,7 @@ public class HYController {
 	@Autowired Command cmd;
 	@Autowired HYMapper mapper;
 	@Autowired Residence residence;
+	@Autowired TransactionService tx;
 	@RequestMapping("/put/listhostels")
 	public @ResponseBody List<?> listHostels(){
 		 logger.info("HYcontroller listHostels{}." ,"진입 ");
@@ -57,6 +62,26 @@ public class HYController {
 		//searchCity.add(residence);
 		System.out.println("result find by host serial=="+searchCity);
 		return searchCity;
+	}
+	
+	
+	@RequestMapping(value="/post/review",method=RequestMethod.POST)
+	public void addReview(@RequestBody Command cmdPo) {
+		logger.info("HYcontroller addReview{}." ,"진입 ");
+		System.out.println("넘어온 리뷰 별점::"+cmdPo.getAction());
+		System.out.println("넘어온 리뷰 콘텐츠::"+cmdPo.getColumn());
+		System.out.println("넘어온 리뷰 seq::"+cmdPo.getDir());
+		cmd.setAction(cmdPo.getAction());
+		cmd.setColumn(cmdPo.getColumn());
+		cmd.setDir(cmdPo.getDir());
+		new IPostService() {
+			@Override
+			public void execute(Object o) {
+				mapper.insert(cmd);
+				return;
+			}
+		}.execute(null);;
+		
 	}
 	
 }
