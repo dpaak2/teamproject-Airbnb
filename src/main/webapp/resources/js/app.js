@@ -97,12 +97,18 @@ app.main=(()=>{
 		    });
 		    
 		    $('#mainSearch').click(e=>{
+		    	$('#mainSearch').tooltip();
 		    	var _searchCity =$('#searchCity').val();
-		        alert('검색한 도시::'+_searchCity);
-		        sessionStorage.setItem('searchCity',_searchCity);
-		    	$('#airbnbText').empty();
-	    		$('#content').empty();
-	    		 yongju.common.init(ctx);
+		    	if(_searchCity == null){
+		    		$('#airbnbText').empty();
+		    		$('#content').empty();
+		    		 yongju.common.init(ctx);
+		    	}else{
+		    		 sessionStorage.setItem('searchCity',_searchCity);
+				    	$('#airbnbText').empty();
+			    		$('#content').empty();
+			    		 yongju.common.init(ctx);
+		    	}
 			 
 		    });
 		  
@@ -157,6 +163,7 @@ app.main=(()=>{
 		    });
 		    
 		    $('#rooms').html(rommbanner);
+		    //backup
 /*		    $('#tophos').click(e=>{
 		    	alert('ghtmxzkdfjal');
 		    });*/

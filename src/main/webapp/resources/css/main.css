@@ -1,5 +1,9 @@
 @charset "UTF-8";
 /*hayun css*/
+label {
+	display: inline-block;
+	width: 5em;
+}
 .hy-content{
 	padding-bottom: 35%;
 }

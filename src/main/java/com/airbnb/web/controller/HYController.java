@@ -75,15 +75,16 @@ public class HYController {
 		System.out.println("넘어온 리뷰 별점::"+cmdPo.getAction());
 		System.out.println("넘어온 리뷰 콘텐츠::"+cmdPo.getColumn());
 		System.out.println("넘어온 리뷰 seq::"+cmdPo.getDir());
-		brd.setBoardSeq(null);
-		brd.setContents(null);
-		new IPostService() {
-			@Override
-			public void execute(Object o) {
-				mapper.insert(cmd);
-				return;
-			}
-		}.execute(null);
+		System.out.println("넘어온 리뷰 memberID::"+cmdPo.getPage());
+		String rw_seq = "rw"+String.valueOf((int)((Math.random()*999999999)+100000000));
+		brd.setBoardSeq(rw_seq);
+		brd.setContents(cmdPo.getColumn());
+		brd.setMemberId(cmdPo.getPage());
+		rvd.setBoardSeq(rw_seq);
+		rvd.setReviewStar(cmdPo.getAction());
+		rvd.setHostSerial(cmdPo.getDir());
+		tx.addReview(brd, rvd);
+		
 	}
 	
 }

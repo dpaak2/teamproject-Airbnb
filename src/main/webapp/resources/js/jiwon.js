@@ -592,7 +592,67 @@ jw.resvBoard = (function(){
               
                     });
                  });*/
-             
+              //후기 작성 버튼
+                $.each(list, (i,j)=>{
+                     compUI.span('brd_btn_res_'+i).appendTo($('#tbl_btnarea'+i))
+                     .attr('displsy','inline')
+                     .attr('data-toggle','modal')
+         			.attr('data-target','#myModal')
+                     .html('후기작성').addClass('label label-warning').css({'cursor':'pointer'})
+                     .click(()=>{
+                  	  alert('후기작성');
+                  	  sessionStorage.setItem('seq',j.hostSerial);
+                  	var reviewStar ='';
+                      if($('#reviewStar1').attr('checked',true)){
+                      	reviewStar=$('#reviewStar1').val();
+                      }
+                      if($('#reviewStar2').attr('checked',true)){
+                      	reviewStar=$('#reviewStar2').val();
+                      }
+                      if($('#reviewStar3').attr('checked',true)){
+                      	reviewStar=$('#reviewStar3').val();
+                      }
+                  	
+                      if($('#reviewStar4').attr('checked',true)){
+                      	reviewStar=$('#reviewStar4').val();
+                      }
+                  	
+                      if($('#reviewStar5').attr('checked',true)){
+                      	reviewStar=$('#reviewStar5').val();
+                      }
+                      
+         				
+         				$('#formCm').html(compUI.inputBtn('formBtn','submit')
+         						.val('후기 작성 완료')
+         						.attr('data-dismiss','modal')
+         						.addClass('btn btn-danger btn-large btn-block')
+         						.css({'font-size': '22px', 'font-weight':'bold','outline-style': 'none'})
+         						.click(e=>{
+         							alert('후기 작성 완료');
+         							$.ajax({
+         								url :ctx+'/post/review',
+         								method : 'post',
+         								dataType : 'json',
+         								contentType : 'application/json',
+         								data : JSON.stringify({
+         									action : reviewStar,
+         									column : $('#reviewContent').val(),
+         									dir : sessionStorage.getItem('seq'),
+         									page:sessionStorage.getItem('smemberid')
+         								}),
+         								success : data=>{
+         									alert('성공');
+         								},
+         								error : (x,s,m)=>{
+         									alert('error'+m);
+         								}
+         								
+         							});
+         							
+         						})
+         					)
+         			   });
+                  });
              });
          },
          error : (x,s,m)=>{

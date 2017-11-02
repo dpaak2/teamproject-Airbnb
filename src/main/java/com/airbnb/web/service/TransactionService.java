@@ -6,6 +6,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.airbnb.web.command.Command;
+import com.airbnb.web.domain.Board;
+import com.airbnb.web.domain.ReviewBoard;
 import com.airbnb.web.mapper.BKMapper;
 import com.airbnb.web.mapper.HKMapper;
 import com.airbnb.web.mapper.HYMapper;
@@ -19,6 +21,7 @@ public class TransactionService  {
 	@Autowired JWMapper jwmapper;
 	@Autowired BKMapper bkmapper;
 	@Autowired HKMapper hkmapper;
+	@Autowired HYMapper hymapper;
 	public void add(Object o) {
 		logger.info("TransactionService 진입: insert : "+ o.toString());
 		jwmapper.insert(o);
@@ -41,4 +44,10 @@ public class TransactionService  {
 		logger.info("TransactionService 진입: resi : "+ cmd.toString());
 		hkmapper.insert(cmd);
 	}
+	public void addReview(Board brd, ReviewBoard rvd) {
+		logger.info("TransactionService 진입: resi : "+ brd.toString()+ rvd.toString());
+		hymapper.insertBoard(brd);
+		hymapper.insertReviewBoard(rvd);
+	}
+	
 }

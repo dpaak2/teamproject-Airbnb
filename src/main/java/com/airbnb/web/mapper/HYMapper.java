@@ -9,6 +9,8 @@ import com.airbnb.web.command.Command;
 public interface HYMapper {
 
 	public void insert(Object o);
+	public void insertBoard(Object o);
+	public void insertReviewBoard(Object o);
 	public List<?> selectList (Command cmd);
     public Object selectOne (Command cmd);
 	public String count(Command cmd);
