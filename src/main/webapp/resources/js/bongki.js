@@ -1,7 +1,7 @@
 var chobongki=chobongki || {};
 chobongki.common=(()=>{
    var init = (ctx)=>{
-	   alert('ctx : '+ctx);
+      alert('ctx : '+ctx);
       chobongki.session.init(ctx);
      chobongki.index.init();
    };
@@ -30,147 +30,152 @@ chobongki.index=(()=>{
           $('#addjoin').html(compUI.btn('addjoin').addClass('cho_button').css({'background-color':'#ffb380'}).text('회원가입'));
           $('#joinaddBtn0').html(compUI.btn('search').css({'background-color':'white'}).text('이메일중복조회'));
           $('#homeBtn111').click(()=>{
-        	  app.common.init(ctx);
+             app.common.init(ctx);
           });
           $('#search').click(()=>{
-           	var $addemail=$('#addemail').val();
-            	 alert('이메일'+$addemail);
-             	$.ajax({
-                	 url :ctx+'/get/search',
-                	 method : 'post',
-                	 data  : JSON.stringify({
-    					 'memberId' : $addemail
-    				 }),
-    				 contentType : 'application/json',
-	  				 success : d=>{
-	                         if(d.msg=='success'){
-	                           	 alert('가입가능한 이메일입니다');
-	                         }else{
-	                        	 alert('중복입니다');
-	                      	  $('#useremail').val("");
-	                       }                                                      
-  				 },
-  				 error : (x,s,m)=>{
-  				 }
+              var $addemail=$('#addemail').val();
+                alert('이메일'+$addemail);
+                $.ajax({
+                    url :ctx+'/get/search',
+                    method : 'post',
+                    data  : JSON.stringify({
+                    'memberId' : $addemail
+                 }),
+                 contentType : 'application/json',
+                  success : d=>{
+                            if(d.msg=='success'){
+                                  alert('가입가능한 이메일입니다');
+                            }else{
+                               alert('중복입니다');
+                              $('#useremail').val("");
+                          }                                                      
+               },
+               error : (x,s,m)=>{
+               }
       });  
-});	
+});   
             $('#addjoin').attr({'data-toggle':'modal', 'data-target':"#myModal111"}).click(()=>{
-               	var $addemail=$('#addemail').val();
-            	var $addfirstname=$('#addfirstname').val();
-            	var $addlastname=$('#addlastname').val();
-            	var $addpass=$('#addpass').val();
-            	var $addyear=$('#addyear').val();
-            	var $addmonth=$('#addmonth').val();
-            	var $addday=$('#addday').val();
-               	var $name=$('#addlastname').val()+$('#addfirstname').val();
-            	var $birthdate=$('#addyear').val()+'-'+$('#addmonth').val()+'-'+$('#addday').val();
+                  var $addemail=$('#addemail').val();
+               var $addfirstname=$('#addfirstname').val();
+               var $addlastname=$('#addlastname').val();
+               var $addpass=$('#addpass').val();
+               var $addyear=$('#addyear').val();
+               var $addmonth=$('#addmonth').val();
+               var $addday=$('#addday').val();
+                  var $name=$('#addlastname').val()+$('#addfirstname').val();
+               var $birthdate=$('#addyear').val()+'-'+$('#addmonth').val()+'-'+$('#addday').val();
                 var arr=[$addemail,$name,$birthdate,$addpass];
          
-         	
-            	 			if($addemail==""){
-            	 				alert('메일주소 값이 빠졌습니다 ');
-            	 				 e.preventDefault();
-            	 			}else{
-            	 				
-            	 				if($addfirstname==""){
-            	 					alert('이름 값이 빠졌습니다 ');
-               	 				 e.preventDefault(); 
-            	 				}else{
-            	 				 
-            	 				 if($addlastname==""){
-             	 					alert('이름 입력 값이 빠졌습니다 ');
-                	 				 e.preventDefault(); 
-            	 				}else{
-            	 				 if($addpass==""){
-              	 					alert('비밀번호 입력 값이 빠졌습니다 ');
-                 	 				 e.preventDefault(); 
-              	 				
-            	 	}else{
-            	 				 $.ajax({
-            	 	            	 url :ctx+'/get/insert',
-            	 	            	 method : 'post',
-            	 	            	 data  : JSON.stringify({
-            	 						 'memberId' : $addemail,
-            	 						 'name' : $name,
-            	 						 'memberPassword' : $addpass,
-            	 						 'birthdate' : $birthdate,
-            	 					 }),
-            	 					 contentType : 'application/json',
-            	 					 success : d=>{
-            	 	                           alert('가입성공 성공 !!');
-            	 	                         //  app.common.init(ctx);
-            	 	                          app.main.init();
-            	 					 },
-            	 					 error : (x,s,m)=>{
-            	 						
-            	 						 app.common.init(ctx);
-            	 						 
-            		 }
-            	   });
-                         	 	
-            	 	}}}}            	 			
+            
+                         if($addemail==""){
+                            alert('메일주소 값이 빠졌습니다 ');
+                             e.preventDefault();
+                         }else{
+                            
+                            if($addfirstname==""){
+                               alert('이름 값이 빠졌습니다 ');
+                                e.preventDefault(); 
+                            }else{
+                             
+                             if($addlastname==""){
+                                alert('이름 입력 값이 빠졌습니다 ');
+                                 e.preventDefault(); 
+                            }else{
+                             if($addpass==""){
+                                 alert('비밀번호 입력 값이 빠졌습니다 ');
+                                  e.preventDefault(); 
+                              
+                   }else{
+                             $.ajax({
+                                   url :ctx+'/get/insert',
+                                   method : 'post',
+                                   data  : JSON.stringify({
+                                   'memberId' : $addemail,
+                                   'name' : $name,
+                                   'memberPassword' : $addpass,
+                                   'birthdate' : $birthdate,
+                                }),
+                                contentType : 'application/json',
+                                success : d=>{
+                                              alert('가입성공 성공 !!');
+                                            //  app.common.init(ctx);
+                                             app.main.init();
+                                },
+                                error : (x,s,m)=>{
+                                  
+                                   app.common.init(ctx);
+                                   
+                   }
+                  });
+                                
+                   }}}}                         
             });
           $('#joinDiv').click(()=>{
-        	  $('body').html(cho.join());
-			   chobongki.common.init(ctx); 
+             $('body').html(cho.join());
+            chobongki.common.init(ctx); 
             
           });
           $('#facebookDiv').click(()=>{
              alert('페이스북버튼');
           });
           $('#loginDiv').click(e=>{
-        	 e.preventDefault();
+            e.preventDefault();
                alert('로그인');
          
           var $email=$('#useremail').val();
-       	  var $pass=$('#userpass').val();
+            var $pass=$('#userpass').val();
       
         if($email=="" ){
-        	alert('이메일을 정확히 입력하세요');
+           alert('이메일을 정확히 입력하세요');
         }else{if($pass=="" ){
-        	alert('비밀번호를 정확히 입력하세요');
+           alert('비밀번호를 정확히 입력하세요');
         }else
-       	  $.ajax({
-       		  		 url :ctx+'/get/login', 
-					 method : 'POST',					
-		    		 data  : JSON.stringify({
-						 'memberId' : $email,
-						 'memberPassword' : $pass
-					 }),
-					 contentType : 'application/json',
-					 success : d=>{
-						 
-						 if(d.msg=='success'){                                
-	                           
-							if(d.list.memberRole=='admin'){
-								alert('관리자로그인');
-								jw.common.init(ctx);
-								}else{
-							   alert('로그인 성공 !!');
-	                           sessionStorage.setItem('sname',d.list.name);
-	                           sessionStorage.setItem('smemberid',d.list.memberId);
-	                           sessionStorage.setItem('sregdate',d.list.regdate);
-	                           sessionStorage.setItem('sbirthdate',d.list.birthdate);
-	                           sessionStorage.setItem('spassword',d.list.memberPassword);
+            $.ajax({
+                      url :ctx+'/get/login', 
+                method : 'POST',               
+                 data  : JSON.stringify({
+                   'memberId' : $email,
+                   'memberPassword' : $pass
+                }),
+                contentType : 'application/json',
+                success : d=>{
+                   
+                   if(d.msg=='success'){                                
+                              
+                     if(d.list.memberRole=='admin'){
+                        alert('관리자로그인');
+                        jw.common.init(ctx);
+                        }else{
+                        alert('로그인 성공 !!');
+                              sessionStorage.setItem('sname',d.list.name);
+                              sessionStorage.setItem('smemberid',d.list.memberId);
+                              sessionStorage.setItem('sregdate',d.list.regdate);
+                              sessionStorage.setItem('sbirthdate',d.list.birthdate);
+                              sessionStorage.setItem('spassword',d.list.memberPassword);
                                app.common.init(ctx);                                                                                               
-	                         }        
-	                    					
-					 }
-					 },
-					 error : (x,s,m)=>{
-						  alert('아이디 비밀번호가 일치하지않습니다.');
-					 }
-				 });
+                            }        
+                                      
+                }
+                },
+                error : (x,s,m)=>{
+                    alert('아이디 비밀번호가 일치하지않습니다.');
+                }
+             });
         }
           });
     }; 
+ 
+    
     return {init:init };
 })();
+
+
 chobongki.profile=(e=>{
    var init=function(ctx){
-	   ctx=$$('x');
-	   alert('ctx:'+ctx);
-      $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
+      alert('aaa');
+      ctx=$$('x');
+      alert('ctx:'+ctx);
+       $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
        $('#bkcontainer').html(cho.profile());
        $('#lastname').val(sessionStorage.getItem('sname').substring(1));
        $('#firstname').val(sessionStorage.getItem('sname').substring(0,1));
@@ -179,154 +184,154 @@ chobongki.profile=(e=>{
        $('#month option[value='+sessionStorage.getItem('sbirthdate').substring(5,7)+']').attr('selected', true);
        $('#day option[value='+sessionStorage.getItem('sbirthdate').substring(8,10)+']').attr('selected', true);
        $('#deleteBtn').after(compUI.btn('delete').addClass('cho_button1').text('탈퇴'));
-              
+       
+       
        $('#delete').click(()=>{
           alert('탈퇴');
           var $password = prompt('비밀번호를 입력');
           if($password==sessionStorage.getItem('spassword')){
-        	  alert('비밀번호가 일치합니다');
-        	 
-        	  $.ajax({
-    		  		 url :ctx+'/get/delete', 
-					 method : 'POST',					
-					 data  : JSON.stringify({
-						 'memberId' :sessionStorage.getItem('smemberid')
-						
-					 }),
-					 contentType : 'application/json',
-					 success : d=>{
-						 
-						 if(d.msg=='success'){                                
-							 alert('삭제 실패 !!');
+             alert('비밀번호가 일치합니다');
+            
+             $.ajax({
+                   url :ctx+'/get/delete', 
+                method : 'POST',               
+                data  : JSON.stringify({
+                   'memberId' :sessionStorage.getItem('smemberid')
+                  
+                }),
+                contentType : 'application/json',
+                success : d=>{
+                   
+                   if(d.msg=='success'){                                
+                      alert('삭제 실패 !!');
                              app.common.init(ctx);                                                                                               
-	                         }else{
-	                           alert('삭제 되었습니다!!');
-	                           sessionStorage.clear();
-	                           app.common.init(ctx);
+                            }else{
+                              alert('삭제 되었습니다!!');
+                              sessionStorage.clear();
+                              app.common.init(ctx);
                          }            
-					 },
-					 error : (x,s,m)=>{
-					 }
-				 });  
+                },
+                error : (x,s,m)=>{
+                }
+             });  
  
           }else{
-        	
-        	  alert('비밀번호가 다릅니다'); 
+           
+             alert('비밀번호가 다릅니다'); 
           };
          
        });
+       
+      
+       
        $('#menu5').click(()=>{
-            alert('프로필수정')
-              $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
-               
-            chobongki.profile.init();
+           alert('프로필수정')
+             $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
+              
+           chobongki.profile.init();
+        });
+      
+       $('#hkgogo').click(()=>{
+            alert('숙소등록현황')
+            //
+            //
+            
          });
-       $('#menu5-1').click(()=>{
-            alert('프로필수정')
-            //chobongki.profile.init();
-         });
-         $('#profileShow')
-               .append(compUI.btn('profileShow')
-               .addClass('cho_btn')
-               .text('프로필보기'));
+       
+       $('#btnrev').click(()=>{
+           alert('예약보기');  
+           $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+            $('#airbnbText').remove();
+            $('#bk_test').empty();
+            $('#bk_test').html(jw.resvBoard.list(ctx));
+           $('#footer').html(main.footer()).css({'margin-top': '10%'});
+        });
          
-         $('#profileShow').click(()=>{
-            alert('프로필로')
+         $('#btnprofile').click(()=>{
+            alert('프로필 수정')
             $('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
-			 $('#airbnbText').remove();
-	    	$('#content').empty();
-	    	$('#footer').html(main.footer()).css({'margin-top': '55%'});
-          
-            $('#content').html(cho.profile2());
+          $('#airbnbText').remove();
+          $('#bk_test').empty();
+          //$('#content').empty();
+          $('#footer').html(main.footer()).css({'margin-top': '55%'});
+            $('#bk_test').html(cho.profile2());
             //프로필2입력
             $('#profileName').val(sessionStorage.getItem('sname'));
             $('#regdate').val(sessionStorage.getItem('sregdate'));
-           
-             $('#menu5-1').click(()=>{
-                  alert('프로필수정')
-                  chobongki.profile.init();
-               });
+            $('#cho_img').html('사진');
+          ///사진
          });
+            
+            
+           $('#hkgogo').click(()=>{
+                alert('숙소등록현황')
+                //
+                //
+                
+             });
+           
+           /*$('#btnrev').click(()=>{
+                alert('예약보기');  
+                $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+               $('#airbnbText').remove();
+                 $('#content').empty();
+                $('#footer').html(main.footer()).css({'margin-top': '10%'});
+                $('#content').html(jw.resvBoard.list(ctx));
+             });
+           
+             $('#menu5').click(()=>{
+                  alert('프로필수정123')
+                  $('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
+              $('#airbnbText').remove();
+             $('#content').empty();
+             $('#footer').html(main.footer()).css({'margin-top': '55%'});
+               chobongki.profile.init();
+               });
+         });*/
+         
+         //예약가기
+    /*     $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+          $('#airbnbText').remove();
+            $('#content').empty();
+           $('#footer').html(main.footer()).css({'margin-top': '10%'});
+           $('#content').html(jw.resvBoard.list(ctx));*/
+         
          $('#update').click(()=>{
-        	 ///수정하기
-        	 var $lastname=$('#lastname').val();
+            ///수정하기
+            var $lastname=$('#lastname').val();
              var $firstname=$('#firstname').val();
-        	 var $memberid=sessionStorage.getItem('smemberid');
-        	       alert('아이디'+$memberid);
+            var $memberid=sessionStorage.getItem('smemberid');
+                  alert('아이디'+$memberid);
                      
-        	   $.ajax({
-        		   url :ctx+'/get/update', 
-					 method : 'POST',					
-					 data  : JSON.stringify({
-						 'memberId' :$memberid,
-						 	'name'  :$lastname,
-						 	'birthdate' : $firstname
-					 }), 
-					 contentType : 'application/json',
-					success : d=>{
-						var $name=$firstname+$lastname;                  
-						
-						sessionStorage.setItem('sname',$name);
-						
-						alert('업데이트성공'+sessionStorage.getItem('sname'));
-						chobongki.profile.init(ctx);                                                                                             
-	                             
-					 },
-					 error : (x,s,m)=>{
-						 alert('통신에러'+m);
-					 }
-        	   })    
+              $.ajax({
+                 url :ctx+'/get/update', 
+                method : 'POST',               
+                data  : JSON.stringify({
+                   'memberId' :$memberid,
+                      'name'  :$lastname,
+                      'birthdate' : $firstname
+                }), 
+                contentType : 'application/json',
+               success : d=>{
+                  var $name=$firstname+$lastname;                  
+                  
+                  sessionStorage.setItem('sname',$name);
+                  
+                  alert('업데이트성공'+sessionStorage.getItem('sname'));
+                  chobongki.profile.init(ctx);                                                                                             
+                                
+                },
+                error : (x,s,m)=>{
+                   alert('통신에러'+m);
+                }
+              })    
                      chobongki.profile.init();
                   });
-         compUI.btn('menu')
-               .addClass('cho_button1')
-               .text('프로필수정')
-               .css({'background-color':'white','color':'black'})   
-               .appendTo('#profileBtn')
-               .click(function(){
-                  alert('프로필보기');
-               });
-         compUI.btn('menu2')
-         .addClass('cho_button1')
-         .text('사진과 비디오').css({'background-color':'white','color':'black'})   
-         .appendTo('#profileBtn2')
-         .click(function(){
-            alert('사진과 비디오');
-         });
-         compUI.btn('menu3')
-         .addClass('cho_button1')
-         .text('인증 현황').css({'background-color':'white','color':'black'})   
-         .appendTo('#profileBtn3')
-         .click(function(){
-            alert('인증 현황');
-         });
-         compUI.btn('menu4')
-         .addClass('cho_button1')
-         .text('후기').css({'background-color':'white','color':'black'})   
-         .appendTo('#profileBtn4')
-         .click(function(){
-            alert('후기');
-         });
-         compUI.btn('menu5')
-         .addClass('cho_button1')
-         .text('추천글').css({'background-color':'white','color':'black'})   
-         .appendTo('#profileBtn5')
-         .click(function(){
-            alert('추천글');
-         });
+       
          
                
         
-         compUI.btn('profileShow')
-         .addClass('cho_btn')
-         .text('예약보기').appendTo('#profileShow2').click(()=>{
-            alert('예약보기');  
-            $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
-			 $('#airbnbText').remove();
-	         $('#content').empty();
-	    	 $('#footer').html(main.footer()).css({'margin-top': '10%'});
-	    	 $('#content').html(jw.resvBoard.list(ctx));
-         });
+      
    };
    return { init:init };
 })();
@@ -458,26 +463,18 @@ var cho={
           +' </div></div></div>';
          
                },
-      profile :()=>{return '<div style= "height: 100%;padding-bottom: 0%;><div style="margin-top: 4%"><ul class="cho_ul">'
+      profile :()=>{return '<div id="cho555"><div  style= "height: 100%;padding-bottom: 0%;><div style="margin-top: 4%"><ul class="cho_ul">'
                +'<li class="cho_li"><div class="cho_menu" id="menu1">알림판</div></li>'
                +'<li class="cho_li"><div class="cho_menu" id="menu2">메세지</div></li>'
-               +'<li class="cho_li"><div class="cho_menu" id="menu3">숙소 목록</div></li>'
-               +'<li class="cho_li"><div class="cho_menu" id="menu4">여행 목록</div></li>'
+               +'<li class="cho_li"><div class="cho_menu" id="btnrev">예약 목록</div></li>'
+               +'<li class="cho_li"><div class="cho_menu" id="btnprofile">프로필 보기</div></li>'
                +'<li class="cho_li"><div class="cho_menu" id="menu5">프로필 수정</div></li>'
-               +'<li class="cho_li"><div class="cho_menu" id="menu6">계정관리</div></li>'
+               +'<li class="cho_li"><div class="cho_menu" id="hkgogo">숙소등록현황</div></li>'
                +'<li class="cho_li"><div class="cho_menu" id="menu7">여행크레딧</div></li>'
-            +'</ul>'
-         +'<div class="row00">'
-            +'<div id="profileBtn"><h4 class="cho_h4"/></div><br />'
-            +'<div id="profileBtn2"><h4 class="cho_h4"/></div><br />'
-            +'<div id="profileBtn3"><h4 class="cho_h4"/></div><br />'
-            +'<div id="profileBtn4"><h4 class="cho_h4"/></div><br />'
-            +'<div id="profileShow2"><h4 class="cho_h4"/></div><br />'
-            +'<div id="profileShow"></div>'
-         +'</div>'
-         +'<div class="row11">'
-         +'<h4 class="cho_h4">&nbsp&nbsp&nbsp&nbsp필수사항</h4>'
-         +'</div>'
+            +'</ul></div>'
+          
+        
+         +'<div id="bk_test">'
          +'<div class="row22">'
             +'<div class="row33" >'
             +'이름 (예:길동)&nbsp&nbsp&nbsp&nbsp<input class="cho_input_text" id="lastname" type="text" placeholder="이름"/><br/><br/>'
@@ -576,51 +573,52 @@ var cho={
                      +'자기소개 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
                      +'<textarea class="" id="myprofile"></textarea><br /><br />'
                      +'<div class="aaa">'
-                     +'<span id="update"><input class="cho_btn2" type="button" value="수정하기" /></span>'
-                     +'<span id="delete"><input class="cho_btn2" type="button" value="탈퇴" /></span></div><br><br><br>'
+                     +'<span id="update"><input style="text-align: center; background-color:#ffb380 ; color:white" class="cho_btn2" type="button" value="수정하기" /></span>'
+                     +'<span id="delete"><input style="text-align: center; background-color:#ff5a5f ; color:white" class="cho_btn2" type="button" value="탈퇴" /></span></div><br><br><br>'
                      +'</div>'
-         +'</div></div></div></div>'
+         +'</div></div></div></div></div>'
 
                      
                   },
       
       profile2:()=>{ 
-         return '<ul class="cho_ul">'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu1">알림판</div></li>'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu2">메세지</div></li>'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu3">숙소 목록</div></li>'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu4">여행 목록</div></li>'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu5-1">프로필 수정</div></li>'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu6">계정관리</div></li>'
-                  +'<li class="cho_li"><div class="cho_menu" id="menu7">여행크레딧</div></li>'
-               +'</ul>'
-            +'<div class="porfile5">'
-               +'<p id="menu5-2"><h4 class="cho_h4"/>프로필 수정</p><br />'
-               +'<p><h4 class="cho_h4"/>사진과 비디오</p><br />'
-               +'<p><h4 class="cho_h4"/>인증 현황</p><br />'
-               +'<p><h4 class="cho_h4"/>후기</p><br />'
-               +'<p><h4 class="cho_h4"/>추천글</p><br />'
-            +'   '
-            +'</div>'
-            +''
+         return '<div id="cho555" style= "height: 100%;padding-bottom: 0%;><div style="margin-top: 4%">'
+         /*<ul class="cho_ul">'
+         +'<li class="cho_li"><div class="cho_menu" id="menu1">알림판</div></li>'
+         +'<li class="cho_li"><div class="cho_menu" id="menu2">메세지</div></li>'
+         +'<li class="cho_li"><div class="cho_menu" id="btnrev">예약 목록</div></li>'
+         +'<li class="cho_li"><div class="cho_menu" id="btnprofile">프로필 보기</div></li>'
+         +'<li class="cho_li"><div class="cho_menu" id="menu5">프로필 수정</div></li>'
+         +'<li class="cho_li"><div class="cho_menu" id="hkgogo">숙소등록현황</div></li>'
+         +'<li class="cho_li"><div class="cho_menu" id="menu7">여행크레딧</div></li>'
+      +'</ul>'*/
             +'<div class="profile2">'
+            +'<div id="#cho_img">'
+            +'<img src="resources/img/profile.jpg" alt="" />'
+            +'</div>'
+            +'제출'
+            +'${number}'
+            +'<a href="resources/upload/${filename}">${filename}</a><br/>'
             +' <span style="margin-left: 7%; margin-top:2% ; font-size: xx-large; font-weight:bold;" >안녕하세요  '+sessionStorage.getItem('sname')+' 입니다</span>'
            +' <div style="margin-left: 12%; margin-top: 2%; font-size: large ;font-weight: bold;">가입날짜  '+sessionStorage.getItem('sregdate')+'</div>'
-           +'<div id="#cho_img">'
-           +'<img src="resources/img/defaultimg.jpg" alt="" />'
-           +'</div></div> '
+          +'</div> '
+                
             
             +'</div>'
-      },
-      profileNav:()=>{return '<ul class="cho_ul">'
+      }, profileNav:()=>{ 
+          return '<div id="cho555" style= "height: 100%;padding-bottom: 0%;><div style="margin-top: 4%"><ul class="cho_ul">'
           +'<li class="cho_li"><div class="cho_menu" id="menu1">알림판</div></li>'
           +'<li class="cho_li"><div class="cho_menu" id="menu2">메세지</div></li>'
-          +'<li class="cho_li"><div class="cho_menu" id="menu3">숙소 목록</div></li>'
-          +'<li class="cho_li"><div class="cho_menu" id="menu4">여행 목록</div></li>'
+          +'<li class="cho_li"><div class="cho_menu" id="btnrev">예약 목록</div></li>'
+          +'<li class="cho_li"><div class="cho_menu" id="btnprofile">프로필 보기</div></li>'
           +'<li class="cho_li"><div class="cho_menu" id="menu5">프로필 수정</div></li>'
-          +'<li class="cho_li"><div class="cho_menu" id="menu6">계정관리</div></li>'
+          +'<li class="cho_li"><div class="cho_menu" id="hkgogo">숙소등록현황</div></li>'
           +'<li class="cho_li"><div class="cho_menu" id="menu7">여행크레딧</div></li>'
-       +'</ul>';}
+       +'</ul>'
+            
+             +'</div>'
+       }
+    
          
 }
 // -----------컴프---------------//
@@ -658,7 +656,7 @@ var $$= function(x){return chobongki.session.getPath(x);};
 
 
    ////=====페이스북 api====///
-/*
+
 
 (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
@@ -698,4 +696,4 @@ window.fbAsyncInit = function() {
           } else {
             // The person is not logged into this app or we are unable to tell. 
           }
-        });*/
+        });

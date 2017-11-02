@@ -34,4 +34,10 @@ public class HomeController {
 		model.addAttribute("path", PathFactory.create());
 		return "map";
 	}
+	@RequestMapping("/admin")
+	public String admin(Model model) {
+		logger.info("admin was  {}." ,"ENTERED!! ");
+		model.addAttribute("path", PathFactory.create());
+		return "admin";
+	}
 }

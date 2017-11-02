@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.airbnb.web.command.Command;
 import com.airbnb.web.mapper.BKMapper;
+import com.airbnb.web.mapper.HKMapper;
 import com.airbnb.web.mapper.HYMapper;
 import com.airbnb.web.mapper.JWMapper;
 
@@ -17,6 +18,7 @@ public class TransactionService  {
 	private static final Logger logger = LoggerFactory.getLogger(TransactionService.class);
 	@Autowired JWMapper jwmapper;
 	@Autowired BKMapper bkmapper;
+	@Autowired HKMapper hkmapper;
 	public void add(Object o) {
 		logger.info("TransactionService 진입: insert : "+ o.toString());
 		jwmapper.insert(o);
@@ -34,5 +36,9 @@ public class TransactionService  {
 	public void delete(Command cmd) {
 		bkmapper.deleteId(cmd);
 		bkmapper.deleteRes(cmd);
+	}
+	public void resi(Command cmd) {
+		logger.info("TransactionService 진입: resi : "+ cmd.toString());
+		hkmapper.insert(cmd);
 	}
 }

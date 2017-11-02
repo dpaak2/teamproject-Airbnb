@@ -1,5 +1,8 @@
 @charset "UTF-8";
 /*hayun css*/
+.hy-content{
+	padding-bottom: 35%;
+}
 a{
     border-bottom: 2px solid transparent;
 }
@@ -39,19 +42,15 @@ hy-h3{
     color: #484848;
 }
 .hy-navbar{
-    height:41px;
     position:absolute;
-    top:20px;
-    left: 70%;
+    top:30px;
+    left:90%;
 }
 .hy-navbar-ul {
     background: transparent;
     list-style: none;
     position: fixed;
-    right: 0px;
-    width: 400px;
-    text-shadow: 0 0 black;
-   
+    right: 1%;
 }
 .hy-navbar-ul>li {
     display: inline-block;
@@ -59,9 +58,9 @@ hy-h3{
 .hy-navbar-ul>li>a {
     display: block;
     text-decoration: none;
-    font-size:12px;
+    font-size:1em;
     padding: 0 10px;
-    color: #484848 ;
+    color: #484848;
 }
 .hy-navbar-ul>li>a:hover {
     border-bottom:1.5px solid #484848;
@@ -100,36 +99,6 @@ hy-h3{
  90% {margin-left: -2184px;}
 }
 
-/*hostels slide*/
-* { box-sizing: border-box; }
-.carousel {
-  background: #EEE;
-}
-
-.carousel-cell {
-  width: 28%;
-  height: 200px;
-  margin-right: 10px;
-  background: #8C8;
-  counter-increment: gallery-cell;
-}
-
-.carousel-cell.is-selected {
-  background: #ED2;
-}
-
-/* cell number */
-.carousel-cell:before {
-  display: block;
-  text-align: center;
-  content: counter(gallery-cell);
-  line-height: 200px;
-  font-size: 80px;
-  color: white;
-}
-
-
-
 /* style icon */
 .inner-addon .glyphicon {
     position: absolute;
@@ -143,18 +112,101 @@ hy-h3{
 .left-addon input  { padding-left:  30px; }
 .right-addon input { padding-right: 30px; }
 .main-nav-txt{
-    padding: 15%;
+    padding: 12.5%;
+    padding-bottom: 7%;
+    margin-left: 5%;
+    margin-top: 10px;
 }
 .hy-air-mainTxt{
-    font-size: 40px;font-weight: bold;color:#FF5A5F;
+    font-size: 3.5em;font-weight: bold;color:#FF5A5F;margin-bottom: -10px;
 }
-.hy-air-mainSubTxt{font-size: 40px;color:#484848;}
-.hy-air-mainSubTxta {text-decoration: none;font-size: 40px;color:#484848; }
+.hy-air-mainSubTxt{font-size: 3.5em;color:#484848;line-height: 58.1px;}
+.hy-air-mainSubTxta {text-decoration: none;color:#484848; }
 .hy-air-mainSearchBtn{
     position: absolute;right:0;
     top: 0px;
     background-color:#FF5A5F;
     text-align: center; text-decoration: none;cursor: pointer; border: none; color: white; padding:7px;  border-radius: 3px;
+}
+
+/* 주연이의 서치바 */
+.icon{
+  float:left;
+  padding: 23px;
+}
+.search-div{
+  font-size: 1em;
+  width: 90%;
+  height: 65px;
+  border-radius: 4px;
+  border: 1px solid #DADADA;
+  box-shadow: 0 5px 30px rgba(156, 160, 171, 0.25);
+}
+.search-input{
+  float:left;
+  font-size: 1.3em;
+  margin-top: 22px;
+  margin-left: 10px;
+  width: 83%;
+  border: none;
+  outline: none;
+}
+.search-btn{
+  margin-top: 7px;
+  background-color: #FF5A5F;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  color: white;
+  font-size: 19px;
+  width: 80px;
+  height: 48px;
+  border-radius: 4px;
+}
+/* 주연이의 슬라이더 */
+.main-carousel {
+  width: 80%;
+  margin:0 auto;
+}
+
+.carousel-cell {
+  width: 300px;
+  height: 200px;
+  margin-right: 10px;
+  border-radius: 5px;
+  background: transparant !important;
+}
+.carousel-img {
+  display: block;
+  width: 300px;
+  height: 200px;
+  //border-radius: 5px;
+}
+/* cell number */
+.carousel-cell:before {
+  display: block;
+  text-align: center;
+  line-height: 200px;
+  font-size: 80px;
+}
+/* button style */
+.flickity-prev-next-button{
+	background: transparant;
+}
+.flickity-next-button{
+	background: transparant;
+}
+/* position dots up a bit */
+.flickity-page-dots {
+  bottom: -22px;
+}
+/* dots are lines */
+.flickity-page-dots .dot {
+  height: 0px;
+  width: 0px;
+  margin: 0;
+  border-radius: 0;
 }
 /*navbar css*/
 body {
@@ -533,30 +585,7 @@ body {
     width: 100% !important;
     text-overflow: ellipsis !important;
 }
-input{
-    padding: 1px 0px;
-    -webkit-appearance: textfield;
-    background-color: white;
-    -webkit-rtl-ordering: logical;
-    user-select: text;
-    cursor: auto;
-    padding: 1px;
-    border-width: 2px;
-    border-style: inset;
-    border-color: initial;
-    border-image: initial;
-    text-rendering: auto;
-    color: initial;
-    letter-spacing: normal;
-    word-spacing: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    display: inline-block;
-    text-align: start;
-    margin: 0em;
-    font: 13.3333px Arial;
-}
+
 .main-nav-filter-element-9{
     position: absolute !important;
     left: 0px !important;
@@ -1272,11 +1301,11 @@ li div:hover {
 
 }
 .row22 {
-   border:0.5px solid #bbb;
-    margin-left: -13%;
-   
-        width: 44%;
-        height:150%;
+    border: 0.5px solid #bbb;
+    margin-left: 27%;
+    margin-top: 3%;
+    width: 44%;
+    height: 150%;
     float: left;
 }
 .row33 {
@@ -1289,7 +1318,7 @@ li div:hover {
     box-sizing: border-box;
     color: gray;
 }
-textarea {
+.cho_textarea {
     vertical-align: top;
     height: 5em;
     resize: vertical;

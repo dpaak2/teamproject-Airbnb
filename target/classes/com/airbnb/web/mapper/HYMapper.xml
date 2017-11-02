@@ -9,21 +9,27 @@
       <result property="price" column="price"/>      
       <result property="residenceName" column="residence_name"/>      
    </resultMap>
-    <insert id="insert" parameterType="com.airbnb.web.command.Command">
+    <insert id="insertBoard" parameterType="com.airbnb.web.domain.Board">
+		INSERT INTO Board (
+		   board_seq
+		  ,board_content
+		  ,board_regdate
+		  ,meember_id		  
+		) VALUES (#{dir},#{action},#{column})
+	</insert>
+	   <insert id="insertReviewBoard" parameterType="com.airbnb.web.domain.Board">
 		INSERT INTO ReviewBoard (
-		
 		   board_seq
 		  ,review_star
 		  ,host_serial
-		) VALUES (#{dir},#{action},#{column}
-			
-		)
+		) VALUES (#{dir},#{action},#{column})
 	</insert>
+	
 
 	<select id="selectList" parameterType="com.airbnb.web.command.Command" resultMap="ResiMap">
 		SELECT host_serial, info_img,price,residence_name FROM Residence
 	  <if test="action != null">
-		    WHERE addr like '%${action}%'
+		    WHERE addr OR residence_name like '%${action}%'
 	</if> 
 	</select>
 

@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.airbnb.web.command.Command;
 import com.airbnb.web.command.ResultMap;
+import com.airbnb.web.domain.Board;
 import com.airbnb.web.domain.Residence;
+import com.airbnb.web.domain.ReviewBoard;
 import com.airbnb.web.mapper.HYMapper;
 import com.airbnb.web.service.IGetService;
 import com.airbnb.web.service.IListService;
@@ -30,6 +32,8 @@ public class HYController {
 	@Autowired Command cmd;
 	@Autowired HYMapper mapper;
 	@Autowired Residence residence;
+	@Autowired Board brd;
+	@Autowired ReviewBoard rvd;
 	@Autowired TransactionService tx;
 	@RequestMapping("/put/listhostels")
 	public @ResponseBody List<?> listHostels(){
@@ -71,17 +75,15 @@ public class HYController {
 		System.out.println("넘어온 리뷰 별점::"+cmdPo.getAction());
 		System.out.println("넘어온 리뷰 콘텐츠::"+cmdPo.getColumn());
 		System.out.println("넘어온 리뷰 seq::"+cmdPo.getDir());
-		cmd.setAction(cmdPo.getAction());
-		cmd.setColumn(cmdPo.getColumn());
-		cmd.setDir(cmdPo.getDir());
+		brd.setBoardSeq(null);
+		brd.setContents(null);
 		new IPostService() {
 			@Override
 			public void execute(Object o) {
 				mapper.insert(cmd);
 				return;
 			}
-		}.execute(null);;
-		
+		}.execute(null);
 	}
 	
 }

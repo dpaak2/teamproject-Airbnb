@@ -3,7 +3,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
 import com.airbnb.web.command.Command;
 import com.airbnb.web.command.ResultMap;
 import com.airbnb.web.domain.Board;
@@ -22,9 +20,9 @@ import com.airbnb.web.service.IDeleteService;
 import com.airbnb.web.service.IGetService;
 import com.airbnb.web.service.IListService;
 import com.airbnb.web.service.TransactionService;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
 
 @RestController
 public class JWController {
@@ -114,6 +112,20 @@ public class JWController {
 				
 				System.out.println(map.get("combobox"));
 				break;
+			case "pivot":
+				/*Gson gson = new Gson();
+				cmd.setDir(cate);
+				
+				String gsonData = gson.toJson(new IListService() {
+					@Override
+					public List<?> execute(Object o) {
+						return mapper.chartList(cmd);
+					}
+				}.execute(cmd));
+				
+				System.out.println("pivot: "+gsonData);*/
+				//map.put("pivot", gsonData);
+				break;
 		}
 		
 		map.put("result", "success");
@@ -159,7 +171,7 @@ public class JWController {
 						return mapper.chartList(cmd);
 					}
 				}.execute(cmd);
-
+				
 				for(int i=0; i<arrColumn.size();i++) {	
 					jOb1 = new JSONObject();
 					jOb2 = new JSONObject();
@@ -171,6 +183,8 @@ public class JWController {
 					String temp2= (arrColumn.get(i).getLyearSales()==null)?"0":arrColumn.get(i).getLyearSales();
 					String temp3= (arrColumn.get(i).getTyearSales()==null)?"0":arrColumn.get(i).getTyearSales();
 					
+					System.out.println("Column: "+arrColumn.get(i).getBlyearSales()+"/"+temp1+" || "+arrColumn.get(i).getLyearSales()+"/"+temp2+" || "+arrColumn.get(i).getTyearSales()+"/"+temp3);
+						
 					jOb1.put("v", arrColumn.get(i).getColMonth()+"월");
 					jOb2.put("v", Integer.parseInt(temp1));
 					jOb3.put("v", Integer.parseInt(temp2));
@@ -211,6 +225,9 @@ public class JWController {
 					rowArr = new JSONArray();
 					
 					String temp= (arrline.get(i).getColCount()==null)?"0":arrline.get(i).getColCount();
+					
+					System.out.println("line: "+arrline.get(i).getColYear()+"/"+temp);
+					
 					jOb1.put("v", String.valueOf(arrline.get(i).getColYear()));
 					jOb2.put("v", Integer.parseInt(temp));
 					rowArr.add(jOb1);
@@ -255,6 +272,8 @@ public class JWController {
 					rowArr = new JSONArray();
 					
 					String temp= (arrgeo.get(i).getColCount()==null)?"0":arrgeo.get(i).getColCount();
+					System.out.println("geo: "+arrgeo.get(i).getColCount()+"/"+temp);
+					
 					jOb1.put("v", reginMap.get(arrgeo.get(i).getColArea()));
 					jOb1.put("f", arrgeo.get(i).getColArea());
 					jOb2.put("v", Integer.parseInt(temp));
@@ -273,6 +292,9 @@ public class JWController {
 		map.put("result", "success");
 		return data;
 	}
+	
+	
+	
 	
 	
 	@RequestMapping(value="/jw/get/{cate}", method=RequestMethod.POST, consumes="application/json")
