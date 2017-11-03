@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.airbnb.web.command.Command;
 import com.airbnb.web.command.ResultMap;
 import com.airbnb.web.domain.Board;
+import com.airbnb.web.domain.Reservation;
+import com.airbnb.web.mapper.HKMapper;
 import com.airbnb.web.mapper.JWMapper;
 import com.airbnb.web.service.IDeleteService;
 import com.airbnb.web.service.IGetService;
@@ -112,25 +115,52 @@ public class JWController {
 				
 				System.out.println(map.get("combobox"));
 				break;
-			case "pivot":
-				/*Gson gson = new Gson();
-				cmd.setDir(cate);
-				
-				String gsonData = gson.toJson(new IListService() {
-					@Override
-					public List<?> execute(Object o) {
-						return mapper.chartList(cmd);
-					}
-				}.execute(cmd));
-				
-				System.out.println("pivot: "+gsonData);*/
-				//map.put("pivot", gsonData);
-				break;
+			
 		}
 		
 		map.put("result", "success");
 		return map;
 	}
+	
+	
+	@RequestMapping("/jw/rev/{cate}/{param1}/{param2}/{param3}")
+	public @ResponseBody Map<?, ?> revList (@PathVariable String cate, @PathVariable String param1, @PathVariable String param2, @PathVariable String param3){
+		logger.info("JWController 진입: rev :"+ cate + " / " + param1 + " / " + param2 + " / " + param3);
+		Map<String, Object> map = new HashMap<>();
+
+		switch(cate) {
+			case "rsvList":
+				cmd.setDir(cate);
+				cmd.setSearch(param1+"@"+param2+"."+param3);
+				
+				map.put("list", new IListService() {
+					@Override
+					public List<?> execute(Object o) {
+						return mapper.selectList(cmd);
+					}
+				}.execute(cmd));
+				
+				System.out.println(map.get("list"));
+				break;
+			case "hresiList":
+				cmd.setDir(cate);
+				cmd.setSearch(param1+"@"+param2+"."+param3);
+				System.out.println("member_id"+cmd.getSearch());
+				map.put("list", new IListService() {
+					@Override
+					public List<?> execute(Object o) {
+						return mapper.selectList(cmd);
+					}
+				}.execute(cmd));
+				
+				System.out.println(map.get("list"));
+				break;
+		}
+		
+		
+		map.put("result", "success");
+		return map;
+	};
 	
 	
 	@RequestMapping("/jw/list/chart/{cate}")
@@ -345,7 +375,6 @@ public class JWController {
 		return map;
 	}
 	
-	
 	@RequestMapping(value="/jw/delete/{cate}", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?, ?> delete(@RequestBody Board board, @PathVariable String cate){
 		logger.info("JWController 진입: delete : "+cate);
@@ -378,9 +407,27 @@ public class JWController {
 						map.put("result", "success");
 					}
 				}.execute(cmd);
-
 				break;
 		}
+		return map;
+	}
+	
+	@RequestMapping(value="/jw/rsv/delete/rsvDel", method=RequestMethod.POST, consumes="application/json")
+	public @ResponseBody Map<?, ?> delete(@RequestBody Reservation rsv){
+		logger.info("JWController 진입: reservation delete : ");
+		Map<String, Object> map = new HashMap<>();
+		
+		cmd.setDir("reservation");
+		cmd.setSearch(rsv.getRsvSeq());
+		System.out.println("reservation: "+cmd.getDir()+"/"+cmd.getSearch());
+		
+		new IDeleteService() {
+			@Override
+			public void execute(Object o) {
+				mapper.delete(cmd);
+				map.put("result", "success");
+			}
+		}.execute(cmd);
 		return map;
 	}
 }

@@ -98,14 +98,12 @@ chobongki.index=(()=>{
                                 contentType : 'application/json',
                                 success : d=>{
                                               alert('가입성공 성공 !!');
-                                            //  app.common.init(ctx);
-                                             app.main.init();
+                                             app.common.init(ctx);
                                 },
                                 error : (x,s,m)=>{
                                   
                                    app.common.init(ctx);
-                                   
-                   }
+                       }
                   });
                                 
                    }}}}                         
@@ -154,8 +152,7 @@ chobongki.index=(()=>{
                               sessionStorage.setItem('spassword',d.list.memberPassword);
                                app.common.init(ctx);                                                                                               
                             }        
-                                      
-                }
+                       }
                 },
                 error : (x,s,m)=>{
                     alert('아이디 비밀번호가 일치하지않습니다.');
@@ -244,7 +241,7 @@ chobongki.profile=(e=>{
             $('#airbnbText').remove();
             $('#bk_test').empty();
             $('#bk_test').html(jw.resvBoard.list(ctx));
-           $('#footer').html(main.footer()).css({'margin-top': '10%'});
+            $('#footer').html(main.footer()).css({'margin-top': '10%'});
         });
          
          $('#btnprofile').click(()=>{
@@ -265,8 +262,11 @@ chobongki.profile=(e=>{
             
            $('#hkgogo').click(()=>{
                 alert('숙소등록현황')
-                //
-                //
+                $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+                $('#airbnbText').remove();
+                $('#bk_test').empty();
+                $('#bk_test').html(jw.resiHost.list(ctx));
+                $('#footer').html(main.footer()).css({'margin-top': '10%'});
                 
              });
            
@@ -307,7 +307,7 @@ chobongki.profile=(e=>{
                  url :ctx+'/get/update', 
                 method : 'POST',               
                 data  : JSON.stringify({
-                   'memberId' :$memberid,
+                      'memberId' :$memberid,
                       'name'  :$lastname,
                       'birthdate' : $firstname
                 }), 

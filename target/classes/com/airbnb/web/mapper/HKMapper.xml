@@ -74,13 +74,15 @@
 		<if test="action != null">
          <choose>
             <when test="action == 'revList'">
-                SELECT b.board_seq, b.board_content, b.board_regdate, b.member_id, rb.host_serial, 
-					(SELECT ROUND(AVG(review_star),1) as revavg 
-					FROM reviewboard 
-					GROUP BY host_serial) AS rev_avg
-				FROM board b 
-				JOIN reviewboard rb ON b.board_seq = rb.board_seq 
-				WHERE rb.host_serial LIKE #{search}
+            SELECT b.board_seq, b.board_content, b.board_regdate, b.member_id, rb.host_serial, 
+               (SELECT ROUND(AVG(review_star),1) as revavg 
+                FROM reviewboard 
+                WHERE host_serial LIKE #{search}
+                GROUP BY host_serial) AS rev_avg
+            FROM board b 
+            JOIN reviewboard rb ON b.board_seq = rb.board_seq 
+            WHERE rb.host_serial LIKE #{search}
+            
             </when>
             <when test="action == 'revsearch'">
 	            SELECT * 

@@ -37,6 +37,7 @@ public class HKController {
 				return mapper.selectOne(cmd);
 			}
 		}.execute(null));
+		
 		//ResultMap rm = (ResultMap) map.get("detail");
 		return map;
 		
@@ -57,6 +58,7 @@ public class HKController {
 				countService = (x)->{
 					return mapper.count(cmd);
 				};
+				System.out.println("revieList 결과 ::"+listService.execute(cmd));
 				map.put("revList", listService.execute(cmd));
 				map.put("count", countService.execute(cmd));
 				

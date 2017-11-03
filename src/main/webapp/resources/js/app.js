@@ -230,11 +230,6 @@ app.main=(()=>{
 		    
 			/* jw-footer */
 			$('#container').after(main.footer());
-			
-	         $('<option/>',{'value':'ko'}).appendTo($('#language-selector')).text('한국어');
-	         $('<option/>',{'value':'en'}).appendTo($('#language-selector')).text('English');
-	         $('<option/>',{'value':'krw'}).appendTo($('#currency-selector')).text('KRW');
-	         $('<option/>',{'value':'usd'}).appendTo($('#currency-selector')).text('USD');
 	         
 		});
 			
@@ -295,11 +290,13 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:90%;  height:200px
 	+'     background-image:url(https://a0.muscache.com/ac/pictures/d3811ff7-cc34-471b-8aee-b0d613db0052.jpg);'
 	+'     background-size: cover;">'
 	+'     </div>'
+	+'<a style="text-decoration: none;" title="미구현 기능입니다.">'
 	+'     <div id="textbox2" style="float:left; width:30%; height:100%; margin-top: 10%; margin-left:5%;">'
 	+'        <span style="font-size:17px; width: 100%">'
 	+'        트립'
 	+'        </span>'
 	+'     </div>'
+	+'</a>'
 	+'  </div>'
 	+'  <div id="box3" style="margin-left:20px; float:left; width:22%; height:50%;' 
 	+'     border: 1px solid #EAEAEA; box-shadow:3px 3px 8px #EAEAEA; display: inline-block;;">'
@@ -307,11 +304,13 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:90%;  height:200px
 	+'     background-image:url(https://a0.muscache.com/ac/pictures/da2d8e97-90b7-409f-94ac-5ab0327c289b.jpg);'
 	+'     background-size: cover;">'
 	+'     </div>'
+	+'<a style="text-decoration: none;" title="미구현 기능입니다.">'
 	+'     <div id="textbox3" style="float:left; width:30%; height:100%; margin-top: 10%; margin-left:5%;">'
 	+'        <span style="font-size:17px;">'
 	+'           음식'
 	+'        </span>'
 	+'     </div>'
+	+'</a>'
 	+'  </div>'
 	+' </div>'
 	+'</div>'
@@ -581,6 +580,11 @@ app.navbar=(function(){
 		    	$('#content').remove();
 		    	jw.common.init(ctx);
 		    });
+		    
+		    $('#mainLogobox').click(e=>{
+		    	sessionStorage.removeItem('searchCity');
+		    	app.common.init(ctx);
+		    }); 
 		});
 	};
 	return {init: init}
