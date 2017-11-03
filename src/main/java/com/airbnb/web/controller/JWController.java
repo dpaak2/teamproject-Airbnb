@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.airbnb.web.command.Command;
 import com.airbnb.web.command.ResultMap;
 import com.airbnb.web.domain.Board;
 import com.airbnb.web.domain.Reservation;
-import com.airbnb.web.mapper.HKMapper;
 import com.airbnb.web.mapper.JWMapper;
 import com.airbnb.web.service.IDeleteService;
 import com.airbnb.web.service.IGetService;
@@ -115,7 +115,6 @@ public class JWController {
 				
 				System.out.println(map.get("combobox"));
 				break;
-			
 		}
 		
 		map.put("result", "success");
@@ -145,7 +144,7 @@ public class JWController {
 			case "hresiList":
 				cmd.setDir(cate);
 				cmd.setSearch(param1+"@"+param2+"."+param3);
-				System.out.println("member_id"+cmd.getSearch());
+				
 				map.put("list", new IListService() {
 					@Override
 					public List<?> execute(Object o) {
@@ -198,7 +197,7 @@ public class JWController {
 				ArrayList<ResultMap> arrColumn = (ArrayList<ResultMap>) new IListService() {
 					@Override
 					public List<?> execute(Object o) {
-						return mapper.chartList(cmd);
+						return mapper.chartCol(cmd);
 					}
 				}.execute(cmd);
 				
@@ -245,7 +244,7 @@ public class JWController {
 				ArrayList<ResultMap> arrline = (ArrayList<ResultMap>) new IListService() {
 					@Override
 					public List<?> execute(Object o) {
-						return mapper.chartList(cmd);
+						return mapper.chartLine(cmd);
 					}
 				}.execute(cmd);
 				
@@ -292,7 +291,7 @@ public class JWController {
 				ArrayList<ResultMap> arrgeo = (ArrayList<ResultMap>) new IListService() {
 					@Override
 					public List<?> execute(Object o) {
-						return mapper.chartList(cmd);
+						return mapper.chartgeo(cmd);
 					}
 				}.execute(cmd);
 				
@@ -323,30 +322,48 @@ public class JWController {
 		return data;
 	}
 	
-	
-	
-	
-	
 	@RequestMapping(value="/jw/get/{cate}", method=RequestMethod.POST, consumes="application/json")
 	public @ResponseBody Map<?, ?> get(@RequestBody Board board, @PathVariable String cate){
 		logger.info("JWController 진입: getDetail : "+cate);
 		Map<String, Object> map = new HashMap<>();
 		
-		cmd.setColumn(board.getTitle());
-		cmd.setSearch(board.getBoardSeq());
-		cmd.setDir(cate);
-		System.out.println(cmd.getColumn()+"/"+cmd.getSearch()+"/"+cmd.getDir());
+		switch(cate) {
+			case "board":
+				cmd.setColumn(board.getTitle());
+				cmd.setSearch(board.getBoardSeq());
+				cmd.setDir(cate);
+				System.out.println(cmd.getColumn()+"/"+cmd.getSearch()+"/"+cmd.getDir());
+	
+				map.put("detail", new IGetService() {
+					@Override
+					public Object execute(Object o) {
+						return mapper.selectOne(cmd);
+					}
+				}.execute(cmd));
+				
+				System.out.println(map.get("detail"));
+				break;
+		}
 		
-		
-		map.put("detail", new IGetService() {
+		map.put("result", "success");
+		return map;
+	}
+	
+	@RequestMapping("/jw/get/dash")
+	public @ResponseBody Map<?, ?> getDashBoard(){
+		logger.info("JWController 진입: getDashBoard");
+		Map<String, Object> map = new HashMap<>();
+
+		cmd.setDir("dashboard");
+		map.put("data", new IGetService() {
 			@Override
 			public Object execute(Object o) {
 				return mapper.selectOne(cmd);
 			}
 		}.execute(cmd));
-		map.put("result", "success");
-		System.out.println(map.get("detail"));
 		
+		System.out.println("dashboard: "+map.get("data"));	
+		map.put("result", "success");
 		return map;
 	}
 	

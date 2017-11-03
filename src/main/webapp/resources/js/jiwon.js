@@ -73,40 +73,15 @@ jw.stats = (()=>{
 		//chart 호출
 		jw.chart.geoChart();
 		
-		//pivot grid
-		var url = ctx + '/jw/list/pivot/x/x';
-		$.getJSON(url, d=>{
-			$("#stat_div_pivot").pivotUI(
-					[
-						{"colYear":"2017","colMonth":"10","colArea":"서울특별시","colCount":"1","colPrice":"157329"},
-						{"colYear":"2017","colMonth":"10","colArea":"서울특별시","colCount":"2","colPrice":"358500"},
-						{"colYear":"2017","colMonth":"10","colArea":"서울특별시","colCount":"2","colPrice":"191652"},
-						{"colYear":"2017","colMonth":"10","colArea":"부산광역시","colCount":"1","colPrice":"202926"},
-						{"colYear":"2017","colMonth":"09","colArea":"부산광역시","colCount":"1","colPrice":"102926"},
-						{"colYear":"2017","colMonth":"09","colArea":"부산광역시","colCount":"1","colPrice":"20526"},
-						{"colYear":"2017","colMonth":"09","colArea":"서울특별시","colCount":"1","colPrice":"202926"},
-						{"colYear":"2016","colMonth":"08","colArea":"전라북도","colCount":"1","colPrice":"102000"},
-						{"colYear":"2016","colMonth":"08","colArea":"경상북도","colCount":"1","colPrice":"107926"},
-						{"colYear":"2016","colMonth":"11","colArea":"서울특별시","colCount":"1","colPrice":"301926"},
-						{"colYear":"2016","colMonth":"11","colArea":"전라북도","colCount":"1","colPrice":"270926"},
-						{"colYear":"2016","colMonth":"12","colArea":"제주특별자치도","colCount":"1","colPrice":"202926"},
-						{"colYear":"2016","colMonth":"12","colArea":"서울특별시","colCount":"1","colPrice":"202926"},
-						{"colYear":"2016","colMonth":"12","colArea":"서울특별시","colCount":"1","colPrice":"102026"},
-						{"colYear":"2015","colMonth":"03","colArea":"서울특별시","colCount":"1","colPrice":"92926"},
-						{"colYear":"2015","colMonth":"03","colArea":"서울특별시","colCount":"1","colPrice":"72926"},
-						{"colYear":"2015","colMonth":"11","colArea":"전라북도","colCount":"1","colPrice":"60226"},
-						{"colYear":"2015","colMonth":"11","colArea":"제주특별자치도","colCount":"1","colPrice":"202926"},
-						{"colYear":"2015","colMonth":"11","colArea":"제주특별자치도","colCount":"1","colPrice":"202926"}
-					],
-					{
-		                rows: ["colArea"],
-		                cols: ["colYear","colMonth"],
-		                vals: ["colPrice"],
-		                aggregatorName: "Sum as Fraction of Total"
-		            }
-		        );
+		//split data
+		$.getJSON(ctx+'/jw/get/dash', d=>{
+			alert(d.data);
+			
+			$('#stat_span_memCnt').text(d.data.rowNum);
+			$('#stat_span_hostCnt').text(d.data.totalCnt);
+			$('#stat_span_dailySale').text(d.data.sale);
+			$('#stat_span_yearSale').text(d.data.limitNo);
 		});
-		
 	}; 
 	
 	return { init : init };
@@ -124,35 +99,35 @@ jw.chart = (()=>{
 	};
 	
 	var geoChart = ()=>{
-		init();
-		google.charts.load('current', {'packages':['geochart'], 'mapsApiKey': 'AIzaSyD-9tSrke72PouQMnMX-a7eZSW0jkFMBWY'});
-		google.charts.setOnLoadCallback(drawRegionsMap);
-	
-		function drawRegionsMap() {
-			console.log(1);
-			var url = ctx+'/jw/list/chart/geo';
-			$.getJSON(url, d=>{
-				var data = new google.visualization.DataTable(d);
-		  
-				var options = {
-		        	displayMode: 'regions',
-		        	enableRegionInteractivity: 'true',
-		        	resolution: 'provinces',
-		        	region : 'KR',
-		        	displayMode: 'markers',
-		        	sizeAxis: { minValue: 0 },
-	        		colorAxis : {colors: ['#3182BD','#9ECAE1','#DEEBF7']},
-	        		keepAspectRatio: true
-		        };
+	      init();
+	      google.charts.load('current', {'packages':['geochart'], 'mapsApiKey': 'AIzaSyB2po9awT3gcPJdB_pK8XKHVZitS2zg-1U'});
+	      google.charts.setOnLoadCallback(drawRegionsMap);
+	   
+	      function drawRegionsMap() {
+	         console.log(1);
+	         var url = ctx+'/jw/list/chart/geo';
+	         $.getJSON(url, d=>{
+	            var data = new google.visualization.DataTable(d);
+	        
+	            var options = {
+	                 displayMode: 'regions',
+	                 enableRegionInteractivity: 'true',
+	                 resolution: 'provinces',
+	                 region : 'KR',
+	                 displayMode: 'markers',
+	                 sizeAxis: { minValue: 1 },
+	                 colorAxis : {colors: ['#3182BD','#9ECAE1','#DEEBF7']},
+	                 keepAspectRatio: true
+	              };
 
-		        var chart = new google.visualization.GeoChart($('#stat_Rtop_chart')[0]);
-		        chart.draw(data, options);
-			});
-	    }
-		
-		//lineChart 호출
-	    lineChart();
-	};
+	              var chart = new google.visualization.GeoChart($('#stat_Rtop_chart')[0]);
+	              chart.draw(data, options);
+	         });
+	       }
+	      
+	      //lineChart 호출
+	       lineChart();
+	   };
 	
 	var lineChart = ()=>{
 		google.charts.load('current', {'packages':['corechart']});
@@ -197,7 +172,7 @@ jw.chart = (()=>{
 		                legend: { position: 'bottom' },
 		                chartArea: {left: 30, top: 10, width: '100%', height: '70%'},
 		                hAxis: {textStyle: {fontSize: 15}},
-		                colors: ['#7570b3', '#008489', '#FF5A5F']
+		                colors: ['#01B8AA', '#374649', '#FF5A5F']
 		        };
 				
 				var chart = new google.charts.Bar(document.getElementById('stat_div_column'));
@@ -575,24 +550,45 @@ var admIndex = {
 /*******************************
  * 통계 UI
  *******************************/
-var statsUI = {
+ var statsUI = {
 	frame : ()=>{
 		return '<div style="width:80%; margin:auto;">'
 				+ '		<div style="display:inline-block; width:100%;">'
 				+ '		<div style="float:left; width:55%">'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 매출실적<span></div>'
+				+ '					<div style="float:left"><span class="jw_header_title">> Airbnb 현황<span></div>'
 				+ '					<div id="stat_dvbtn_1" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_div_column" class="jw_div_border" style="height:240px;">그래프</div>'
+				+ '				<div>'
+				+ '					<div class="jw_div_splitborder" style="margin-right:7px;">'
+				+ '						<div class="jw_div_split_img"><span class="glyphicon glyphicon-user" style="font-size:70px; color:#01B8AA" /></div>'
+				+ '						<div class="jw_div_split_num"><span id="stat_span_memCnt" style="color:#01B8AA;"></span></div>'
+				+ '						<div class="jw_div_split_title" style="background-color:#01B8AA;"><span>가입 회원수</span></div>'
+				+ '					</div>'
+				+ '					<div class="jw_div_splitborder" style="margin-right:7px;">'
+				+ '						<div class="jw_div_split_img"><span class="glyphicon glyphicon-home" style="font-size:70px; color:#374649" /></div>'
+				+ '						<div class="jw_div_split_num"><span id="stat_span_hostCnt" style="color:#374649;"></span></div>'
+				+ '						<div class="jw_div_split_title" style="background-color:#374649;"><span>호스팅 회원수</span></div>'
+				+ '					</div>'
+				+ '					<div class="jw_div_splitborder" style="margin-right:7px;">'
+				+ '						<div class="jw_div_split_img"><span class="glyphicon glyphicon-usd" style="font-size:70px; color:#FF5A5F" /></div>'
+				+ '						<div class="jw_div_split_num"><span id="stat_span_dailySale" style="color:#FF5A5F;"></span></div>'
+				+ '						<div class="jw_div_split_title" style="background-color:#FF5A5F;"><span>일 매출실적</span></div>'
+				+ '					</div>'
+				+ '					<div class="jw_div_splitborder">'
+				+ '						<div class="jw_div_split_img"><span class="	glyphicon glyphicon-menu-hamburger" style="font-size:70px; color:#F2C80F" /></div>'
+				+ '						<div class="jw_div_split_num"><span id="stat_span_yearSale" style="color:#F2C80F;"></span></div>'
+				+ '						<div class="jw_div_split_title" style="background-color:#F2C80F;"><span>당년 매출실적</span></div>'
+				+ '					</div>'
+				+ '				</div>'
 				+ '			</div>'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
-				+ '					<div style="float:left"><span class="jw_header_title">> 지역별 연간 매출 비율<span></div>'
+				+ '					<div style="float:left"><span class="jw_header_title">> 매출실적<span></div>'
 				+ '					<div id="stat_dvbtn_3" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_div_pivot" class="jw_div_border" style="height:327px;">리스트</div>'				
+				+ '				<div id="stat_div_column" class="jw_div_border" style="height:317px;"></div>'				
 				+ '			</div>'
 				+ '		</div>'
 				+ '		<div style="float:right; width:44%">'
@@ -601,14 +597,14 @@ var statsUI = {
 				+ '					<div style="float:left"><span class="jw_header_title">> 지역별 숙소 분포도<span></div>'
 				+ '					<div id="stat_dvbtn_4" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_Rtop_chart" class="jw_div_border" style="height:355px;">그래프</div>'
+				+ '				<div id="stat_Rtop_chart" class="jw_div_border" style="height:355px;"></div>'
 				+ '			</div>'
 				+ '			<div>'
 				+ '				<div class="jw_stat_title">'
 				+ '					<div style="float:left"><span class="jw_header_title">> 연간 사용자 가입 추이<span></div>'
 				+ '					<div id="stat_dvbtn_5" style="float:right"></div>'
 				+ '				</div>'
-				+ '				<div id="stat_div_line" class="jw_div_border" style="height:212px;">그리드</div>'
+				+ '				<div id="stat_div_line" class="jw_div_border" style="height:212px;"></div>'
 				+ '			</div>'
 				+ '		</div>'
 				+ '		</div>'
@@ -636,6 +632,8 @@ var accomUI = {
 				+ '</div>'
 	}
 }
+
+
 
 /*******************************
  * 게시판 UI
@@ -680,23 +678,6 @@ var boardUI = {
 		+ '     </ul>'
 		+ ' </nav></div>'; 
 	},
-	
-	/* backUp
-	 * pagebar : ()=>{
-		return '<div><nav aria-label="Page navigation" style="width:314px; margin:auto;">'
-			+ '      <ul id="page_form" class="pagination">'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;"><span class="glyphicon glyphicon-fast-backward" aria-hidden="true"></span></a></li>'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;" aria-label="Previous"><span aria-hidden="true">&laquo;</span></a></li>'
-			+ '         <li><a href="#" style="color:#D9534F;">1</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">2</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">3</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">4</a></li>'
-			+ '         <li><a onclick="" style="color:#D9534F;">5</a></li>'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;" aria-label="Next"><span aria-hidden="true">&raquo;</span></a></li>'
-			+ '         <li><a onclick="" href="#" style="color:#D9534F;"><span class="glyphicon glyphicon-fast-forward" aria-hidden="true"></span></a></li>'
-			+ '     </ul>'
-			+ ' </nav></div>'; 
-	},*/
 	
 	detail : ()=>{
 		return '<div style="width:80%; margin:auto">'
@@ -840,6 +821,14 @@ jw.resvBoard = (function(){
    return { list : list };
 })();
 
+
+/*숙소등록현황 -> 호스트 디테일 보기*/
+jw.goDetail={
+		temp : function(x){
+		  $.getJSON(hee.rev.init(x));
+		}
+};
+
 /*******************************
  * 호스트 숙소 list
  *******************************/
@@ -864,11 +853,13 @@ jw.resiHost = (()=>{
         
         var url = ctx + '/jw/rev/hresiList/'+_param1+'/'+_param2+'/'+_param3;  
         $.getJSON(url, d=>{
+        	alert(d);
         	var tr="";
+        	//jw.goDetail.temp(\''+hostSerial+'\')
      	   	$.each(d.list, (i,j)=>{
      	   		tr += '<tr style="height:25px; text-align:center;">'
      	   			+ '<td>'+(i+1)+'</td>'
- 	   				+ '<td><a onClick="'+j.hostSerial+'">'+j.residenceName+'</a></td>'
+ 	   				+ '<td><a onclick="">'+j.residenceName+'</a></td>'
  	   				+ '<td>'+j.zipcode+")"+j.addr+'</td>'
  	   				+ '<td>'+j.price+'원</td>'
  	   				+ '<td>'+j.limitNo+'명</td>'

@@ -1,4 +1,4 @@
-var yongju=yongju || {};
+/*var yongju=yongju || {};
 yongju.common=(()=>{
    var init=(ctx)=>{
       onCreate();
@@ -32,7 +32,7 @@ yongju.index=(()=>{
         .appendTo('#yj-container')
         .attr('id','yj-content')
         .css({'width':'65%','float': 'left','margin-top':'4%','margin-left':'1.1%'});
-        /*google map*/
+        google map
         $('<div></div>')
         .appendTo('#yj-container')
         .attr('id','gmap')
@@ -86,11 +86,11 @@ yongju.index=(()=>{
                                 +'<span >'+j.price+'</span></br>'
                                 +'<span > '+j.residence_name+' </span>'
                                 +'<span > 침대 3개</span></br>'
-                               /* +'<span><span class="glyphicon glyphicon-star" style="color: #006666"></span>'
+                                +'<span><span class="glyphicon glyphicon-star" style="color: #006666"></span>'
                              +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
                              +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
                              +'<span class="glyphicon glyphicon-star" style="color: #006666"></span>'
-                             +'<span class="glyphicon glyphicon-star" style="color: #006666"></span></span>'*/
+                             +'<span class="glyphicon glyphicon-star" style="color: #006666"></span></span>'
                                 +'</div>';
                         });
                         $('#yj-content').append(row);
@@ -99,8 +99,8 @@ yongju.index=(()=>{
         }
      
         $('#gmap').load(ctx+'/gmap');
-       /* $('#gmap').after('<div/>').attr('id','mapSpace');
-        $('#mapSpace').css('height','800px');*/
+        $('#gmap').after('<div/>').attr('id','mapSpace');
+        $('#mapSpace').css('height','800px');
      
    };
    return {init:init};
@@ -109,9 +109,9 @@ yongju.test={
 		temp : function(x){
 		
 			alert(x+' click');
-		/*   $('#content').empty(); 
+		   $('#content').empty(); 
 		    $('#airbnbText').remove();
-		    	hee.common.init(ctx);*/
+		    	hee.common.init(ctx);
 		//  location.href= hee.rev.init(x);
 		  $.getJSON(hee.rev.init(x));
 			
@@ -128,4 +128,4 @@ yongju.session={
          return sessionStorage.getItem(x);
       }
 };
-var $$= function(x){return yongju.session.getPath(x);};
+var $$= function(x){return yongju.session.getPath(x);};*/

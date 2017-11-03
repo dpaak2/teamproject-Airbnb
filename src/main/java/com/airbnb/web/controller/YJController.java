@@ -1,4 +1,4 @@
-package com.airbnb.web.controller;
+/*package com.airbnb.web.controller;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,4 +28,4 @@ public class YJController {
       System.out.println("List 확인"+list);
       return list;
    }
-}
+}*/

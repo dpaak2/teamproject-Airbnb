@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!doctype html>
 <html lang="en">
@@ -25,7 +26,6 @@
 	   <script src="https://www.gstatic.com/charts/loader.js"></script>
 	   <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
 	   
-	  
   
 
 	   <script src="${path.js}/app.js"></script>

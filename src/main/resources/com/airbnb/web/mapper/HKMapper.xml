@@ -42,6 +42,7 @@
 		<result property="reviewStar" column="review_star"></result>		
 		<result property="contents" column="board_content"></result>		
 		<result property="regdate" column="board_regdate"></result>		
+		<result property="rownum" column="ROWNUM"></result>		
 	</resultMap>
 	
 	<insert id="insert"
@@ -59,7 +60,7 @@
 			            VALUES(#{view}, #{dir}, #{action}, #{column}, #{search}, #{startRow}, #{endRow}, #{page})
 		            </when>
 		            <when test="common == 'resiopt'">
-			            INSERT INTO resiopt
+			            INSERT INTO resiopt (wifi, bed_num, pet, essential_item, parking, bathroom_num, tv, washing_mac, Air_condi, kitchen, host_serial)
 			            VALUES(#{view}, #{dir}, #{action}, #{column}, #{search}, #{startRow}, #{endRow}, #{page}, #{pageNumber}, #{kitchen}, #{serial})
 		            </when>
 		         </choose>   
@@ -74,15 +75,14 @@
 		<if test="action != null">
          <choose>
             <when test="action == 'revList'">
-            SELECT b.board_seq, b.board_content, b.board_regdate, b.member_id, rb.host_serial, 
-               (SELECT ROUND(AVG(review_star),1) as revavg 
-                FROM reviewboard 
-                WHERE host_serial LIKE #{search}
-                GROUP BY host_serial) AS rev_avg
-            FROM board b 
-            JOIN reviewboard rb ON b.board_seq = rb.board_seq 
+               SELECT b.board_seq, b.board_content, b.board_regdate, b.member_id, rb.host_serial, 
+                   (SELECT TRUNCATE(review_star,0) as revavg 
+                    FROM reviewboard 
+                    WHERE host_serial LIKE #{search}
+                    GROUP BY host_serial) AS rev_avg
+	            FROM board b 
+	            JOIN reviewboard rb ON b.board_seq = rb.board_seq 
             WHERE rb.host_serial LIKE #{search}
-            
             </when>
             <when test="action == 'revsearch'">
 	            SELECT * 
@@ -93,6 +93,13 @@
 	            SELECT DATE_FORMAT(checkin,'%Y-%m-%d') AS disable, solddays 
 	            FROM reservation 
 	            WHERE host_serial LIKE #{search}
+            </when>
+            <when test="action == 'allRegSelect'">
+	            SELECT *
+				FROM (SELECT @NO := @NO + 1 AS ROWNUM, A.*
+					FROM(SELECT * FROM residence WHERE addr LIKE '%${search}%') A, ( SELECT @NO := 0 ) B 
+				)C
+				WHERE C.ROWNUM BETWEEN '${startRow}' AND '${endRow}'
             </when>
          </choose>
       </if>      
@@ -108,10 +115,19 @@
 	
 	<select id="count"
 		resultType="string"
-		parameterType="com.airbnb.web.command.Command">  
-		SELECT COUNT(*) 
-		FROM board b JOIN reviewboard rb ON b.board_seq = rb.board_seq 
-		WHERE rb.host_serial LIKE #{search};
+		parameterType="com.airbnb.web.command.Command">
+		<choose>
+            <when test="action == 'revList'">  
+				SELECT COUNT(*) 
+				FROM board b JOIN reviewboard rb ON b.board_seq = rb.board_seq 
+				WHERE rb.host_serial LIKE #{search};
+			</when>
+			<when test="action == 'allRegSelect'">  
+				SELECT COUNT(*) 
+				FROM residence 
+				WHERE addr LIKE '%${search}%';
+			</when>
+		</choose>
 	</select>
 
 	<update id="update">

@@ -141,22 +141,23 @@ hy-h3{
 .search-div{
   font-size: 1em;
   width: 90%;
-  height: 65px;
+  height: 75px;
   border-radius: 4px;
   border: 1px solid #DADADA;
   box-shadow: 0 5px 30px rgba(156, 160, 171, 0.25);
 }
+
 .search-input{
   float:left;
   font-size: 1.3em;
   margin-top: 22px;
   margin-left: 10px;
-  width: 83%;
+  width: 50%;
   border: none;
   outline: none;
 }
 .search-btn{
-  margin-top: 7px;
+  margin-top: 13px;
   background-color: #FF5A5F;
   text-align: center;
   text-decoration: none;
@@ -167,7 +168,10 @@ hy-h3{
   width: 80px;
   height: 48px;
   border-radius: 4px;
+  float: right;
+  margin-right: 10px;
 }
+
 /* 주연이의 슬라이더 */
 .main-carousel {
   width: 80%;
@@ -818,6 +822,7 @@ content-box
     letter-spacing: 0px !important;
 } 
 
+
 /*****************************************/
 
 	
@@ -1047,11 +1052,28 @@ li {
 /**jiwon admin*/
 
 .jw_index_header {
-	display:inline-block; width:100%; border-bottom:1px solid #D5D5D5; height: 64px;
+	display:inline-block; width:100%; border-bottom:1px solid #D5D5D5; height: 64px; 
 }
 .jw_div_border {
 	border:1px solid #D5D5D5;
 }
+
+/*추가start*/
+.jw_div_splitborder {
+	float:left; height:250px; width:24.2%; border:1px solid #D5D5D5;
+}
+.jw_div_split_title{
+	height:50px; text-align:center; color:#FFF; padding-top:10px; font-size:15px; font-weight:bold;
+}
+.jw_div_split_img{
+	height:130px; text-align:center; padding-top:18px;
+}
+.jw_div_split_num{
+	height:70px; text-align:center; font-size:30px; font-weight:bold;
+}
+
+/*추가end*/
+
 .jw_header_title {
 	font-weight:bold; font-size:16px;
 }
@@ -1075,7 +1097,7 @@ li {
 /* ---------------------- */
 .jw_navbar-ul {
   	list-style: none;
-  	position: fixed;
+  	/* position: fixed; */
   	padding-top: 28.5px;
     padding-bottom: 12px;
 }
@@ -1089,10 +1111,10 @@ li {
   	display: block;
   	font-size: 15px;
   	font-weight: 700;
-  	color: #FBC02D; /*#008489*/
+  	color: #F2C80F;
 }
 .jw_navbar-ul>li>span:hover {
-	border-bottom:2px solid #FBC02D;
+	border-bottom:2px solid #F2C80F;
 }
 .jw_main-nav-logobox { display: table-cell !important;vertical-align: middle !important;}
 .jw_main-nav-logobox2 { display: table-cell !important;
@@ -1170,6 +1192,8 @@ li {
 	list-style-type: none;
     padding: 16px 0;
 }
+
+/**************************************************************************/
 
 /**************************************************************************/
 /*bongki css*/

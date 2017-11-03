@@ -1,7 +1,8 @@
 package com.airbnb.web.command;
 
+import lombok.Data;
 
-
+@Data
 
 public class ResultMap {
    /*common ResultMap*/
@@ -18,11 +19,19 @@ public class ResultMap {
 	private String hostSerial, memberId, residenceName, price, zipcode, detailImg, infoImg, resiContent, addr, limit;
 	private String wifi, bedNum, pet, essentialItem, parking, bathroomNum, tv, washingMac, airCondi, kitchen,
 	boardSeq, reviewStar, contents, regdate, rsvSeq, checkin, checkout, adult, teen, child, solddays, resPrice, disable;
+	private int rownum; 
+	
 	public String getName() {
 		return name;
 	}
 	public void setName(String name) {
 		this.name = name;
+	}
+	public int getRownum() {
+		return rownum;
+	}
+	public void setRownum(int rownum) {
+		this.rownum = rownum;
 	}
 	public String getBirthdate() {
 		return birthdate;

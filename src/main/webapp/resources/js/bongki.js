@@ -34,7 +34,6 @@ chobongki.index=(()=>{
           });
           $('#search').click(()=>{
               var $addemail=$('#addemail').val();
-                alert('이메일'+$addemail);
                 $.ajax({
                     url :ctx+'/get/search',
                     method : 'post',
@@ -118,8 +117,6 @@ chobongki.index=(()=>{
           });
           $('#loginDiv').click(e=>{
             e.preventDefault();
-               alert('로그인');
-         
           var $email=$('#useremail').val();
             var $pass=$('#userpass').val();
       
@@ -144,7 +141,6 @@ chobongki.index=(()=>{
                         alert('관리자로그인');
                         jw.common.init(ctx);
                         }else{
-                        alert('로그인 성공 !!');
                               sessionStorage.setItem('sname',d.list.name);
                               sessionStorage.setItem('smemberid',d.list.memberId);
                               sessionStorage.setItem('sregdate',d.list.regdate);
@@ -169,9 +165,7 @@ chobongki.index=(()=>{
 
 chobongki.profile=(e=>{
    var init=function(ctx){
-      alert('aaa');
       ctx=$$('x');
-      alert('ctx:'+ctx);
        $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
        $('#bkcontainer').html(cho.profile());
        $('#lastname').val(sessionStorage.getItem('sname').substring(1));
@@ -222,21 +216,20 @@ chobongki.profile=(e=>{
       
        
        $('#menu5').click(()=>{
-           alert('프로필수정')
              $('<div/>',{'id':'bkcontainer'}).appendTo('#content');
               
            chobongki.profile.init();
         });
       
        $('#hkgogo').click(()=>{
-            alert('숙소등록현황')
-            //
-            //
-            
-         });
+           $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
+           $('#airbnbText').remove();
+           $('#bk_test').empty();
+           $('#bk_test').html(jw.resiHost.list(ctx));
+           $('#footer').html(main.footer()).css({'margin-top': '10%'});
+        });
        
        $('#btnrev').click(()=>{
-           alert('예약보기');  
            $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
             $('#airbnbText').remove();
             $('#bk_test').empty();
@@ -245,11 +238,9 @@ chobongki.profile=(e=>{
         });
          
          $('#btnprofile').click(()=>{
-            alert('프로필 수정')
             $('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
           $('#airbnbText').remove();
           $('#bk_test').empty();
-          //$('#content').empty();
           $('#footer').html(main.footer()).css({'margin-top': '55%'});
             $('#bk_test').html(cho.profile2());
             //프로필2입력

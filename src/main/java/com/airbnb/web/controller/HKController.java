@@ -37,7 +37,6 @@ public class HKController {
 				return mapper.selectOne(cmd);
 			}
 		}.execute(null));
-		
 		//ResultMap rm = (ResultMap) map.get("detail");
 		return map;
 		
@@ -58,7 +57,6 @@ public class HKController {
 				countService = (x)->{
 					return mapper.count(cmd);
 				};
-				System.out.println("revieList 결과 ::"+listService.execute(cmd));
 				map.put("revList", listService.execute(cmd));
 				map.put("count", countService.execute(cmd));
 				
@@ -75,6 +73,49 @@ public class HKController {
 				};
 				map.put("disable", listService.execute(cmd));
 				System.out.println(map.get("disable"));
+				break;
+			case "allRegSelect":
+				//페이지네이션
+				int theNumberOfPage=0, startPage=0, endPage=0, startRow=0, endRow=0;
+				int pageSize=6;
+				int blockSize=3;
+				int pageNum=Integer.parseInt(cmd.getPage());
+				map.put("pageNum", pageNum);
+				System.out.println("pageNum "+pageNum);
+				
+				countService = (x)->{
+					return mapper.count(cmd);
+				};
+				map.put("count", countService.execute(cmd));
+				
+				int theNumberOfRows=Integer.parseInt((String) map.get("count"));
+				System.out.println("숙소 등록 갯수:::"+theNumberOfRows);
+				
+				theNumberOfPage = (theNumberOfRows%pageSize) == 0? theNumberOfRows/pageSize : theNumberOfRows/pageSize+1;
+				
+				map.put("totalPage", theNumberOfPage);
+				
+				startRow =(pageNum-1)*pageSize+1;
+				endRow = (pageNum*pageSize);
+				cmd.setStartRow(String.valueOf(startRow));
+				cmd.setEndRow(String.valueOf(endRow));
+				
+				startPage = pageNum - ((pageNum-1)%blockSize);
+				endPage = (startPage + blockSize-1 <= theNumberOfPage) ? startPage + blockSize-1 : theNumberOfPage;
+				map.put("startPage", startPage);
+				map.put("endPage", endPage);
+				
+				listService = (x)->{
+					return mapper.selectList(cmd);
+				};
+				System.out.println("startPage "+startRow);
+				System.out.println("endPage "+endRow);
+				map.put("allReg", listService.execute(cmd));
+				
+				
+				
+				System.out.println(map.get("allReg"));
+				System.out.println(map.get("totalPage"));
 				break;
 		};
 		

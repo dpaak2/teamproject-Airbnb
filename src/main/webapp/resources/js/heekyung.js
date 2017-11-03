@@ -89,11 +89,16 @@ hee.rev = (function(){
 					.css({'font-size': '15px','margin-right':'15px', 'color':'black'})
 					.appendTo($menubar);
 			});
-			
+			$('a').on('click', function(event) { 
+				if (this.hash !== "") { 
+				  event.preventDefault(); 
+				  var hash = this.hash; 
+				  $('html, body').animate({scrollTop: $(hash).offset().top}, 800, function(){window.location.hash = hash;}); 
+				}
+			}); 
 			//숙소 디테일 호출
 			hee.logic.revdata(hostSerialNum);
-			//구글맵
-			$('#rev_map').load(ctx+'/gmap');
+			
 			
 			compUI.iBtn('trans')
 				.val('이 설명을 한국어로 번역하기')
@@ -110,6 +115,7 @@ hee.rev = (function(){
 				.appendTo($searchBtn)
 				.click(e=>{
 					alert('후기 검색');
+					hee.logic.reviewSearch(hostSerialNum);
 				});
 			
 			//달력 시작
@@ -286,13 +292,15 @@ hee.rev = (function(){
 	        //리뷰보드&리뷰검색 호출
 			hee.logic.reviewBoard(hostSerialNum);
 			hee.logic.reviewSearch(hostSerialNum);
+			//구글맵
+			$('#rev_map').load(ctx+'/gmap');
 			
 		});
 		
 	};
 	var setContextView=function(){
 			$('#content').html(reservation.layout());
-			//$('body').html(reservation.layout());
+			
 	};
 	
 	
@@ -319,13 +327,10 @@ hee.logic=(function(){
 			data : JSON.stringify(x),
 			contentType : 'application/json',
 			success : d=>{
-				
 				var limit=d.detail.limit*1;
 				var ssesionPrice=d.detail.price*1;
 				sessionStorage.setItem('ssesionPrice', ssesionPrice);
-				sessionStorage.setItem('mapAddress',d.detail.addr);
-				alert('가져온 가격'+sessionStorage.getItem('ssesionPrice'));
-				
+				sessionStorage.setItem('mapAddress',d.detail.addr+',');
 				$('#resiName').html(d.detail.residenceName);
 				$('#host_id').html(d.detail.memberId);
 				$('#price').html(d.detail.price);
@@ -380,7 +385,6 @@ hee.logic=(function(){
 			contentType : 'application/json',
 			success : d=>{
 				limit=d.detail.limit*1;
-				alert("업다운의 넘어온 리미트 숫자"+limit);
 			},
 			error : (x,s,m)=>{
 				alert('에러 발생'+m);
@@ -500,8 +504,6 @@ hee.logic=(function(){
 	var datePic =(x)=>{
 		init();
 		var memId = sessionStorage.getItem('smemberid');
-		alert("넘어온 아이디 값"+memId);
-		
 		$('#modal_body').empty();
 		$('#modal_body').html(reservation.resModal());
 		
@@ -558,7 +560,7 @@ hee.logic=(function(){
 					$('#search').val('back')
 						.click(e=>{
 							$('#search').val('Go');
-							revDetail(x);
+							hee.logic.reviewBoard(x);
 						});
 					
 					var forTb;
@@ -647,7 +649,6 @@ var disable =(x)=>{
 hee.register = (function(){
 	var js, temp, ctx;
 	var init=function(hostSerialNum){
-		
 		js=$$('j');
 		ctx=$$('x');
 	    temp=js+'/template.js';
@@ -678,12 +679,12 @@ hee.register = (function(){
 			$registerCont.empty();
 			$registerCont.append(regForm.address());
 		
-			compUI.btn('nextBtn','nextBtn')
+			$nextBtnDiv.html(compUI.btn('nextBtn','nextBtn')
 				.text('다음')
 				.addClass('btn')
-				.css({'width': '30%','background-color':'#FF5A5F', 'border-color':'#FF5A5F', 'color':'white','height': '40px', 'font-size': '17px', 'font-weight': 'bold', 'float': 'right'})
-				.appendTo($nextBtnDiv)
-				.click(e=>{
+				.css({'width': '30%','background-color':'#FF5A5F', 'border-color':'#FF5A5F', 'color':'white','height': '40px', 'font-size': '17px', 'font-weight': 'bold', 'float': 'right'}));
+				
+				$('#nextBtn').click(e=>{
 					addr_si = $('#addr_si').val();
 					addr_gu = $('#addr_gu').val();
 					addr_doro = $('#addr_doro').val();
@@ -716,6 +717,7 @@ hee.register = (function(){
 									if(hee.valid.name_checker($('#info_name').val())==='yes'){
 										if(hee.valid.price_checker($('#info_price').val())==='yes'){
 											$registerCont.empty();
+											$('#register').css({'width':'35%','height':'750px'});
 											$registerCont.append(regForm.detail());
 											$title.html('숙소 옵션을 설정하세요.');
 											$progressBar.css({'width': '75%', 'background-color': '#00A699'});
@@ -766,7 +768,6 @@ hee.register = (function(){
 																.css({'width': '100%', 'height': '50px', 'background-color':'#FF5A5F', 'border-color':'#FF5A5F', 'color':'white', 'font-size': '20px', 'font-weight': 'bold'})
 																.appendTo('#endBtn')
 																.click(e=>{
-																	alert('메인 페이지로!!!! 수정수정');
 																	app.common.init(ctx);
 																});
 														}else{
@@ -796,6 +797,8 @@ hee.register = (function(){
 	};
 	var setContentView=function(){
 		$('#content').html(regForm.layout());
+		$('#resiColor').css({'background-color':'#FAFAFA'});
+		
 	};
 	return{init:init}
 })();
@@ -811,7 +814,6 @@ hee.resilogic=(function(){
 	};
 	var resi=(x)=>{
 		init();
-		alert('resi 진입');
 		var json = x;
 		alert(json.addr_doro);
 		var zipcode = json.addr_si + ' '+ json.addr_gu + ' ' + json.addr_doro + ' ' + json.addr_apt;
@@ -855,24 +857,158 @@ hee.resilogic=(function(){
  * 숙소 등록 정규식
  *******************************/
 hee.valid = {
-	    post_checker: x => {
+	    post_checker :(x)=> {
 	        var regPost = /^[0-9]{5}$/;
 	        return regPost.test(x)? "yes" : "no";
 	    },
-	    name_checker : x => {
+	    name_checker :(x)=> {
 	        var regName = /^.{10,49}$/;
 	        return regName.test(x)? "yes" : "no";
 	    },
-	    price_checker : x=> {
+	    price_checker :(x)=> {
 	    	var regPrice = 200000;
 	    	
 	        return x<=regPrice ? "yes" : "no";
 	    }
 };
+/*******************************
+ * 모든 숙소 리스트
+ *******************************/
+hee.allRegList=(function(){
+	var ctx, js, temp, price;
+	var init = (y)=>{		
+		js=$$('j');
+		ctx=$$('x');
+		temp=js+'/template.js';	
+		onCreate(y);
+	};
+	var onCreate=(y)=>{
+        setContentView();
+    	hee.allRegLogic.search('1',y);
+       
+	};
+	var setContentView=()=>{
+	   $('#content').html(allReg.layout());
+	   $('#main-navbar').css({'border-top':'1px solid #e4e4e4','box-shadow':'0 1px 5px rgba(0, 0, 0, 0.1)'});
+	};
+	return {init:init};
+	
+})();
+hee.allRegLogic=(function(){
+	var js, temp, ctx;
+	var init=function(){
+		js=$$('j');
+		ctx=$$('x');
+	    temp=js+'/template.js';
+	};
+	var select =(x)=>{
+		init();
+		hee.rev.init(x);
+	};
+	var search=(x,y)=>{
+		init();
+		$.ajax({
+		     url : ctx+'/list/rev',
+		     method : 'post',
+		     contentType : 'application/json',
+		     data : JSON.stringify({
+				'action' : 'allRegSelect',
+				'page' : x,
+				'search' : y
+			 }),
+		     success : d=>{
+					var row='';
+					var frame='', addr='', price='';
+					var start_page = d.startPage*1; 
+					var end_page = d.endPage*1; 
+					var page_size = 6; 
+					var page_num = d.pageNum*1; 
+					var total_page = d.totalPage*1;
+					var total_count = d.count*1;
+					var block_size=3; 
+					console.log('start_page :'+start_page);
+					console.log('end_page :'+end_page);
+					console.log('page_size :'+page_size);
+					console.log('total_page :'+total_page);
+					console.log('total_count :'+total_count);
+					console.log('block_size :'+block_size);
+					
+					$.each(d.allReg, function(i,j){
+						row += '<div onclick="hee.allRegLogic.select(\''+j.hostSerial+'\')" style="float:left; width:290px; height:280px; margin-right:3em; margin-top: 5%; cursor: pointer;">' 
+			         	 	+'<img src="'+j.infoImg+'" style="width:320px; height:215px"/>'
+			         	 	+'<span style="font-size:17px; font-weight: 700;"> '+j.residenceName+'</span>'
+			         	 	+'<br/>'
+			         	 	+'<span style="font-size:17px; font-weight: 700">￦ '+j.price+'원</span></br>'
+			         	 	+'</div>';
+							addr += j.addr+',';
+					});
+					frame += row;
+					console.log(addr);
+					sessionStorage.setItem('mapAddress', addr);
+					
+					var pagination = '<nav aria-label="Page navigation" style="width:350px; margin:0 auto;">'
+						+'  <ul class="pagination">';
+					
+					if (page_num > block_size){
+						var temp=0;
+						if(page_num % block_size == 0){
+							temp = (Math.floor(((page_num - block_size)/ block_size))*block_size)+1-block_size;
+						}else{
+							temp = (Math.floor(((page_num - block_size)/ block_size))*block_size)+1;
+						}
+						var temp2 = 1;
+						pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp2+'\')" arial-label="Previous">'
+							+'<span style="font-size:12px;" aria-hidden="true">&laquo;</span>'
+							+'</a></li>'
+							+'<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp+'\')" arial-label="Previous">'
+							+'<span style="font-size:12px" aria-hidden="true"><</span>'
+							+'</a></li>';
+					}
+					var i=0;
+					var temp_num=0;
+					
+					for(i=start_page; i<(start_page+block_size) && i<=total_page; i++){
+						if(i==page_num){
+							pagination += '<li class="active"><a style="border-radius: 50%; margin: 0 5px; background-color:#FF5A5F; border-color: #FF5A5F;" href="#">'+i+'</a></li>';
+						}else{
+							pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+i+'\')">'+i+'</a></li>';
+						}
+						temp_num = i;
+					};
+					if(temp_num != total_page){
+						var temp=0;
+						if(page_num % block_size==0){
+							temp=(Math.floor(((page_num + block_size)/ block_size))*block_size)+1-block_size;
+						}else{
+							temp=(Math.floor(((page_num + block_size)/ block_size))*block_size)+1;
+						}
+						var temp2 = total_page;
+						pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp+'\')" arial-label="Previous">'
+						+'<span style="font-size:12px" aria-hidden="true">></span>'
+						+'</a></li>'
+						+'<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp2+'\')" arial-label="Previous">'
+						+'<span style="font-size:12px" aria-hidden="true">&raquo;</span>'
+						+'</a></li>';
+					};
+					pagination += '</ul></nav>';
+				
+					$('#y_list').html(frame);
+					$('#y_pagination').html(pagination);
+					
+					$('#y_map').load(ctx+'/gmap');
+		     }
+		});
+		
+	};
+	return {init:init,
+		select:select,
+		//noSearch:noSearch,
+		search:search}
+})();
 
 
 /*******************************
- * 레이아웃 (예약내역, 숙소등록, 후기)
+ * 레이아웃 (예약내역, 숙소등록, 후기, 모든숙소)
  *******************************/
 var reservation={
 		layout:()=>{
@@ -1008,7 +1144,6 @@ var reservation={
 			+'						<tbody id="tbody">'
 			+'					    </tbody>'
 			+'				  	</table>'
-
 			+'					<div id="moveDiv2"></div>'
 			+'				</div>'
 			+'			</div>'
@@ -1051,7 +1186,6 @@ var reservation={
 			+'			         </div>'
 			+'			    </div>'
 			+'			</div>'
-			
 			+'		</div>'
 			+'	</div>'
 			+'</div>'//
@@ -1076,7 +1210,6 @@ var reservation={
 			+'	    </div>'
 			+'	  </div>'
 			+'	</div>'
-			+'	<input type="button" id="hide_btn" style="visibility:hidden">'
 			+'</div>';
 		},
 		resModal: ()=>{
@@ -1124,7 +1257,7 @@ var reservation={
 };
 var regForm={
 		layout : ()=>{
-			return '<div id="container"  style="height: 100%; background-color:#FAFAFA;">'
+			return '<div id="resi_container"  style="height: 100%; background-color:#FAFAFA;">'
 			+'	<div id="proDiv"> '
 			+'		<div class="progress"  style="height: 17px; background-color: #E7E7E7; margin-bottom:0;">'
 			+'			<div id="progressBar" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width: 25%; background-color: #00A699;">'
@@ -1133,7 +1266,7 @@ var regForm={
 			+'		</div>'
 			+'	</div> '
 			+'	<div> '
-			+'		<div id="register" style="width: 35%; height: 760px; margin:0 auto; background-color: white; padding-top: 4%;">'
+			+'		<div id="register" style="width: 35%; height: 650px; margin:0 auto; background-color: white; padding-top: 4%;">'
 			+'			<div style="width: 100%; padding-left:10%;">'
 			+'				<div>'
 			+'				<span id="title" style="font-size: 30px; font-weight: 700;">숙소의  위치를 알려주세요.</span>'
@@ -1381,4 +1514,17 @@ var regForm={
 		},
 		
 };
-
+var allReg={
+		layout:()=>{
+			return '<div style="width:100%; height:100%; border-top:1px; solid black">'
+			+'	<div id="y_content" style="width:63%; height:700px; display:inline-block; margin-left: 3em; padding-top: 6%;">'
+			+'		<div id="y_list" style="width:100%; height:100%">'
+			+'		</div>'
+			+'		<div id="y_pagination" style="width:100%; height:100%; margin-top: 6.7em;">'
+			+'		</div>'
+			+'	</div>'
+			+'	<div id="y_map" style="width:33%; height:800px; display:inline-block; float: right; margin-top: 5em;">'
+			+'	</div>'
+			+'</div>';
+		}
+};
