@@ -957,10 +957,10 @@ hee.allRegLogic=(function(){
 							temp = (Math.floor(((page_num - block_size)/ block_size))*block_size)+1;
 						}
 						var temp2 = 1;
-						pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp2+'\')" arial-label="Previous">'
+						pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.search(\''+temp2+'\')" arial-label="Previous">'
 							+'<span style="font-size:12px;" aria-hidden="true">&laquo;</span>'
 							+'</a></li>'
-							+'<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp+'\')" arial-label="Previous">'
+							+'<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.search(\''+temp+'\')" arial-label="Previous">'
 							+'<span style="font-size:12px" aria-hidden="true"><</span>'
 							+'</a></li>';
 					}
@@ -971,7 +971,7 @@ hee.allRegLogic=(function(){
 						if(i==page_num){
 							pagination += '<li class="active"><a style="border-radius: 50%; margin: 0 5px; background-color:#FF5A5F; border-color: #FF5A5F;" href="#">'+i+'</a></li>';
 						}else{
-							pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+i+'\')">'+i+'</a></li>';
+							pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.search(\''+i+'\')">'+i+'</a></li>';
 						}
 						temp_num = i;
 					};
@@ -983,10 +983,10 @@ hee.allRegLogic=(function(){
 							temp=(Math.floor(((page_num + block_size)/ block_size))*block_size)+1;
 						}
 						var temp2 = total_page;
-						pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp+'\')" arial-label="Previous">'
+						pagination += '<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.search(\''+temp+'\')" arial-label="Previous">'
 						+'<span style="font-size:12px" aria-hidden="true">></span>'
 						+'</a></li>'
-						+'<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.noSearch(\''+temp2+'\')" arial-label="Previous">'
+						+'<li><a style="border-radius: 50%; margin: 0 5px; color: black;" onclick="hee.allRegLogic.search(\''+temp2+'\')" arial-label="Previous">'
 						+'<span style="font-size:12px" aria-hidden="true">&raquo;</span>'
 						+'</a></li>';
 					};
@@ -1002,7 +1002,6 @@ hee.allRegLogic=(function(){
 	};
 	return {init:init,
 		select:select,
-		//noSearch:noSearch,
 		search:search}
 })();
 

@@ -308,7 +308,7 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:90%;  height:200px
 	+'  </div>'
 	+' </div>'
 	+'</div>'
-	+'<div  class="modal fade" id="myModal111" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
+	/*+'<div  class="modal fade" id="myModal111" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">'
     +'<div class="modal-dialog"><br/>'
     +'       <div class="modal-content">'
         +'         <div class="modal-header" style="margin-left: 14%;">'
@@ -474,7 +474,7 @@ var mainPG={lookup:()=>{return '<div id="lookup" style="width:90%;  height:200px
      +'</div>'
      +'   </labal></div> '
       +' </form> '
-     +' </div></div></div></div></div></div></div>';},
+     +' </div></div></div></div></div></div></div>'*/;},
 	top3 :()=>{return '<div style="width: 70%; margin: -7% 17.5%;">'
 	+'	<div  style="width: 50%;position: relative;">'
 	+'<span><h3 style="font-weight: bold;font-size: xx-large;color: #434343;margin:0 0px 26px 9px">인기 여행지</h3></span>'
