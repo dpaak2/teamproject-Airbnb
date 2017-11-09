@@ -331,6 +331,7 @@ hee.logic=(function(){
 				var ssesionPrice=d.detail.price*1;
 				sessionStorage.setItem('ssesionPrice', ssesionPrice);
 				sessionStorage.setItem('mapAddress',d.detail.addr+',');
+				sessionStorage.setItem('imgAddr',d.detail.detailImg);
 				$('#resiName').html(d.detail.residenceName);
 				$('#host_id').html(d.detail.memberId);
 				$('#price').html(d.detail.price);
@@ -524,12 +525,13 @@ hee.logic=(function(){
 				contentType : 'application/json',
 				success : d=>{
 					$('#form_price').html("￦  "+$('#revbar_result').text()+" 원");
+					$('#res_img').css({'background-image':'url(http://a2.cdn.whatstrending.com/post_items/images/000/021/755/large/airbnblogo.jpg)'});
 				},
 				error : (x,s,m)=>{
 					alert('에러 발생'+m);
 				}
 			});
-			$('#formDt').html(sessionStorage.getItem("start_string")+' ~ '+sessionStorage.getItem("end_string"));
+			$('#formDt').html(sessionStorage.getItem('start_string')+' ~ '+sessionStorage.getItem('end_string'));
 			$('#formRev_name').html($('#resiName').text());
 			$('#formA').html($('#revNumA').text()+' 명');
 			$('#formT').html($('#revNumT').text()+' 명');
@@ -540,8 +542,7 @@ hee.logic=(function(){
 						.val('예약 내역 확인')
 						.attr('data-dismiss','modal')
 						.addClass('btn btn-large btn-block')
-						.css({'font-size': '22px','background-color':'#FF5A5F', 'border-color':'#FF5A5F','font-weight':'bold','width':'100%','outline-style': 'none'})
-					)
+						.css({'font-size': '22px','background-color':'#FF5A5F', 'border-color':'#FF5A5F','color':'white','font-weight':'bold','width':'100%','outline-style': 'none'}))
 			});
 		
 	};
@@ -1212,9 +1213,7 @@ var reservation={
 			+'</div>';
 		},
 		resModal: ()=>{
-			return '<div style="margin: auto; width: 100%; height:300px;'
-			+'			background-image:url(https://a0.muscache.com/im/pictures/666eeff6-12f5-4a94-a2d7-fc727c95e5cf.jpg);'
-			+'			background-size: cover;">'
+			return '<div id="res_img" style="margin: auto; width: 100%; height:300px;">'
 			+'	      	</div>'
 			+'	      	<div style="padding-top: 5px; width: 100%; height: 40px;">'
 			+'	      		<span id="formRev_name" style="float:right; font-size: 25px; font-weight:bold;"></span>'
@@ -1516,7 +1515,7 @@ var regForm={
 var allReg={
 		layout:()=>{
 			return '<div style="width:100%; height:100%; border-top:1px; solid black">'
-			+'	<div id="y_content" style="width:63%; height:700px; display:inline-block; margin-left: 3em; padding-top: 6%;">'
+			+'	<div id="y_content" style="width:64%; height:700px; display:inline-block; margin-left: 3em; padding-top: 6%;">'
 			+'		<div id="y_list" style="width:100%; height:100%">'
 			+'		</div>'
 			+'		<div id="y_pagination" style="width:100%; height:100%; margin-top: 6.7em;">'

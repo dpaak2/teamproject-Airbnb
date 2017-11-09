@@ -1,5 +1,6 @@
 package com.airbnb.web.controller;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -163,8 +164,32 @@ public class HKController {
 			cmd.setStartRow(res.getResiContent());
 			cmd.setEndRow(res.getAddr());
 			cmd.setPage(res.getLimit());
-			tx.resi(cmd);
+			@SuppressWarnings("unchecked") List<String> detail =(List<String>) new IListService() {
+				@Override
+				public List<?> execute(Object o) {
+					return mapper.selectAllDetail();
+				}
+			}.execute(cmd);
+			System.out.println("detail@@@@@@@"+detail);
+			@SuppressWarnings("unchecked") List<String> info =(List<String>) new IListService() {
+				@Override
+				public List<?> execute(Object o) {
+					return mapper.selectAllInfo(); 
+				}
+			}.execute(cmd);
+			System.out.println("nifoinfoinfo@@@@@@@"+info);
 			
+			System.out.println("detail@@@@@@@"+detail);
+			System.out.println("nifoinfoinfo@@@@@@@"+info);
+			String selectedDetail = "",selectedInfo = "";
+			int randomD = (int)(Math.random() * 39);
+			selectedDetail=detail.get(randomD);
+			System.out.println("detail@@@@@@@1111111"+selectedDetail);
+			selectedInfo=info.get((int) (Math.random() * 39));
+			System.out.println("nifoinfoinfo@@@@@@@1111111"+selectedInfo);
+			cmd.setDetailImg(selectedDetail);
+			cmd.setInfoImg(selectedInfo);
+			tx.resi(cmd);
 			//resiopt
 			cmd.setCate(cate);
 			cmd.setCommon("resiopt");
@@ -179,8 +204,8 @@ public class HKController {
 			cmd.setPageNumber(res.getAirCondi());
 			cmd.setKitchen(res.getKitchen());
 			cmd.setSerial(hostSerial);
-			tx.resi(cmd);
 			
+			tx.resi(cmd);
 			map.put("result", "success");
 			break;
 		};

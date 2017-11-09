@@ -104,6 +104,7 @@ public class JWController {
 				}.execute(cmd));
 				
 				System.out.println(map.get("list"));
+				
 				break;
 			case "combo":				
 				map.put("combobox", new IListService() {
@@ -144,7 +145,6 @@ public class JWController {
 			case "hresiList":
 				cmd.setDir(cate);
 				cmd.setSearch(param1+"@"+param2+"."+param3);
-				
 				map.put("list", new IListService() {
 					@Override
 					public List<?> execute(Object o) {

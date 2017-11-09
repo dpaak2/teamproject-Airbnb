@@ -11,7 +11,23 @@ import lombok.Data;
 @Lazy
 @Component
 public class Command {
-protected String dir,action, page,pageNumber,search,view,column,startRow,endRow,kitchen,serial,cate,common;
+protected String dir,action, page,pageNumber,search,view,column,startRow,endRow,kitchen,serial,cate,common,detailImg,infoImg;
+
+	public String getDetailImg() {
+	return detailImg;
+}
+
+public void setDetailImg(String detailImg) {
+	this.detailImg = detailImg;
+}
+
+public String getInfoImg() {
+	return infoImg;
+}
+
+public void setInfoImg(String infoImg) {
+	this.infoImg = infoImg;
+}
 
 	public String getDir() {
 	return dir;

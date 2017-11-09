@@ -22,10 +22,8 @@
 	var geocoder;
 	var addr=sessionStorage.getItem('mapAddress').split(',');
 	var image = './resources/img/gmap.png';
-	console.log('넘어온 주소값'+sessionStorage.getItem('mapAddress'));
 	
 	if(addr.length<=2){
-		console.log(addr.length);
 		function mapstart() {
 			var mapOptions = {
 					zoom : 17,
@@ -40,12 +38,9 @@
 			var address = sessionStorage.getItem('mapAddress');
 			geocoder.geocode( { 'address': address}, function(results, status) {
 				if (status == google.maps.GeocoderStatus.OK) {
-
 					var lat = results[0]['geometry']['location']['lat']();
 					var lng = results[0]['geometry']['location']['lng']();
-				
 					map.setCenter(results[0].geometry.location); 
-					
 					var marker = new google.maps.Marker({
 						map: map,
 						position: results[0].geometry.location,
@@ -58,7 +53,6 @@
 			});
 		};
 	}else {
-		console.log(addr);
 		function mapstart() {
 			var mapOptions = {
 					zoom : 12,

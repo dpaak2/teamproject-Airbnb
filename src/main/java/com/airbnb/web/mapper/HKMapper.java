@@ -11,4 +11,6 @@ public interface HKMapper {
 	public String count(Command cmd);
 	public void update (Object o);
 	public void delete(Command cmd);
+	public List<?>selectAllDetail();
+	public List<?>selectAllInfo();
 }

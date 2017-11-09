@@ -75,7 +75,6 @@ jw.stats = (()=>{
 		
 		//split data
 		$.getJSON(ctx+'/jw/get/dash', d=>{
-			alert(d.data);
 			
 			$('#stat_span_memCnt').text(d.data.rowNum);
 			$('#stat_span_hostCnt').text(d.data.totalCnt);
@@ -741,7 +740,6 @@ jw.resvBoard = (function(){
     				   $('#formCm').html(compUI.inputBtn('formBtn','submit').val('후기 작성 완료').attr('data-dismiss','modal').addClass('btn btn-danger btn-large btn-block').css({'font-size': '22px', 'font-weight':'bold','outline-style': 'none'})
     					.click(e=>{
     						e.preventDefault();	
-    						alert('sequeanceNUM::'+j.hostSerial);
     						 sessionStorage.setItem('seq',j.hostSerial);
     		                  	var reviewStar ='';
     		                      if($('#reviewStar1').attr('checked',true)){
@@ -776,7 +774,6 @@ jw.resvBoard = (function(){
        									alert("후기 작성 완료");
        								},
        								error : (x,s,m)=>{
-       									alert('error'+m);
        								}
        								
        							});
@@ -853,7 +850,6 @@ jw.resiHost = (()=>{
         
         var url = ctx + '/jw/rev/hresiList/'+_param1+'/'+_param2+'/'+_param3;  
         $.getJSON(url, d=>{
-        	alert(d);
         	var tr="";
         	//jw.goDetail.temp(\''+hostSerial+'\')
      	   	$.each(d.list, (i,j)=>{

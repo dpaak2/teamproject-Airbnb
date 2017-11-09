@@ -1,7 +1,6 @@
 var chobongki=chobongki || {};
 chobongki.common=(()=>{
    var init = (ctx)=>{
-      alert('ctx : '+ctx);
       chobongki.session.init(ctx);
      chobongki.index.init();
    };
@@ -32,6 +31,10 @@ chobongki.index=(()=>{
           $('#homeBtn111').click(()=>{
              app.common.init(ctx);
           });
+          
+          $(this).ready(function(){
+		        $('[data-toggle="tooltip"]').tooltip();   
+		    });
           $('#search').click(()=>{
               var $addemail=$('#addemail').val();
                 $.ajax({
@@ -113,7 +116,7 @@ chobongki.index=(()=>{
             
           });
           $('#facebookDiv').click(()=>{
-             alert('페이스북버튼');
+             alert('구현되지 않는 기능입니다.');
           });
           $('#loginDiv').click(e=>{
             e.preventDefault();
@@ -138,7 +141,7 @@ chobongki.index=(()=>{
                    if(d.msg=='success'){                                
                               
                      if(d.list.memberRole=='admin'){
-                        alert('관리자로그인');
+                        alert('관리자 로그인');
                         jw.common.init(ctx);
                         }else{
                               sessionStorage.setItem('sname',d.list.name);
@@ -178,7 +181,6 @@ chobongki.profile=(e=>{
        
        
        $('#delete').click(()=>{
-          alert('탈퇴');
           var $password = prompt('비밀번호를 입력');
           if($password==sessionStorage.getItem('spassword')){
              alert('비밀번호가 일치합니다');
@@ -249,50 +251,12 @@ chobongki.profile=(e=>{
             $('#cho_img').html('사진');
           ///사진
          });
-            
-            
-           $('#hkgogo').click(()=>{
-                alert('숙소등록현황')
-                $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
-                $('#airbnbText').remove();
-                $('#bk_test').empty();
-                $('#bk_test').html(jw.resiHost.list(ctx));
-                $('#footer').html(main.footer()).css({'margin-top': '10%'});
-                
-             });
-           
-           /*$('#btnrev').click(()=>{
-                alert('예약보기');  
-                $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
-               $('#airbnbText').remove();
-                 $('#content').empty();
-                $('#footer').html(main.footer()).css({'margin-top': '10%'});
-                $('#content').html(jw.resvBoard.list(ctx));
-             });
-           
-             $('#menu5').click(()=>{
-                  alert('프로필수정123')
-                  $('#navbar').html(app.navbar.init()).css({'padding-top':'10px','margin-bottom':'5%'});
-              $('#airbnbText').remove();
-             $('#content').empty();
-             $('#footer').html(main.footer()).css({'margin-top': '55%'});
-               chobongki.profile.init();
-               });
-         });*/
-         
-         //예약가기
-    /*     $('#navbar').html(app.navbar.init()).css({'padding-top': '6px','margin-bottom':' 5%'});
-          $('#airbnbText').remove();
-            $('#content').empty();
-           $('#footer').html(main.footer()).css({'margin-top': '10%'});
-           $('#content').html(jw.resvBoard.list(ctx));*/
-         
+ 
          $('#update').click(()=>{
             ///수정하기
             var $lastname=$('#lastname').val();
              var $firstname=$('#firstname').val();
             var $memberid=sessionStorage.getItem('smemberid');
-                  alert('아이디'+$memberid);
                      
               $.ajax({
                  url :ctx+'/get/update', 
@@ -308,7 +272,6 @@ chobongki.profile=(e=>{
                   
                   sessionStorage.setItem('sname',$name);
                   
-                  alert('업데이트성공'+sessionStorage.getItem('sname'));
                   chobongki.profile.init(ctx);                                                                                             
                                 
                 },
@@ -562,39 +525,24 @@ var cho={
                      +'전화번호&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<input class="cho_input_text" id="phone" type="text" placeholder="010-1234-5678"/>'
                      +'<div class="cho_textbox">예약이 완료될 경우에만 공유됩니다. 번호가 공유되면 개인적으로 연락할 수 있습니다</div><br />'
                      +'자기소개 &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp'
-                     +'<textarea class="" id="myprofile"></textarea><br /><br />'
+                     +'<textarea style="width: 80%;" id="myprofile"></textarea><br /><br />'
                      +'<div class="aaa">'
                      +'<span id="update"><input style="text-align: center; background-color:#ffb380 ; color:white" class="cho_btn2" type="button" value="수정하기" /></span>'
                      +'<span id="delete"><input style="text-align: center; background-color:#ff5a5f ; color:white" class="cho_btn2" type="button" value="탈퇴" /></span></div><br><br><br>'
                      +'</div>'
-         +'</div></div></div></div></div>'
-
-                     
+                     +'</div></div></div></div></div>'
                   },
       
       profile2:()=>{ 
          return '<div id="cho555" style= "height: 100%;padding-bottom: 0%;><div style="margin-top: 4%">'
-         /*<ul class="cho_ul">'
-         +'<li class="cho_li"><div class="cho_menu" id="menu1">알림판</div></li>'
-         +'<li class="cho_li"><div class="cho_menu" id="menu2">메세지</div></li>'
-         +'<li class="cho_li"><div class="cho_menu" id="btnrev">예약 목록</div></li>'
-         +'<li class="cho_li"><div class="cho_menu" id="btnprofile">프로필 보기</div></li>'
-         +'<li class="cho_li"><div class="cho_menu" id="menu5">프로필 수정</div></li>'
-         +'<li class="cho_li"><div class="cho_menu" id="hkgogo">숙소등록현황</div></li>'
-         +'<li class="cho_li"><div class="cho_menu" id="menu7">여행크레딧</div></li>'
-      +'</ul>'*/
             +'<div class="profile2">'
             +'<div id="#cho_img">'
             +'<img src="resources/img/profile.jpg" alt="" />'
             +'</div>'
-            +'제출'
-            +'${number}'
             +'<a href="resources/upload/${filename}">${filename}</a><br/>'
             +' <span style="margin-left: 7%; margin-top:2% ; font-size: xx-large; font-weight:bold;" >안녕하세요  '+sessionStorage.getItem('sname')+' 입니다</span>'
-           +' <div style="margin-left: 12%; margin-top: 2%; font-size: large ;font-weight: bold;">가입날짜  '+sessionStorage.getItem('sregdate')+'</div>'
-          +'</div> '
-                
-            
+            +' <div style="margin-left: 12%; margin-top: 2%; font-size: large ;font-weight: bold;">가입날짜  '+sessionStorage.getItem('sregdate')+'</div>'
+            +'</div> '
             +'</div>'
       }, profileNav:()=>{ 
           return '<div id="cho555" style= "height: 100%;padding-bottom: 0%;><div style="margin-top: 4%"><ul class="cho_ul">'
@@ -648,7 +596,7 @@ var $$= function(x){return chobongki.session.getPath(x);};
 
    ////=====페이스북 api====///
 
-
+/*
 (function(d, s, id) {
     var js, fjs = d.getElementsByTagName(s)[0];
     if (d.getElementById(id)) return;
@@ -687,4 +635,4 @@ window.fbAsyncInit = function() {
           } else {
             // The person is not logged into this app or we are unable to tell. 
           }
-        });
+        });*/

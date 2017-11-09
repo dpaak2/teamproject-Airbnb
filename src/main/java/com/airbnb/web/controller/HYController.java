@@ -35,16 +35,30 @@ public class HYController {
 	@Autowired Board brd;
 	@Autowired ReviewBoard rvd;
 	@Autowired TransactionService tx;
+	@SuppressWarnings("unchecked")
 	@RequestMapping("/put/listhostels")
 	public @ResponseBody List<?> listHostels(){
 		 logger.info("HYcontroller listHostels{}." ,"진입 ");
+		 List<Residence> list = new ArrayList<>();
 		 @SuppressWarnings("unchecked")
-		List<Residence> list = (List<Residence>) new IListService() {
+		List<Residence> hostlist = (List<Residence>) new IListService() {
+			@Override
+			public List<?> execute(Object o) {
+				return mapper.selectList(cmd);
+			}
+	    }.execute(cmd);
+		if(hostlist==null){
+		  list =(List<Residence>) new IListService() {
 			@Override
 			public List<?> execute(Object o) {
 				return mapper.selectList(cmd);
 			}
 		}.execute(cmd);
+		           System.out.println("첫번째 리스트 확인 ____"+list);
+		}else {
+			 list =hostlist;
+			 System.out.println("두번째 리스트 확인 ____"+list);
+		}
 		System.out.println("hy넘어온 리스트 확인:::"+list);
 		return list;
 	}

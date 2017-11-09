@@ -21,7 +21,7 @@
 	<select id="selectSearch" resultType="com.airbnb.web.domain.Member"
 		parameterType="com.airbnb.web.command.Command">
 	SELECT member_id AS memberId , member_password AS memberPassword ,name,regdate,birthdate,member_role AS memberRole 
-	FROM Member 
+	FROM member 
 	WHERE member_id LIKE #{action} 
 	 
 	</select>
@@ -29,7 +29,7 @@
 	<select id="selectOne" resultType="com.airbnb.web.domain.Member"
 		parameterType="com.airbnb.web.command.Command">
 	SELECT member_id AS memberId , member_password AS memberPassword ,name,regdate,birthdate,member_role AS memberRole 
-	FROM Member 
+	FROM member 
 	WHERE member_id LIKE #{action} 
 	 AND member_password LIKE #{column}
 	</select>

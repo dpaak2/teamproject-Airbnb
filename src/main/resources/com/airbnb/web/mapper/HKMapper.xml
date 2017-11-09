@@ -36,7 +36,6 @@
 		<result property="teen" column="wifi"/>
 		<result property="child" column="wifi"/>
 		<result property="resPrice" column="resPrice"/>
-		
 		<result property="boardSeq" column="board_seq"></result>
 		<result property="hostSerial" column="host_serial"></result>
 		<result property="reviewStar" column="review_star"></result>		
@@ -44,10 +43,8 @@
 		<result property="regdate" column="board_regdate"></result>		
 		<result property="rownum" column="ROWNUM"></result>		
 	</resultMap>
-	
 	<insert id="insert"
 		parameterType="com.airbnb.web.command.Command">
-		
 		 <choose>
             <when test="cate == 'rev'">
                 INSERT INTO reservation 
@@ -56,8 +53,8 @@
             <when test="cate == 'resi'">
 	            <choose>
 		            <when test="common == 'residence'">
-		                INSERT INTO residence(member_id, residence_name, price, zipcode, host_serial, resi_content, addr, limit_no)
-			            VALUES(#{view}, #{dir}, #{action}, #{column}, #{search}, #{startRow}, #{endRow}, #{page})
+		                INSERT INTO residence(member_id, residence_name, price, zipcode, host_serial, resi_content, addr, limit_no,detail_img, info_img)
+			            VALUES(#{view}, #{dir}, #{action}, #{column}, #{search}, #{startRow}, #{endRow}, #{page},#{detailImg},#{infoImg})
 		            </when>
 		            <when test="common == 'resiopt'">
 			            INSERT INTO resiopt (wifi, bed_num, pet, essential_item, parking, bathroom_num, tv, washing_mac, Air_condi, kitchen, host_serial)
@@ -67,6 +64,15 @@
             </when>
          </choose>
 	</insert>
+	
+  <select id="selectAllDetail" resultType="string" >
+   select detail_img as detail
+   from residence
+   </select>
+  <select id="selectAllInfo"  resultType="string" >
+   select info_img as info 
+   from residence
+   </select>
 		
 	<select id="selectList"
 		resultMap="ResiMap" 

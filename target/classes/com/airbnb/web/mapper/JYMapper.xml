@@ -4,24 +4,62 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.airbnb.web.mapper.JYMapper">
 
-	<insert id="insert" >
+	<insert id="insert" parameterType="com.airbnb.web.domain.Reservation">
+		INSERT INTO reservation (
+			member_id,
+			host_serial,
+			res_price,
+		   	rsv_seq,
+		   	checkin,
+		   	checkout,
+		   	regdate,
+		   	solddays
+		) 
+		VALUES (
+			#{memberId},
+			#{hostSerial},
+			#{resPrice},
+			#{rsvSeq},
+			#{checkin},
+			#{checkout},
+			now(),
+			#{solddays}
+		);
 	</insert>
 
-	<select id="selectList"></select>
-
-	<select id="count" >
-
+	<select id="selectList" resultType="com.airbnb.web.domain.Residence">
+		SELECT member_id AS memberId,
+		       residence_name AS residenceName,
+		       price,
+		       zipcode,
+		       host_serial AS hostSerial,
+		       detail_img AS detailImg,
+			   resi_content AS regiContent,
+			   addr,
+		       info_img AS infoImg,
+		       limit_no AS limitNo
+		FROM residence;
 	</select>
-
-	<select id="selectOne">
 	
+	<select id="selectOne" resultType="com.airbnb.web.domain.Member" parameterType="com.airbnb.web.domain.Member">
+		SELECT 
+			member_id AS memberId,
+			member_password AS MemberPassword,
+			name
+		FROM 
+			member
+		WHERE 
+			member_id = #{memberId} AND member_password = #{memberPassword};
 	</select>
-
-	<update id="update" >
 	
+	<select id="count" resultType="String">
+		SELECT COUNT(*) FROM residence;
+	</select>
+	  
+	<update id="update">
 	</update>
-
-	<delete id="delete" >
 	
-	</delete> 
+	<delete id="delete">
+	</delete>
+
 </mapper>

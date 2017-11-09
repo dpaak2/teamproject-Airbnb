@@ -130,12 +130,10 @@
 					WHERE m.member_id = r.member_id
 					AND r.host_serial = x.host_serial
 					AND m.member_id = #{search}
-					;
 				</when>
 				<when test="dir == 'hresiList'">
 					SELECT * FROM residence
   					WHERE member_id = #{search}
-  					;
 				</when>
 			</choose>
 		</if>		
